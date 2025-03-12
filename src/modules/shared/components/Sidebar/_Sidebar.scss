@@ -169,3 +169,49 @@
     height: 18px !important;
   }
 }
+
+.ant-layout-sider:not(.ant-layout-sider-collapsed) {
+  flex: 0 0 15rem !important;
+  max-width: 15rem !important;
+  min-width: 15rem !important;
+  width: 15rem !important;
+
+  padding: 0 0.6rem;
+
+  & .ant-layout-sider-trigger {
+    width: 15rem !important;
+    left: 0;
+  }
+}
+
+.add-new-path {
+  font-feature-settings:
+    "cv01" on,
+    "cv03" on,
+    "cv04" on;
+
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+
+  color: #3887d9;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 145%;
+
+  border-radius: 8px;
+  border: 1px solid #3887d9;
+  background: #f7fbff;
+
+  padding: 0.5rem 1rem;
+  margin: 0 4px;
+
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.add-new-path:hover {
+  background: #d5e7ff;
+  transition: all 0.2s ease-out;
+}

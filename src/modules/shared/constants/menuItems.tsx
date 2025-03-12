@@ -1,5 +1,4 @@
 import {
-  RobotOutlined,
   ThunderboltOutlined,
   DashboardOutlined,
   SettingOutlined,
@@ -8,26 +7,14 @@ import {
   CodeOutlined,
   TrophyFilled,
 } from "@ant-design/icons";
+import { PATH } from "@src/modules/dashboard/routes/paths";
 
 export const menuItems = [
-  // {
-  //   key: "posts",
-  //   label: "Posts",
-  //   icon: <HomeOutlined />,
-  //   path: "/posts",
-  // },
-  // {
-  //   key: "schedule",
-  //   label: "Schedule",
-  //   icon: <CalendarOutlined />,
-  //   path: "/schedule",
-  //   disabled: true,
-  // },
   {
-    key: "chat",
-    label: "Chat",
-    icon: <RobotOutlined />,
-    path: "/chat",
+    key: "dashboard",
+    label: "Dashboard",
+    icon: <DashboardOutlined />,
+    path: PATH.DASHBOARD,
   },
 
   {
@@ -35,14 +22,6 @@ export const menuItems = [
     label: "Learning Path",
     icon: <ThunderboltOutlined />,
     path: "/learning-path",
-    disabled: true,
-  },
-
-  {
-    key: "dashboard",
-    label: "Dashboard",
-    icon: <DashboardOutlined />,
-    path: "/dashboard",
     disabled: true,
   },
 
@@ -67,13 +46,6 @@ export const menuItems = [
     icon: <UserOutlined />,
     path: "/community",
     disabled: true,
-  },
-
-  {
-    key: "configuration",
-    label: "Configuration",
-    icon: <SettingOutlined />,
-    path: "/configuration",
   },
 ];
 
