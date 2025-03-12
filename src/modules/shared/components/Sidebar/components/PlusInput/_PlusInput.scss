@@ -1,0 +1,26 @@
+.plus-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  padding: 5px 0.5rem 5px 0;
+  border: 1px solid transparent;
+  transition: all 100ms;
+}
+
+.plus-input.active {
+  color: #3887d9;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+  border: 1px solid #3887d9;
+  background: #f7fbff;
+
+  & img {
+    filter: invert(47%) sepia(54%) saturate(1940%) hue-rotate(190deg) brightness(91%) contrast(86%);
+  }
+  & span {
+    color: #3887d9 !important;
+  }
+}

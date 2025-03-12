@@ -1,0 +1,17 @@
+{
+  "createJournal": {
+    "errors": {
+      "intituleRequired": "Intitulé est requis.",
+      "codeRequired": "Code est requis.",
+      "journalRequired": "Journal est requis."
+    }
+  },
+  "createTypeJournal": {
+    "errors": {
+      "codeRequired": "Code est requis.",
+      "journalTypeRequired": "Type de journal est requis.",
+      "linkedAccountsRequired": "linked Accounts est requis.",
+      "linkedAccountMinItem": "Le champ Liste des comptes liées doit contenir au moins 1 élément."
+    }
+  }
+}

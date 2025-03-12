@@ -1,0 +1,86 @@
+.inline-button-search-filter {
+    background: #fff;
+    max-height: 40px !important;
+
+    .ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+        border: none !important;
+    }
+
+    .ant-select-selection-overflow {
+        display: flex;
+        flex-wrap: wrap;
+        row-gap: 4px;
+    }
+
+    .ant-input-container .ant-select {
+        margin-top: 0px !important;
+
+        .ant-select-selector {
+
+            display: flex;
+            height: unset;
+            align-items: center;
+            border: none;
+            padding-inline: 0px;
+            border-radius: 4px !important;
+
+            .ant-select-selection-search {
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .ant-select-selection-item .ant-select-selection-item-content {
+            font-size: 12px !important;
+        }
+
+        .ant-select-selection-item {
+            margin-block: 0px !important;
+            background: #edf6ff !important;
+            padding: 0px 8px;
+            height: fit-content !important;
+            border-radius: 4px !important;
+            max-width: 250px;
+        }
+    }
+
+    .filters {
+        margin-bottom: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+
+        & .filters-title {
+            display: flex;
+            align-items: center;
+
+            & h2 {
+                color: #344054;
+
+                font-family: Inter;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 500;
+            }
+
+            & .effacer {
+                color: #3887d9;
+                font-family: Inter;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 600;
+                cursor: pointer;
+            }
+
+            & .ant-divider {
+                border-inline-start: 1px solid #d0d5dd;
+                top: 0;
+            }
+        }
+
+        & .buttons-filter {
+            display: flex;
+            gap: 0.4rem;
+        }
+    }
+}

@@ -1,0 +1,13 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Linear / Arrows Action / Square Bottom Up">
+<g clip-path="url(#clip0_1288_24306)">
+<path id="Vector" d="M8.66644 14.666C11.3698 14.6611 12.7854 14.5947 13.6901 13.69C14.6664 12.7137 14.6664 11.1424 14.6664 7.99967C14.6664 4.85698 14.6664 3.28563 13.6901 2.30932C12.7138 1.33301 11.1425 1.33301 7.99978 1.33301C4.85708 1.33301 3.28573 1.33301 2.30942 2.30932C1.40473 3.21401 1.33836 4.62963 1.3335 7.33301" stroke="#3887D9" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Vector_2" d="M2 14.0003L7.33333 8.66699M7.33333 8.66699H3.33333M7.33333 8.66699V12.667" stroke="#3887D9" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_1288_24306">
+<rect width="16" height="16" rx="3.33333" fill="white"/>
+</clipPath>
+</defs>
+</svg>

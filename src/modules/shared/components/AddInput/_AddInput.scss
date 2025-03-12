@@ -1,0 +1,16 @@
+.add-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid #3887d9;
+  border-radius: 0.25rem;
+  cursor: pointer;
+
+  & .add-input-text {
+    color: #3887d9;
+    text-align: center;
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+}

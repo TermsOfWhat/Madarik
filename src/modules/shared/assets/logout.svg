@@ -1,0 +1,13 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Linear / Arrows ALogout 2">
+<g clip-path="url(#clip0_7719_135565)">
+<path id="Vector" d="M6.00134 4.66634C6.00941 3.21632 6.07371 2.43105 6.58597 1.91879C7.17176 1.33301 8.11457 1.33301 10.0002 1.33301L10.6669 1.33301C12.5525 1.33301 13.4953 1.33301 14.0811 1.91879C14.6669 2.50458 14.6669 3.44739 14.6669 5.33301L14.6669 10.6663C14.6669 12.552 14.6669 13.4948 14.0811 14.0806C13.4953 14.6663 12.5525 14.6663 10.6669 14.6663L10.0002 14.6663C8.11457 14.6663 7.17176 14.6663 6.58597 14.0806C6.07371 13.5683 6.00941 12.783 6.00134 11.333" stroke="#FF1616" stroke-width="1.5" stroke-linecap="round"/>
+<path id="Vector_2" d="M10 8L1.33333 8M1.33333 8L3.66667 6M1.33333 8L3.66667 10" stroke="#FF1616" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_7719_135565">
+<rect width="16" height="16" rx="3.33333" fill="white"/>
+</clipPath>
+</defs>
+</svg>

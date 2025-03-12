@@ -1,0 +1,28 @@
+{
+  "sidebar": {
+    "dashboard": "Accueil",
+    "settings": "Paramètres",
+    "profile": "Profil",
+    "saisir": "Saisie",
+    "révisons": "Révisons",
+    "etats financiers": "États financiers",
+    "plan comptable": "Plan comptable",
+    "nouvelle écriture": "Nouvelle écriture",
+    "nouveau journal": "Nouveau journal",
+    "A nouveaux": "A nouveaux",
+    "Achat": "Achat",
+    "Ventes": "Ventes",
+    "Banque": "Banque",
+    "Caisse": "Caisse",
+    "Opérations divers": "Opérations divers",
+    "mes entreprises": "Mes entreprises",
+    "mes invitations": "Mes invitations",
+    "gestion": "Gestion",
+    "utilisateurs": "Utilisateurs",
+    "roles": "Rôles",
+    "comptabilité": "Comptabilité",
+    "paie": "Paie",
+    "facturation": "Facturation",
+    "fiche entreprise": "Fiche entreprise"
+  }
+}

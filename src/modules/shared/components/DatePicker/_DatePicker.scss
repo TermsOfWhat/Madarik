@@ -1,0 +1,21 @@
+.date-form {
+  width: 100%;
+
+  .ant-input-error_txt {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 11px;
+    color: #e04f44;
+    margin-top: 6px;
+  }
+}
+
+.ant-input-required {
+  color: #e04f44;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 11px;
+}

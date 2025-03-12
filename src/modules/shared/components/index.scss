@@ -1,0 +1,24 @@
+@use "./Sidebar/Sidebar";
+@use "./ThemeButton/ThemeButton";
+@use "./Button/Button";
+@use "./Input/Input";
+@use "./LazyLoad/LazyLoad";
+@use "./AntSelect/AntSelect";
+@use "./AddInput/AddInput";
+@use "./Sidebar/components/PlusInput/PlusInput";
+@use "./WrapperLoader/WrapperLoader";
+@use "./ViewTitle/ViewTitle";
+@use "./Alert/alert";
+@use "./AlertMessageAntd/AlertMessageAntd";
+@use "./Pagination/CustomPagination";
+@use "./DatePicker/DatePicker";
+@use "./AntSearch/AntSearch";
+@use "./AntUpload/antUpload.scss";
+@use "./AntCheckbox/antcheckbox";
+@forward "./ButtonWithTags/";
+@forward "./NumericInput/";
+@forward "./Search/";
+
+@forward "./SelectStatus/";
+@forward "./ModalTitle/";
+@forward "./ModalTitle/";

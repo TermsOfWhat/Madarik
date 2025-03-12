@@ -1,0 +1,22 @@
+{
+  "sidebar": {
+    "dashboard": "لوحة التحكم",
+    "settings": "الإعدادات",
+    "profile": "الملف الشخصي",
+    "saisir": "الإدخال",
+    "révisons": "المراجعات",
+    "etats financiers": "البيانات المالية",
+    "plan comptable": "الخطة المحاسبية",
+    "nouvelle écriture": "إدخال جديد",
+    "nouveau journal": "سجل جديد",
+    "A nouveaux": "جديد",
+    "Achat": "الشراء",
+    "Ventes": "المبيعات",
+    "Banque": "البنك",
+    "Caisse": "النقدية",
+    "Opérations divers": "العمليات المتنوعة",
+    "mes entreprises": "شركاتي",
+    "mes invitations": "طلبات الإنضمام",
+    "gestion": "إدارة"
+  }
+}

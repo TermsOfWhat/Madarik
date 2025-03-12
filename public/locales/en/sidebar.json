@@ -1,0 +1,23 @@
+{
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "profile": "Profile",
+    "saisir": "Input",
+    "révisons": "Revisions",
+    "etats financiers": "Financial Statements",
+    "plan comptable": "Chart of Accounts",
+    "nouvelle écriture": "New Entry",
+    "nouveau journal": "New Journal",
+    "A nouveaux": "New",
+    "Achat": "Purchase",
+    "Ventes": "Sales",
+    "Banque": "Bank",
+    "Caisse": "Cash",
+    "Opérations divers": "Miscellaneous Operations",
+    "mesEntreprises": "Mes entreprises",
+    "gestion": "Gestion",
+    "Utilisateurs": "Utilisateurs",
+    "mes invitations": "My invitations"
+  }
+}

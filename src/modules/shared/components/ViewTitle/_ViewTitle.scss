@@ -1,0 +1,38 @@
+header {
+  border-bottom: 1px solid #f2f4f7;
+  padding: 17px;
+  display: flex;
+  justify-content: space-between;
+
+  & .title {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-items: center;
+    & img {
+      cursor: pointer;
+    }
+    & h1 {
+      color: #1d2939;
+      font-size: 1.25rem;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 120%;
+      letter-spacing: -0.025rem;
+
+      @media screen and (max-width: 997px) {
+        font-size: 18px;
+      }
+    }
+    & a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  & .actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+}

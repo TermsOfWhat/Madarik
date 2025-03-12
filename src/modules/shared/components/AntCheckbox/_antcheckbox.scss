@@ -1,0 +1,24 @@
+.shared-ant-checkbox {
+  & .ant-checkbox-inner {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+  & .ant-checkbox-inner::after {
+    width: 6px;
+    height: 10px;
+    left: 6.5px;
+  }
+
+  & .ant-checkbox-indeterminate {
+    & .ant-checkbox-inner {
+      background-color: #1677ff !important;
+      border-color: #1677ff !important;
+    }
+    & .ant-checkbox-inner::after {
+      background-color: #ffff !important;
+      width: 60%;
+      height: 2px;
+      left: 50%;
+    }
+  }
+}
