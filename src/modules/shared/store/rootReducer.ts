@@ -1,10 +1,11 @@
-import { combineReducers } from "@reduxjs/toolkit";
+import { combineReducers } from '@reduxjs/toolkit';
 
-import authReducer from "../../auth/data/authSlice";
+import authReducer from '../../auth/data/authSlice';
 
-import layoutReducer from "./slices/layout/layoutSlice";
-import modalReducer from "./slices/modal/modalSlice";
-import themeReducer from "./slices/theme/themeSlice";
+import layoutReducer from './slices/layout/layoutSlice';
+import modalReducer from './slices/modal/modalSlice';
+import themeReducer from './slices/theme/themeSlice';
+import quizReducer from '../../quiz/store/quizSlice';
 
 const rootReducer = combineReducers({
   theme: themeReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   modal: modalReducer,
 
   layout: layoutReducer,
+  quiz: quizReducer,
 });
 
 export default rootReducer;
