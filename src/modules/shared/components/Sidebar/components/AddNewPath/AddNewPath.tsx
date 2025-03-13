@@ -6,7 +6,8 @@ function AddNewPath() {
   const navigate = useNavigate();
   return (
     <div className="add-new-path" onClick={() => navigate(PATH.CHAT)}>
-      <PlusOutlined /> New Path
+      <PlusOutlined />
+      <p>New Path</p>
     </div>
   );
 }

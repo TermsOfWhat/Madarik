@@ -77,3 +77,13 @@
     }
   }
 }
+
+.main-layout-ant-navbar {
+  height: 2.3rem;
+
+  & .ant-menu-item {
+    display: flex;
+    align-items: center;
+    border-radius: 8px !important;
+  }
+}

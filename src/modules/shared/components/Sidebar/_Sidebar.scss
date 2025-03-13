@@ -159,14 +159,14 @@
   }
 }
 .ant-menu-item svg {
-  width: 16px !important;
-  height: 16px !important;
+  width: 18px !important;
+  height: 18px !important;
 }
 
 .ant-layout-sider-collapsed {
   .ant-menu-item svg {
-    width: 18px !important;
-    height: 18px !important;
+    width: 20px !important;
+    height: 20px !important;
   }
 }
 
@@ -183,22 +183,17 @@
     left: 0;
   }
 }
-
 .add-new-path {
   font-feature-settings:
     "cv01" on,
     "cv03" on,
     "cv04" on;
 
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-
   color: #3887d9;
   font-family: Inter;
-  font-size: 14px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 500;
-  line-height: 145%;
 
   border-radius: 8px;
   border: 1px solid #3887d9;
@@ -207,11 +202,60 @@
   padding: 0.5rem 1rem;
   margin: 0 4px;
 
+  margin-bottom: 2rem;
+
   cursor: pointer;
-  margin-bottom: 1rem;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  & svg {
+    width: 15px;
+    height: 15px;
+  }
+  p {
+    font-feature-settings:
+      "cv01" on,
+      "cv03" on,
+      "cv04" on;
+
+    color: #3887d9;
+  }
 }
 
 .add-new-path:hover {
   background: #d5e7ff;
   transition: all 0.2s ease-out;
+}
+
+.sidebar-menu {
+  & .ant-menu-item {
+    padding-left: 16px !important;
+  }
+
+  & .ant-menu-title-content {
+    font-size: 17px !important;
+  }
+}
+
+.sidebar-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.ant-layout-sider-collapsed {
+  .sidebar-menu .ant-menu-item {
+    padding-left: 25px !important;
+  }
+  .add-new-path {
+    justify-content: center;
+    span {
+      margin-left: -1px;
+    }
+    p {
+      display: none;
+    }
+  }
 }
