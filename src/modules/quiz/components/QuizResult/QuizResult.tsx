@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback, memo } from 'react';
 import { Card, Result, Progress, Button } from 'antd';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
@@ -12,6 +12,38 @@ interface QuizResultProps {
   onRetryCurrentQuiz?: () => void;
 }
 
+const triggerConfetti = (duration: number) => {
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+  const randomInRange = (min: number, max: number) => {
+    return Math.random() * (max - min) + min;
+  };
+
+  const interval: number = window.setInterval(function () {
+    const timeLeft = animationEnd - Date.now();
+
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+
+    const particleCount = 50 * (timeLeft / duration);
+
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+    });
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+    });
+  }, 250);
+
+  return interval;
+};
+
 const QuizResult: React.FC<QuizResultProps> = ({
   score,
   totalQuestions,
@@ -19,39 +51,35 @@ const QuizResult: React.FC<QuizResultProps> = ({
   onRetryCurrentQuiz,
 }) => {
   useEffect(() => {
+    let interval: number | undefined;
+
     if (score >= 80) {
-      const duration = 3 * 1000;
-      const animationEnd = Date.now() + duration;
-      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
-
-      const randomInRange = (min: number, max: number) => {
-        return Math.random() * (max - min) + min;
-      };
-
-      const interval: number = window.setInterval(function () {
-        const timeLeft = animationEnd - Date.now();
-
-        if (timeLeft <= 0) {
-          return clearInterval(interval);
-        }
-
-        const particleCount = 50 * (timeLeft / duration);
-
-        confetti({
-          ...defaults,
-          particleCount,
-          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-        });
-        confetti({
-          ...defaults,
-          particleCount,
-          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-        });
-      }, 250);
-
-      return () => clearInterval(interval);
+      interval = triggerConfetti(3000);
     }
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   }, [score]);
+
+  const handleRetry = useCallback(() => {
+    onRetry();
+  }, [onRetry]);
+
+  const handleRetryCurrentQuiz = useCallback(() => {
+    if (onRetryCurrentQuiz) {
+      onRetryCurrentQuiz();
+    }
+  }, [onRetryCurrentQuiz]);
+
+  const formattedScore = score.toFixed(2);
+  const correctAnswers = Math.round((score * totalQuestions) / 100);
+  const isSuccess = score >= 80;
+
+  const fadeInAnimation = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+  };
 
   return (
     <motion.div
@@ -61,26 +89,25 @@ const QuizResult: React.FC<QuizResultProps> = ({
     >
       <Card className="result-card">
         <Result
-          status={score >= 80 ? 'success' : 'info'}
+          status={isSuccess ? 'success' : 'info'}
           title={
             <motion.div
+              {...fadeInAnimation}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
               className="result-title"
             >
-              {score >= 80 ? 'Congratulations! 🎉' : 'Quiz Completed'}
+              {isSuccess ? 'Congratulations! 🎉' : 'Quiz Completed'}
             </motion.div>
           }
           subTitle={
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              {...fadeInAnimation}
               transition={{ delay: 0.4 }}
               className="result-subtitle"
             >
-              You scored {score.toFixed(2)}% (
-              {Math.round((score * totalQuestions) / 100)}/{totalQuestions}{' '}
+              You scored {formattedScore}% ({correctAnswers}/{totalQuestions}{' '}
               correct)
             </motion.div>
           }
@@ -93,12 +120,12 @@ const QuizResult: React.FC<QuizResultProps> = ({
             >
               <Progress
                 type="circle"
-                percent={Number(score.toFixed(2))}
-                status={score >= 80 ? 'success' : 'normal'}
+                percent={Number(formattedScore)}
+                status={isSuccess ? 'success' : 'normal'}
                 className="result-progress"
               />
             </motion.div>,
-            score < 80 && onRetryCurrentQuiz && (
+            !isSuccess && onRetryCurrentQuiz && (
               <motion.div
                 key="retry-button"
                 initial={{ y: 20, opacity: 0 }}
@@ -108,7 +135,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
               >
                 <Button
                   type="primary"
-                  onClick={onRetryCurrentQuiz}
+                  onClick={handleRetryCurrentQuiz}
                   className="retry-same-button"
                   icon={<RedoOutlined />}
                 >
@@ -122,7 +149,11 @@ const QuizResult: React.FC<QuizResultProps> = ({
               animate={{ y: 0, opacity: 1 }}
               transition={{ delay: 0.8 }}
             >
-              <Button type="primary" onClick={onRetry} className="retry-button">
+              <Button
+                type="primary"
+                onClick={handleRetry}
+                className="retry-button"
+              >
                 Try Another Quiz
               </Button>
             </motion.div>,
@@ -133,4 +164,4 @@ const QuizResult: React.FC<QuizResultProps> = ({
   );
 };
 
-export default QuizResult;
+export default memo(QuizResult);
