@@ -81,11 +81,6 @@
         color: #374151;
         font-size: 0.9rem;
         font-weight: 500;
-
-        user-select: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
       }
 
       &:hover {
@@ -109,11 +104,6 @@
       &.ant-checkbox-wrapper-checked {
         border-color: #3887d9;
         background-color: #f0f7ff;
-
-        span:last-child {
-          color: #1f2937;
-          font-weight: 600;
-        }
       }
 
       span.ant-radio-inner,
@@ -137,11 +127,6 @@
           background-color: #f0f7ff;
         }
       }
-
-      user-select: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
     }
   }
 
