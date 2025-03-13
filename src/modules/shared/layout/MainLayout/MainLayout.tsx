@@ -30,22 +30,8 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Layout style={{ minHeight: "100vh" }} hasSider>
+      <Sidebar />
       <Layout>
-        <Header style={{ display: "flex", alignItems: "center" }}>
-          <div className="demo-logo" />
-          <AddNewPath />
-
-          <Menu
-            theme="dark"
-            mode="horizontal"
-            items={menuItems}
-            defaultSelectedKeys={[location.pathname.split("/")[1]]}
-            selectedKeys={[location.pathname.split("/")[1]]}
-            style={{ flex: 1, minWidth: 0 }}
-            className="main-layout-ant-navbar"
-            onClick={handleMenuClick}
-          />
-        </Header>
         <Content
           style={{
             padding: 24,

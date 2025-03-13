@@ -183,6 +183,46 @@
     left: 0;
   }
 }
+.add-new-path {
+  font-feature-settings:
+    "cv01" on,
+    "cv03" on,
+    "cv04" on;
+
+  color: #3887d9;
+  font-family: Inter;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 500;
+
+  border-radius: 8px;
+  border: 1px solid #3887d9;
+  background: #f7fbff;
+
+  padding: 0.5rem 1rem;
+  margin: 0 4px;
+
+  margin-bottom: 2rem;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  & svg {
+    width: 15px;
+    height: 15px;
+  }
+  p {
+    font-feature-settings:
+      "cv01" on,
+      "cv03" on,
+      "cv04" on;
+
+    color: #3887d9;
+  }
+}
 
 .add-new-path:hover {
   background: #d5e7ff;
@@ -203,4 +243,19 @@
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
+}
+
+.ant-layout-sider-collapsed {
+  .sidebar-menu .ant-menu-item {
+    padding-left: 25px !important;
+  }
+  .add-new-path {
+    justify-content: center;
+    span {
+      margin-left: -1px;
+    }
+    p {
+      display: none;
+    }
+  }
 }
