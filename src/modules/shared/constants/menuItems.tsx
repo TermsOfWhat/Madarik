@@ -4,9 +4,9 @@ import {
   SettingOutlined,
   LogoutOutlined,
   UserOutlined,
-  CodeOutlined,
-  TrophyFilled,
 } from "@ant-design/icons";
+import { BookOpen, Brain, Home, BarChart } from "lucide-react";
+
 import { PATH } from "@src/modules/dashboard/routes/paths";
 
 export const menuItems = [
@@ -18,33 +18,17 @@ export const menuItems = [
   },
 
   {
-    key: "learningPath",
-    label: "Learning Path",
-    icon: <ThunderboltOutlined />,
-    path: "/learning-path",
-    disabled: true,
-  },
-
-  {
-    key: "exercises",
-    label: "Exercises",
-    icon: <CodeOutlined />,
-    path: "/exercises",
+    key: "roadmaps",
+    label: "Roadmaps",
+    icon: <BookOpen />,
+    path: "/roadmaps",
     disabled: true,
   },
   {
-    key: "Leaderboard",
-    label: "Leaderboard",
-    icon: <TrophyFilled />,
-    path: "/leaderboard",
-    disabled: true,
-  },
-
-  {
-    key: "Community",
-    label: "Community",
-    icon: <UserOutlined />,
-    path: "/community",
+    key: "competetive-quiz",
+    label: "Competetive Quiz",
+    icon: <Brain />,
+    path: "/competetive-quiz",
     disabled: true,
   },
 ];

@@ -42,6 +42,7 @@ const Sidebar = () => {
         items={menuItems}
         selectedKeys={[location.pathname.split("/")[1]]}
         onClick={handleMenuClick}
+        rootClassName="sidebar-menu"
       />
     </Sider>
   );
