@@ -34,6 +34,7 @@
     "accessible-nprogress": "^2.1.2",
     "antd": "^5.20.6",
     "axios": "^1.4.0",
+    "canvas-confetti": "^1.9.3",
     "classnames": "^2.5.1",
     "date-fns": "^3.6.0",
     "file-saver": "^2.0.5",
@@ -61,6 +62,7 @@
   },
   "devDependencies": {
     "@types/antd": "^1.0.0",
+    "@types/canvas-confetti": "^1.9.0",
     "@types/lodash": "^4.17.6",
     "@types/node": "^20.2.5",
     "@types/react": "^18.0.37",
