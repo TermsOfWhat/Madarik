@@ -1,0 +1,31 @@
+// Additional styles for the scrollable sections
+.section {
+  scroll-margin-top: 2rem;
+  min-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+}
+
+// Dark mode styles
+:global(.dark) {
+  .section {
+    &:not(:last-child) {
+      border-bottom-color: #303030;
+    }
+  }
+}

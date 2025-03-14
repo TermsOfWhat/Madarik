@@ -1,0 +1,196 @@
+// Color variables
+$white: #ffffff;
+$light-blue: #e8f4ff;
+$blue: #0080ff;
+$dark-blue: #004ea6;
+$navy-blue: #00254d;
+$background: #f7f9fc;
+$text-secondary: rgba(0, 0, 0, 0.45);
+$border-color: #eaedf2;
+
+.courseProgressContainer {
+  width: 100%;
+  margin: 16px 0 24px;
+}
+
+.mainSection {
+  background-color: $white;
+  border-radius: 8px;
+  border: 1px solid $border-color;
+  padding: 16px 20px;
+  height: 100%;
+}
+
+.courseTitle {
+  color: $navy-blue !important;
+  margin-bottom: 16px !important;
+  font-size: 16px !important;
+  line-height: 1.4 !important;
+  font-weight: 600 !important;
+}
+
+.progressSection {
+  margin-top: 12px;
+}
+
+.progressHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.progressLabel {
+  font-weight: 500;
+  color: $text-secondary;
+  font-size: 14px;
+  margin: 0 !important;
+}
+
+.progressValue {
+  font-weight: 600;
+  color: $blue;
+  font-size: 14px;
+}
+
+.progressContentWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.progressBarWrapper {
+  width: 100%;
+}
+
+.progressBar {
+  margin-bottom: 4px;
+  :global {
+    .ant-progress-inner {
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .ant-progress-bg {
+      height: 10px !important;
+      border-radius: 4px;
+    }
+  }
+}
+
+.progressInfoWrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.progressItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 140px;
+}
+
+.infoIcon {
+  color: $text-secondary;
+  font-size: 14px;
+  margin-top: 2px;
+}
+
+.detailsSection {
+  background-color: $white;
+  border-radius: 8px;
+  border: 1px solid $border-color;
+  padding: 16px 20px;
+  height: 100%;
+}
+
+.detailsTitle {
+  color: $navy-blue !important;
+  margin-bottom: 16px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px 12px;
+}
+
+.detailItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detailIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background-color: $light-blue;
+  color: $blue;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.detailContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.itemLabel {
+  font-size: 13px !important;
+  margin: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemValue {
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Responsive adjustments
+@media (max-width: 992px) {
+  .progressContentWrapper {
+    flex-direction: column;
+  }
+
+  .progressInfoWrapper {
+    margin-top: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainSection,
+  .detailsSection {
+    padding: 16px;
+  }
+
+  .progressInfoWrapper {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .progressItem {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
