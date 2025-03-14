@@ -17,20 +17,20 @@ export const menuItems = [
     path: PATH.DASHBOARD,
   },
 
-  {
-    key: "roadmaps",
-    label: "Roadmaps",
-    icon: <BookOpen />,
-    path: "/roadmaps",
-    disabled: true,
-  },
-  {
-    key: "competetive-quiz",
-    label: "Competetive Quiz",
-    icon: <Brain />,
-    path: "/competetive-quiz",
-    disabled: true,
-  },
+  // {
+  //   key: "roadmaps",
+  //   label: "Roadmaps",
+  //   icon: <BookOpen />,
+  //   path: "/roadmaps",
+  //   disabled: true,
+  // },
+  // {
+  //   key: "competetive-quiz",
+  //   label: "Competetive Quiz",
+  //   icon: <Brain />,
+  //   path: "/competetive-quiz",
+  //   disabled: true,
+  // },
 ];
 
 export const userMenuItems = [
