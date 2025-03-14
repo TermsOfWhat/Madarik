@@ -1,8 +1,6 @@
 import {
   Background,
   BackgroundVariant,
-  Controls,
-  MiniMap,
   ReactFlow,
   useEdgesState,
   useNodesState,
@@ -39,9 +37,9 @@ function LearningPath() {
           navigate(`/module/${node.data.label}`);
         }}
         fitView
+        nodesDraggable={false}
+        draggable={false}
       >
-        <Controls />
-        <MiniMap />
         <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
         <Drawer
           title="MODULE TITLE"
