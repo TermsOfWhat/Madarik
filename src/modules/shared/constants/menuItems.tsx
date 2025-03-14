@@ -4,6 +4,7 @@ import {
   LogoutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
+import { BookOpen } from "lucide-react";
 
 import { PATH } from "@src/modules/dashboard/routes/paths";
 
@@ -15,13 +16,13 @@ export const menuItems = [
     path: PATH.DASHBOARD,
   },
 
-  // {
-  //   key: "roadmaps",
-  //   label: "Roadmaps",
-  //   icon: <BookOpen />,
-  //   path: "/roadmaps",
-  //   disabled: true,
-  // },
+  {
+    key: "roadmaps",
+    label: "Roadmaps",
+    icon: <BookOpen />,
+    path: "/roadmaps",
+    disabled: true,
+  },
   // {
   //   key: "competetive-quiz",
   //   label: "Competetive Quiz",
