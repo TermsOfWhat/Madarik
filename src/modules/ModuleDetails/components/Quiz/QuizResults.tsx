@@ -1,6 +1,6 @@
 "use client";
 
-import { Typography, Button, Space } from "antd";
+import { Typography, Button } from "antd";
 import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
 import { QuizQuestion } from "./index";
 import styles from "./QuizResults.module.scss";

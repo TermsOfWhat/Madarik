@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Typography, Row, Col, Tabs, Button, Space, message } from "antd";
+import { Typography, Row, Col, Tabs, Button, message } from "antd";
 import {
   CheckCircleOutlined,
   RightOutlined,
@@ -38,7 +38,6 @@ function CourseConcept({
   title,
   description,
   status,
-  onClick,
   recommendedReadings = [],
 }: CourseConceptProps) {
   const [expanded, setExpanded] = useState(true);
@@ -51,12 +50,12 @@ function CourseConcept({
     }
   };
 
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (status !== "locked" && onClick) {
-      onClick();
-    }
-  };
+  //   const handleClick = (e: React.MouseEvent) => {
+  //     e.stopPropagation();
+  //     if (status !== "locked" && onClick) {
+  //       onClick();
+  //     }
+  //   };
 
   const handleTabChange = (key: string) => {
     setActiveTab(key);

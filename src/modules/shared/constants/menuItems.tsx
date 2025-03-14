@@ -1,11 +1,9 @@
 import {
-  ThunderboltOutlined,
   DashboardOutlined,
   SettingOutlined,
   LogoutOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { BookOpen, Brain, Home, BarChart } from "lucide-react";
 
 import { PATH } from "@src/modules/dashboard/routes/paths";
 

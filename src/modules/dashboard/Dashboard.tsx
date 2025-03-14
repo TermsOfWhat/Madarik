@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { motion } from "framer-motion";
 import { Button, Skeleton, Tooltip } from "antd";
 import {
@@ -136,7 +135,6 @@ const CustomProgressBar = ({
 
 function Dashboard() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

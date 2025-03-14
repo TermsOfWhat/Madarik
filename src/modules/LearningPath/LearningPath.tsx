@@ -9,7 +9,6 @@ import {
 } from "@xyflow/react";
 
 import "@xyflow/react/dist/style.css";
-import { getLayoutedElements } from "./utils/getLayoutedElements";
 import { Drawer } from "antd";
 import { useState } from "react";
 import { nodes as initialNodes, edges as initialEdges } from "./constants";

@@ -1,4 +1,4 @@
-import { RootState } from '../../../store';
+import { RootState } from "../../shared/store";
 
 export const selectQuizzes = (state: RootState) => state.quiz.quizzes;
 export const selectCurrentQuiz = (state: RootState) => state.quiz.currentQuiz;

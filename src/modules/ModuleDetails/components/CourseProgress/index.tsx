@@ -1,13 +1,7 @@
 "use client";
 
 import { Progress, Typography, Row, Col } from "antd";
-import {
-  CalendarOutlined,
-  BookOutlined,
-  ClockCircleOutlined,
-  StarOutlined,
-  TrophyOutlined,
-} from "@ant-design/icons";
+import { BookOutlined, StarOutlined } from "@ant-design/icons";
 import styles from "./CourseProgress.module.scss";
 
 const { Title, Text } = Typography;
@@ -26,12 +20,8 @@ interface CourseProgressProps {
 function CourseProgress({
   title,
   progress,
-  lastAccessed,
-  remainingConcepts,
   totalConcepts,
-  estimatedTime,
   difficulty,
-  achievements,
 }: CourseProgressProps) {
   return (
     <div className={styles.courseProgressContainer}>
