@@ -20,8 +20,8 @@ function LearningPath() {
   // });
   const navigate = useNavigate();
 
-  const [nodes, _, onNodesChange] = useNodesState(initialNodes);
-  const [edges] = useEdgesState(initialEdges);
+  const [nodes, _, onNodesChange] = useNodesState(initialNodes as any);
+  const [edges] = useEdgesState(initialEdges as any);
   const [open, setOpen] = useState(false);
 
   return (
