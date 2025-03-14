@@ -1,0 +1,94 @@
+// Color variables
+$white: #ffffff;
+$blue: #0080ff;
+$light-blue: #e8f4ff;
+$border-color: #eaedf2;
+$text-primary: rgba(0, 0, 0, 0.85);
+$text-secondary: rgba(0, 0, 0, 0.45);
+
+.quizContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.quizTitle {
+  margin: 0 0 8px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: $text-primary !important;
+}
+
+.questionCounter {
+  color: $text-secondary;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.questionSection {
+  margin-bottom: 24px;
+}
+
+.questionText {
+  margin: 0 0 16px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: $text-primary !important;
+  line-height: 1.5 !important;
+}
+
+.optionsGroup {
+  width: 100%;
+}
+
+.optionsSpace {
+  width: 100%;
+}
+
+.optionItem {
+  padding: 8px 0;
+  font-size: 15px;
+
+  :global {
+    .ant-radio {
+      top: 0;
+    }
+
+    .ant-radio + span {
+      padding-left: 12px;
+    }
+  }
+}
+
+.navigationButtons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+  gap: 16px;
+}
+
+.prevButton {
+  min-width: 90px;
+
+  &:disabled {
+    color: rgba(0, 0, 0, 0.25);
+    background: #f5f5f5;
+    border-color: #d9d9d9;
+  }
+}
+
+.nextButton {
+  min-width: 90px;
+  background-color: $blue;
+
+  &:hover,
+  &:focus {
+    background-color: darken($blue, 10%);
+  }
+
+  &:disabled {
+    color: rgba(0, 0, 0, 0.25);
+    background: #f5f5f5;
+    border-color: #d9d9d9;
+  }
+}

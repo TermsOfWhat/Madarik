@@ -1,21 +1,26 @@
-import { ReactNode } from 'react'
-import retourIcon from '../../../accounting/assets/icons/retour.svg'
-import { Link } from 'react-router-dom'
+import { ReactNode } from "react";
+import retourIcon from "../../assets/retour.svg";
+import { Link } from "react-router-dom";
 
 type headerProps = {
-  title: string | undefined
-  children?: ReactNode[] | ReactNode
-  retourUrl?: string
-  onBack?: () => void
-}
+  title: string | undefined;
+  children?: ReactNode[] | ReactNode;
+  retourUrl?: string;
+  onBack?: () => void;
+};
 
-const ViewTitle = ({ title, children, retourUrl = '', onBack }: headerProps) => {
+const ViewTitle = ({
+  title,
+  children,
+  retourUrl = "",
+  onBack,
+}: headerProps) => {
   return (
     <header
       style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
       }}
     >
       <div className="title">
@@ -24,11 +29,11 @@ const ViewTitle = ({ title, children, retourUrl = '', onBack }: headerProps) => 
             <img src={retourIcon} alt="return icon" />
           </Link>
         )}
-        <h1>{title || ''}</h1>
+        <h1>{title || ""}</h1>
       </div>
       <div className="actions">{children}</div>
     </header>
-  )
-}
+  );
+};
 
-export default ViewTitle
+export default ViewTitle;

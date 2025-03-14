@@ -5,6 +5,7 @@ import dashboardRoutes from "../../dashboard/routes/routes";
 import learningPathRoutes from "../../LearningPath/routes/routes";
 
 import quizRoutes from "../../quiz/routes/routes";
+import moduleRoutes from "../../ModuleDetails/routes/routes";
 
 const routes = [
   ...sharedRoutes,
@@ -13,6 +14,7 @@ const routes = [
   ...dashboardRoutes,
   ...learningPathRoutes,
   ...quizRoutes,
+  ...moduleRoutes,
 ];
 
 export default routes;

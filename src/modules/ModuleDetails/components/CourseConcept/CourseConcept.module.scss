@@ -1,0 +1,294 @@
+// Color variables
+$white: #ffffff;
+$green: #22c55e;
+$light-green: #f0fdf4;
+$blue: #0080ff;
+$light-blue: #e8f4ff;
+$light-gray: #f5f7f9;
+$border-color: #eaedf2;
+$border-color-light: #f0f0f0;
+$text-primary: rgba(0, 0, 0, 0.85);
+$text-secondary: rgba(0, 0, 0, 0.45);
+$text-disabled: rgba(0, 0, 0, 0.25);
+$green-text: #16a34a;
+
+.conceptCard {
+  position: relative;
+  width: 100%;
+  background-color: $white;
+  border-radius: 8px;
+  border: 1px solid $border-color;
+  margin-bottom: 16px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
+
+  &:hover:not(.locked) {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.conceptHeader {
+  cursor: pointer;
+}
+
+.conceptContent {
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.iconCol {
+  margin-right: 12px;
+  padding-top: 2px;
+}
+
+.contentCol {
+  overflow: hidden;
+}
+
+.arrowCol {
+  margin-left: 12px;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.conceptTitle {
+  margin: 0 0 4px !important;
+  color: $text-primary !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  line-height: 1.4 !important;
+}
+
+.statusText {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.conceptDescription {
+  display: block;
+  color: $text-secondary;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.statusIcon {
+  font-size: 18px;
+}
+
+.arrowIcon {
+  font-size: 14px;
+  color: $text-secondary;
+  transition: transform 0.3s ease;
+
+  &.expanded {
+    transform: rotate(90deg);
+  }
+}
+
+.emptyIcon {
+  width: 18px;
+  height: 18px;
+}
+
+// Expanded content
+.expandedContent {
+  border-top: 1px solid $border-color-light;
+  padding: 0;
+  background-color: $white;
+}
+
+.conceptTabs {
+  width: 100%;
+
+  :global {
+    .ant-tabs-nav {
+      margin-bottom: 0;
+      padding: 0;
+      width: 100%;
+      margin-left: 1rem;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    .ant-tabs-nav-wrap {
+      padding: 0;
+    }
+
+    .ant-tabs-nav-list {
+      display: flex;
+    }
+
+    .ant-tabs-tab {
+      padding: 12px 0;
+      margin: 0;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      position: relative;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    .ant-tabs-tab-btn {
+      width: 100%;
+      text-align: center;
+    }
+
+    .ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: $blue;
+      font-weight: 500;
+    }
+
+    .ant-tabs-ink-bar {
+      height: 2px;
+      background-color: $blue;
+    }
+
+    .ant-tabs-content {
+      padding: 16px 20px 20px;
+    }
+
+    .ant-tabs-content-holder {
+      overflow: visible;
+    }
+
+    .ant-tabs-tabpane {
+      outline: none;
+    }
+  }
+}
+
+.sectionTitle {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.readingList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.readingItem {
+  display: flex;
+  align-items: flex-start;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid $border-color-light;
+}
+
+.readingIcon {
+  margin-right: 12px;
+  padding-top: 4px;
+  font-size: 16px;
+  color: $blue;
+}
+
+.readingContent {
+  flex: 1;
+}
+
+.readingTitle {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: $text-primary;
+}
+
+.readingMeta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 16px;
+}
+
+.readingTime {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: $text-secondary;
+  font-size: 14px;
+}
+
+.readButton {
+  padding: 0;
+  font-size: 14px;
+  height: auto;
+}
+
+.quizSection {
+  padding: 16px;
+  background-color: $light-gray;
+  border-radius: 8px;
+}
+
+// Completed state
+.completed {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: $green;
+  }
+
+  .statusIcon {
+    color: $green;
+  }
+
+  .statusText {
+    color: $green-text;
+  }
+}
+
+// Active state
+.active {
+  background-color: $white;
+}
+
+// Locked state
+.locked {
+  background-color: $light-gray;
+  cursor: not-allowed;
+
+  .conceptHeader {
+    cursor: not-allowed;
+  }
+
+  .statusIcon {
+    color: $text-disabled;
+  }
+
+  .statusText {
+    color: $text-disabled;
+  }
+
+  .conceptTitle {
+    color: $text-disabled !important;
+  }
+
+  .conceptDescription {
+    color: $text-disabled;
+  }
+
+  .arrowIcon {
+    color: $text-disabled;
+  }
+}

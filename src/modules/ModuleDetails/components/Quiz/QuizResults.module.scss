@@ -1,0 +1,102 @@
+// Color variables
+$white: #ffffff;
+$green: #22c55e;
+$green-light: #f0fdf4;
+$red: #ef4444;
+$red-light: #fef2f2;
+$blue: #0080ff;
+$border-color: #eaedf2;
+$text-primary: rgba(0, 0, 0, 0.85);
+$text-secondary: rgba(0, 0, 0, 0.45);
+
+.resultsContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.resultsTitle {
+  margin: 0 0 20px !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: $text-primary !important;
+}
+
+.questionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.resultItem {
+  border-radius: 8px;
+  padding: 16px;
+
+  &.correct {
+    background-color: $green-light;
+  }
+
+  &.incorrect {
+    background-color: $red-light;
+  }
+}
+
+.resultHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.correctIcon {
+  font-size: 18px;
+  color: $green;
+  margin-top: 4px;
+}
+
+.incorrectIcon {
+  font-size: 18px;
+  color: $red;
+  margin-top: 4px;
+}
+
+.questionText {
+  margin: 0 !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: $text-primary !important;
+  line-height: 1.5 !important;
+}
+
+.answerSection {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 30px;
+}
+
+.userAnswer {
+  font-size: 14px;
+}
+
+.correctAnswer {
+  font-size: 14px;
+  color: $green;
+  font-weight: 600;
+}
+
+.actionButtons {
+  display: flex;
+  margin-top: 8px;
+}
+
+.retryButton {
+  min-width: 90px;
+  background-color: $blue;
+
+  &:hover,
+  &:focus {
+    background-color: darken($blue, 10%);
+  }
+}
