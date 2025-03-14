@@ -41,7 +41,7 @@ function CourseConcept({
   onClick,
   recommendedReadings = [],
 }: CourseConceptProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const [activeTab, setActiveTab] = useState("articles");
 
   const toggleExpand = (e: React.MouseEvent) => {

@@ -12,12 +12,14 @@ import "@xyflow/react/dist/style.css";
 import { getLayoutedElements } from "./utils/getLayoutedElements";
 import { Drawer } from "antd";
 import { useState } from "react";
-import { nodes as initialNodes, edges as initialEdges } from "./Constants";
+import { nodes as initialNodes, edges as initialEdges } from "./constants";
+import { useNavigate } from "react-router-dom";
 
 function LearningPath() {
   // const layouted = getLayoutedElements(initialNodes, initialEdges, {
   //   direction: "TB",
   // });
+  const navigate = useNavigate();
 
   const [nodes, _, onNodesChange] = useNodesState(initialNodes);
   const [edges] = useEdgesState(initialEdges);
@@ -34,11 +36,9 @@ function LearningPath() {
 
           onNodesChange(changes);
         }}
-        // onNodeClick={(_, node) => {
-        //   if (node.data.type === "main") {
-        //     setOpen(true);
-        //   }
-        // }}
+        onNodeClick={(_, node) => {
+          navigate(`/module/${node.data.label}`);
+        }}
         fitView
       >
         <Controls />

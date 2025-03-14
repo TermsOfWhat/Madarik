@@ -1,0 +1,196 @@
+// FloatingComponent.module.scss
+.floatingContainer {
+  width: 100%;
+
+  @media (min-width: 992px) {
+    width: 33.333333%;
+  }
+  padding: 1.5rem;
+}
+
+.stickyWrapper {
+  position: sticky;
+  top: 2.5rem;
+}
+
+.card {
+  width: 100%;
+  transition: all 0.5s;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.cardHeader {
+  padding: 1.25rem;
+  color: white;
+
+  .headerIconTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .cardTitle {
+    margin: 0;
+    color: white !important;
+    font-weight: 600;
+  }
+
+  .cardDescription {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 0.875rem;
+  }
+}
+
+// Header color variants
+.headerBlue {
+  background-color: #1890ff;
+}
+
+.headerPurple {
+  background-color: #722ed1;
+}
+
+.headerGreen {
+  background-color: #52c41a;
+}
+
+.headerAmber {
+  background-color: #faad14;
+}
+
+.cardContent {
+  padding: 1.5rem 1.25rem 1rem;
+
+  .statsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .statItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .checkIcon {
+    color: #52c41a;
+    font-size: 1rem;
+  }
+
+  .statText {
+    font-size: 0.875rem;
+    font-weight: 500;
+
+    strong {
+      font-weight: 700;
+    }
+  }
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid #f0f0f0;
+
+  .learnMoreButton {
+    font-size: 0.875rem;
+    height: 28px;
+    padding: 0 0.75rem;
+
+    .buttonIcon {
+      margin-left: 0.5rem;
+      height: 1rem;
+      width: 1rem;
+    }
+  }
+
+  .sectionNav {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    color: #8c8c8c;
+
+    .navIcon {
+      height: 1rem;
+      width: 1rem;
+    }
+  }
+}
+
+.buttonContainer {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+
+  .activeButton,
+  .inactiveButton {
+    height: 2rem;
+    width: 2rem;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .activeButton {
+    background-color: #1890ff;
+    color: white;
+  }
+}
+
+.quickNavContainer {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: rgba(24, 144, 255, 0.05);
+  border-radius: 0.5rem;
+
+  .quickNavHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    .zapIcon {
+      color: #1890ff;
+    }
+
+    .quickNavTitle {
+      margin: 0;
+      font-weight: 500;
+      font-size: 0.875rem;
+      color: #262626;
+    }
+  }
+
+  .quickNavText {
+    font-size: 0.875rem;
+    color: #595959;
+  }
+}
+
+// Dark mode styles
+:global(.dark) {
+  .cardFooter {
+    border-top-color: #303030;
+  }
+
+  .quickNavContainer {
+    background-color: rgba(24, 144, 255, 0.07);
+
+    .quickNavTitle {
+      color: #e6e6e6;
+    }
+
+    .quickNavText {
+      color: #a6a6a6;
+    }
+  }
+}

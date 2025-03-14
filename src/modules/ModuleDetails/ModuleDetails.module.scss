@@ -1,5 +1,20 @@
+@forward "./components/ScrollableCourseConcept/scrollableCourceConcept.scss";
+
+.scrollableContainer {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 992px) {
+    flex-direction: row;
+  }
+}
+
 .conceptsContainer {
   margin-top: 24px;
+  width: 100%;
 
-  margin-right: 27rem;
+  @media (min-width: 992px) {
+    width: 66.666667%;
+    padding-right: 1.5rem;
+  }
 }
