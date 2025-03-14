@@ -9,6 +9,7 @@ import { ArrowLeft, Clock, CheckCircle, AlertTriangle, Lightbulb, LinkIcon, Book
     Send } from "lucide-react"
 import AnimatedStar from "../../shared/components/Star/animated-star"
 import "../module-detail.scss"
+
 const { TextArea } = Input
 
 interface ModuleDetailProps {
@@ -503,4 +504,3 @@ export default function ModuleDetail({
     </motion.div>
   )
 }
-
