@@ -1,0 +1,82 @@
+@import './components/DashboardHeader/DashboardHeader';
+@import './components/DashboardStats/DashboardStats';
+
+.dashboard {
+  padding: 1.5rem;
+  max-width: 80rem;
+  margin: 0 auto;
+
+  .dashboard-content {
+    margin-top: 2rem;
+    
+    > * + * {
+      margin-top: 2rem;
+    }
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #1f2937;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 1024px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .dashboard-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-0.25rem);
+    }
+
+    .card-content {
+      > * + * {
+        margin-top: 1rem;
+      }
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      img {
+        width: 3rem;
+        height: 3rem;
+        border-radius: 0.5rem;
+        object-fit: cover;
+      }
+
+      h3 {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: #1f2937;
+      }
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #4b5563;
+
+      .icon {
+        color: #3887D9;
+      }
+    }
+  }
+} 

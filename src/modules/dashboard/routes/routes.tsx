@@ -21,6 +21,13 @@ const routes: RouteConfig[] = [
     component: lazy(() => import("../Dashboard")),
     layout: MainLayout,
   },
+  {
+    exact: true,
+    guard: AuthGuard,
+    path: PATH.MODULE_DETAILS,
+    component: lazy(() => import("../components/module-detail")),
+    layout: MainLayout,
+  },
 ];
 
 export default routes;

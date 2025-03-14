@@ -1,3 +1,6 @@
+"use client"
+
+import { useNavigate } from "react-router-dom"
 import {
   Background,
   BackgroundVariant,
@@ -6,60 +9,48 @@ import {
   ReactFlow,
   useEdgesState,
   useNodesState,
-} from "@xyflow/react";
+} from "@xyflow/react"
 
-import "@xyflow/react/dist/style.css";
-import { getLayoutedElements } from "./utils/getLayoutedElements";
-import { Drawer } from "antd";
-import { useState } from "react";
+import "@xyflow/react/dist/style.css"
+import { getLayoutedElements } from "./utils/getLayoutedElements"
 
 function LearningPath() {
+  const navigate = useNavigate()
   const layouted = getLayoutedElements(initialNodes, initialEdges, {
     direction: "TB",
-  });
+  })
 
-  const [nodes, _, onNodesChange] = useNodesState(layouted.nodes);
-  const [edges] = useEdgesState(layouted.edges);
-  const [open, setOpen] = useState(false);
+  const [nodes, _, onNodesChange] = useNodesState(layouted.nodes)
+  const [edges] = useEdgesState(layouted.edges)
+
+  const handleNodeClick = (_, node) => {
+    if (node.data.type === "main") {
+      navigate(`/module/${node.id}`)
+    }
+  }
 
   return (
-    <div className="learning-path">
+    <div className="learning-path h-screen">
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={(changes) => {
-          const isRemove = changes.some((change) => change.type === "remove");
-          if (isRemove) return;
-
-          onNodesChange(changes);
+          const isRemove = changes.some((change) => change.type === "remove")
+          if (isRemove) return
+          onNodesChange(changes)
         }}
-        onNodeClick={(_, node) => {
-          if (node.data.type === "main") {
-            setOpen(true);
-          }
-        }}
+        onNodeClick={handleNodeClick}
         fitView
       >
         <Controls />
         <MiniMap />
         <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
-        <Drawer
-          title="MODULE TITLE"
-          placement="right"
-          width={"60vw"}
-          onClose={() => {
-            setOpen(false);
-          }}
-          open={open}
-        >
-          FULL CONTENT
-        </Drawer>
       </ReactFlow>
     </div>
-  );
+  )
 }
 
-export default LearningPath;
+export default LearningPath
 
 const initialNodes = [
   {
@@ -94,7 +85,7 @@ const initialNodes = [
           }
         : {},
   })),
-];
+]
 
 const initialEdges = [
   { id: "e1-2", source: "1", target: "2" },
@@ -114,4 +105,5 @@ const initialEdges = [
   { id: "e15-16", source: "10", target: "16" },
   { id: "e16-17", source: "1", target: "17", animated: true },
   { id: "e17-18", source: "8", target: "18" },
-];
+]
+
