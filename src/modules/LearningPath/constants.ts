@@ -1,264 +1,347 @@
 export const nodes = [
   {
     id: "1",
-    type: "mainTopic",
+    type: "maintopic",
     position: {
       x: 500,
-      y: 50,
+      y: 100,
     },
     data: {
-      label: "Introduction to DevOps",
+      label: "Introduction to React",
     },
     style: {
-      backgroundColor: "#F7FBFF",
-      border: "1px solid #3887D9",
-      color: "#3887D9",
+      backgroundColor: null,
+      border: "1px solid #3887d9",
+      color: "#3887d9",
     },
   },
   {
     id: "2",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 400,
-      y: 100,
+      x: 700,
+      y: 75,
     },
     data: {
-      label: "DevOps Basics",
+      label: "JSX Basics",
     },
+    style: null,
   },
   {
     id: "3",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 600,
-      y: 100,
+      x: 700,
+      y: 125,
     },
     data: {
-      label: "DevOps Tools Overview",
+      label: "Virtual DOM",
     },
+    style: null,
   },
   {
     id: "4",
-    type: "mainTopic",
+    type: "subtopic",
     position: {
-      x: 500,
-      y: 200,
+      x: 700,
+      y: 175,
     },
     data: {
-      label: "Infrastructure as Code (IaC)",
+      label: "React Elements",
     },
-    style: {
-      backgroundColor: "#F7FBFF",
-      border: "1px solid #3887D9",
-      color: "#3887D9",
-    },
+    style: null,
   },
   {
     id: "5",
-    type: "subTopic",
+    type: "maintopic",
     position: {
-      x: 400,
+      x: 500,
       y: 250,
     },
     data: {
-      label: "Terraform",
+      label: "Components in React",
+    },
+    style: {
+      backgroundColor: null,
+      border: "1px solid #3887d9",
+      color: "#3887d9",
     },
   },
   {
     id: "6",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 600,
-      y: 250,
+      x: 300,
+      y: 225,
     },
     data: {
-      label: "AWS CloudFormation",
+      label: "Functional Components",
     },
+    style: null,
   },
   {
     id: "7",
-    type: "mainTopic",
+    type: "subtopic",
     position: {
-      x: 500,
-      y: 350,
+      x: 300,
+      y: 275,
     },
     data: {
-      label: "Continuous Integration & Delivery (CI/CD)",
+      label: "Class Components",
     },
-    style: {
-      backgroundColor: "#F7FBFF",
-      border: "1px solid #3887D9",
-      color: "#3887D9",
-    },
+    style: null,
   },
   {
     id: "8",
-    type: "subTopic",
+    type: "maintopic",
     position: {
-      x: 350,
+      x: 500,
       y: 400,
     },
     data: {
-      label: "Jenkins",
+      label: "State and Props",
+    },
+    style: {
+      backgroundColor: null,
+      border: "1px solid #3887d9",
+      color: "#3887d9",
     },
   },
   {
     id: "9",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 650,
-      y: 400,
+      x: 700,
+      y: 375,
     },
     data: {
-      label: "GitLab CI/CD",
+      label: "State Management",
     },
+    style: null,
   },
   {
     id: "10",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 500,
-      y: 450,
+      x: 700,
+      y: 425,
     },
     data: {
-      label: "GitHub Actions",
+      label: "Props and Prop Types",
     },
+    style: null,
   },
   {
     id: "11",
-    type: "mainTopic",
+    type: "maintopic",
     position: {
       x: 500,
-      y: 500,
+      y: 550,
     },
     data: {
-      label: "Monitoring & Logging",
+      label: "Lifecycle Methods",
     },
     style: {
-      backgroundColor: "#F7FBFF",
-      border: "1px solid #3887D9",
-      color: "#3887D9",
+      backgroundColor: null,
+      border: "1px solid #3887d9",
+      color: "#3887d9",
     },
   },
   {
     id: "12",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 400,
-      y: 550,
+      x: 300,
+      y: 525,
     },
     data: {
-      label: "Prometheus",
+      label: "Mounting Phase",
     },
+    style: null,
   },
   {
     id: "13",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 600,
-      y: 550,
+      x: 300,
+      y: 575,
     },
     data: {
-      label: "Grafana",
+      label: "Updating Phase",
     },
+    style: null,
   },
   {
     id: "14",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 500,
-      y: 600,
+      x: 300,
+      y: 625,
     },
     data: {
-      label: "ELK Stack",
+      label: "Unmounting Phase",
     },
+    style: null,
   },
   {
     id: "15",
-    type: "mainTopic",
+    type: "maintopic",
     position: {
       x: 500,
-      y: 650,
+      y: 700,
     },
     data: {
-      label: "Security in DevOps",
+      label: "React Routing",
     },
     style: {
-      backgroundColor: "#F7FBFF",
-      border: "1px solid #3887D9",
-      color: "#3887D9",
+      backgroundColor: null,
+      border: "1px solid #3887d9",
+      color: "#3887d9",
     },
   },
   {
     id: "16",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 400,
-      y: 700,
+      x: 700,
+      y: 675,
     },
     data: {
-      label: "Infrastructure Security",
+      label: "Introduction to React Router",
     },
+    style: null,
   },
   {
     id: "17",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 600,
-      y: 700,
+      x: 700,
+      y: 725,
     },
     data: {
-      label: "Compliance & Auditing",
+      label: "Nested Routes",
     },
+    style: null,
   },
   {
     id: "18",
-    type: "mainTopic",
+    type: "maintopic",
     position: {
       x: 500,
-      y: 800,
+      y: 850,
     },
     data: {
-      label: "Advanced Topics",
+      label: "State Management with Redux",
     },
     style: {
-      backgroundColor: "#F7FBFF",
-      border: "1px solid #3887D9",
-      color: "#3887D9",
+      backgroundColor: null,
+      border: "1px solid #3887d9",
+      color: "#3887d9",
     },
   },
   {
     id: "19",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 400,
-      y: 850,
+      x: 300,
+      y: 825,
     },
     data: {
-      label: "GitOps",
+      label: "Redux Basics",
     },
+    style: null,
   },
   {
     id: "20",
-    type: "subTopic",
+    type: "subtopic",
     position: {
-      x: 600,
-      y: 850,
+      x: 300,
+      y: 875,
     },
     data: {
-      label: "AIOps",
+      label: "Connecting React to Redux",
     },
+    style: null,
   },
   {
     id: "21",
-    type: "subTopic",
+    type: "maintopic",
     position: {
       x: 500,
-      y: 900,
+      y: 1000,
     },
     data: {
-      label: "Edge Computing",
+      label: "Advanced React Patterns",
     },
+    style: {
+      backgroundColor: null,
+      border: "1px solid #3887d9",
+      color: "#3887d9",
+    },
+  },
+  {
+    id: "22",
+    type: "subtopic",
+    position: {
+      x: 700,
+      y: 975,
+    },
+    data: {
+      label: "Higher-Order Components",
+    },
+    style: null,
+  },
+  {
+    id: "23",
+    type: "subtopic",
+    position: {
+      x: 700,
+      y: 1025,
+    },
+    data: {
+      label: "Render Props",
+    },
+    style: null,
+  },
+  {
+    id: "24",
+    type: "maintopic",
+    position: {
+      x: 500,
+      y: 1150,
+    },
+    data: {
+      label: "Best Practices",
+    },
+    style: {
+      backgroundColor: null,
+      border: "1px solid #3887d9",
+      color: "#3887d9",
+    },
+  },
+  {
+    id: "25",
+    type: "subtopic",
+    position: {
+      x: 300,
+      y: 1125,
+    },
+    data: {
+      label: "Code Organization",
+    },
+    style: null,
+  },
+  {
+    id: "26",
+    type: "subtopic",
+    position: {
+      x: 300,
+      y: 1175,
+    },
+    data: {
+      label: "Performance Optimization",
+    },
+    style: null,
   },
 ];
 
@@ -287,13 +370,6 @@ export const edges = [
     id: "e1-4",
     source: "1",
     target: "4",
-    type: "straight",
-    animated: false,
-  },
-  {
-    id: "e4-5",
-    source: "4",
-    target: "5",
     type: "smoothstep",
     animated: true,
     style: {
@@ -301,8 +377,16 @@ export const edges = [
     },
   },
   {
-    id: "e4-6",
-    source: "4",
+    id: "e1-5",
+    source: "1",
+    target: "5",
+    type: "straight",
+    animated: false,
+    style: null,
+  },
+  {
+    id: "e5-6",
+    source: "5",
     target: "6",
     type: "smoothstep",
     animated: true,
@@ -311,16 +395,9 @@ export const edges = [
     },
   },
   {
-    id: "e4-7",
-    source: "4",
+    id: "e5-7",
+    source: "5",
     target: "7",
-    type: "straight",
-    animated: false,
-  },
-  {
-    id: "e7-8",
-    source: "7",
-    target: "8",
     type: "smoothstep",
     animated: true,
     style: {
@@ -328,8 +405,16 @@ export const edges = [
     },
   },
   {
-    id: "e7-9",
-    source: "7",
+    id: "e5-8",
+    source: "5",
+    target: "8",
+    type: "straight",
+    animated: false,
+    style: null,
+  },
+  {
+    id: "e8-9",
+    source: "8",
     target: "9",
     type: "smoothstep",
     animated: true,
@@ -338,8 +423,8 @@ export const edges = [
     },
   },
   {
-    id: "e7-10",
-    source: "7",
+    id: "e8-10",
+    source: "8",
     target: "10",
     type: "smoothstep",
     animated: true,
@@ -348,11 +433,12 @@ export const edges = [
     },
   },
   {
-    id: "e7-11",
-    source: "7",
+    id: "e8-11",
+    source: "8",
     target: "11",
     type: "straight",
     animated: false,
+    style: null,
   },
   {
     id: "e11-12",
@@ -390,6 +476,7 @@ export const edges = [
     target: "15",
     type: "straight",
     animated: false,
+    style: null,
   },
   {
     id: "e15-16",
@@ -417,6 +504,7 @@ export const edges = [
     target: "18",
     type: "straight",
     animated: false,
+    style: null,
   },
   {
     id: "e18-19",
@@ -442,6 +530,52 @@ export const edges = [
     id: "e18-21",
     source: "18",
     target: "21",
+    type: "straight",
+    animated: false,
+    style: null,
+  },
+  {
+    id: "e21-22",
+    source: "21",
+    target: "22",
+    type: "smoothstep",
+    animated: true,
+    style: {
+      stroke: "#6366f1",
+    },
+  },
+  {
+    id: "e21-23",
+    source: "21",
+    target: "23",
+    type: "smoothstep",
+    animated: true,
+    style: {
+      stroke: "#6366f1",
+    },
+  },
+  {
+    id: "e21-24",
+    source: "21",
+    target: "24",
+    type: "straight",
+    animated: false,
+    style: null,
+  },
+  {
+    id: "e24-25",
+    source: "24",
+    target: "25",
+    type: "smoothstep",
+    animated: true,
+    style: {
+      stroke: "#6366f1",
+    },
+  },
+  {
+    id: "e24-26",
+    source: "24",
+    target: "26",
     type: "smoothstep",
     animated: true,
     style: {

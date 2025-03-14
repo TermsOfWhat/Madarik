@@ -3,6 +3,7 @@ import { menuItems } from "../../constants/menuItems";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import AddNewPath from "./components/AddNewPath/AddNewPath";
+import logo from "../../assets/logo2.svg";
 
 const { Sider } = Layout;
 
@@ -40,11 +41,15 @@ const Sidebar = () => {
       <div
         className="logo"
         style={{
-          height: 32,
-          margin: 16,
-          background: "rgba(255, 255, 255, 0.2)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginBottom: "2rem",
+          marginTop: "1rem",
         }}
-      ></div>
+      >
+        <img src={logo} style={{}} />
+      </div>
 
       <AddNewPath />
       <Menu
