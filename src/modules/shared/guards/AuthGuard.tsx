@@ -7,7 +7,6 @@ interface MainLayoutProps {
 
 const AuthGuard = ({ children }: MainLayoutProps) => {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  console.log("isAuthenticated", isAuthenticated);
   return isAuthenticated ? children : <Navigate to="/login" />;
 };
 

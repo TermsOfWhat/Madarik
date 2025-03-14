@@ -59,30 +59,6 @@ function CourseProgress({
                     className={styles.progressBar}
                   />
                 </div>
-
-                <div className={styles.progressInfoWrapper}>
-                  <div className={styles.progressItem}>
-                    <CalendarOutlined className={styles.infoIcon} />
-                    <div>
-                      <Text type="secondary" className={styles.itemLabel}>
-                        Last accessed
-                      </Text>
-                      <div className={styles.itemValue}>{lastAccessed}</div>
-                    </div>
-                  </div>
-
-                  <div className={styles.progressItem}>
-                    <BookOutlined className={styles.infoIcon} />
-                    <div>
-                      <Text type="secondary" className={styles.itemLabel}>
-                        Remaining
-                      </Text>
-                      <div className={styles.itemValue}>
-                        {remainingConcepts} of {totalConcepts} concepts
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -95,18 +71,6 @@ function CourseProgress({
             </Title>
 
             <div className={styles.detailsGrid}>
-              <div className={styles.detailItem}>
-                <div className={styles.detailIcon}>
-                  <ClockCircleOutlined />
-                </div>
-                <div className={styles.detailContent}>
-                  <Text type="secondary" className={styles.itemLabel}>
-                    Estimated Time
-                  </Text>
-                  <div className={styles.itemValue}>{estimatedTime}</div>
-                </div>
-              </div>
-
               <div className={styles.detailItem}>
                 <div className={styles.detailIcon}>
                   <StarOutlined />
@@ -129,20 +93,6 @@ function CourseProgress({
                   </Text>
                   <div className={styles.itemValue}>
                     {totalConcepts} concepts
-                  </div>
-                </div>
-              </div>
-
-              <div className={styles.detailItem}>
-                <div className={styles.detailIcon}>
-                  <TrophyOutlined />
-                </div>
-                <div className={styles.detailContent}>
-                  <Text type="secondary" className={styles.itemLabel}>
-                    Achievements
-                  </Text>
-                  <div className={styles.itemValue}>
-                    {achievements} available
                   </div>
                 </div>
               </div>
