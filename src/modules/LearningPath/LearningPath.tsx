@@ -20,15 +20,17 @@ function LearningPath() {
   const { roadmap, isTopicLoading } = useAppSelector((state) => state.roadmap);
 
   const [nodes, setNodes, onNodesChange] = useNodesState(
-    roadmap?.flowChart.nodes as any
+    (roadmap?.flowChart.nodes as any) || []
   );
-  const [edges, setEdges] = useEdgesState(roadmap?.flowChart.edges as any);
+  const [edges, setEdges] = useEdgesState(
+    (roadmap?.flowChart.edges as any) || []
+  );
   const [open, setOpen] = useState(false);
 
   const { pathId } = useParams();
 
   useEffect(() => {
-    if (pathId) {
+    if (pathId && !roadmap) {
       dispatch(fetchRoadmapById(pathId))
         .unwrap()
         .then((data) => {
