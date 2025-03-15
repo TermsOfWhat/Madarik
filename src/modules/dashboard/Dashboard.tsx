@@ -1,9 +1,6 @@
-"use client";
-
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button, Skeleton, Tooltip, Alert } from "antd";
-import { BookOpen, Clock, ChevronRight } from "lucide-react";
 import { CustomProgressBar } from "./components/CustomProgressBar";
 import { useDashboardData } from "./hooks/use-dashboard-data";
 import { useMounted } from "../shared/hooks/use-mounted";

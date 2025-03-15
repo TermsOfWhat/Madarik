@@ -1,6 +1,4 @@
-"use client";
-
-import { Progress, Typography, Row, Col } from "antd";
+import { Typography, Row, Col } from "antd";
 import { BookOutlined, StarOutlined } from "@ant-design/icons";
 import { motion, useAnimation } from "framer-motion";
 import { useEffect } from "react";
@@ -14,9 +12,7 @@ interface CourseProgressProps {
   lastAccessed: string;
   remainingConcepts: number;
   totalConcepts: number;
-  estimatedTime: string;
   difficulty: string;
-  achievements: number;
 }
 
 function CourseProgress({
@@ -30,7 +26,7 @@ function CourseProgress({
   useEffect(() => {
     controls.start({
       width: `${progress}%`,
-      transition: { duration: 1.5, ease: "easeOut" }
+      transition: { duration: 1.5, ease: "easeOut" },
     });
   }, [progress, controls]);
 
@@ -46,7 +42,7 @@ function CourseProgress({
             <div className={styles.progressSection}>
               <div className={styles.progressHeader}>
                 <Text className={styles.progressLabel}>Progress</Text>
-                <motion.div 
+                <motion.div
                   className={styles.progressValue}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

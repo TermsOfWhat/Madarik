@@ -1,5 +1,3 @@
-"use client";
-
 import { Typography, Button } from "antd";
 import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
 import { QuizQuestion } from "./index";

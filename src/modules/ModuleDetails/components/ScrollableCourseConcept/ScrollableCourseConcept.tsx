@@ -2,32 +2,26 @@ import CourseConcept from "../CourseConcept";
 import styles from "../../ModuleDetails.module.scss";
 
 import FloatingComponent from "../FloatingComponent";
+import { Chapter } from "@src/modules/LearningPath/data/pathTypes";
 
-function ScrollableCourseConcept({
-  concepts,
-  handleConceptClick,
-}: {
-  concepts: any[];
-  handleConceptClick: (id: number) => void;
-}) {
+function ScrollableCourseConcept({ chapters }: { chapters: Chapter[] }) {
   return (
     <div className={styles.scrollableContainer}>
       <div className={styles.conceptsContainer}>
-        {concepts.map((concept, index) => (
+        {chapters.map((chapter, index) => (
           <section key={`section-${index}`} id={`section-${index}`}>
             <CourseConcept
-              key={concept.id}
-              title={concept.title}
-              description={concept.description}
-              status={concept.status as "completed" | "active" | "locked"}
-              onClick={() => handleConceptClick(concept.id)}
-              recommendedReadings={concept.recommendedReadings}
+              key={chapter.name}
+              name={chapter.name}
+              description={chapter.description}
+              status={"active"}
+              articles={chapter.articles}
             />
           </section>
         ))}
       </div>
 
-      <FloatingComponent sections={concepts} />
+      <FloatingComponent sections={chapters} />
     </div>
   );
 }

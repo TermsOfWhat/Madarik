@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Radio, Button, Typography, Space } from "antd";
 import type { RadioChangeEvent } from "antd";
