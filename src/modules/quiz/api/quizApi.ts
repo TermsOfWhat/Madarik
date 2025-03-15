@@ -33,7 +33,7 @@ const mockQuizzes: Quiz[] = [
       },
       {
         id: 'q2',
-        text: 'Which of these are benefits of E-Learning? (Select all that apply)',
+        text: 'Which of these are benefits of E-Learning?',
         type: 'multiple',
         timeLimit: 20,
         explanation:
