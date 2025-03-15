@@ -45,5 +45,8 @@ export default defineConfig(({ mode }) => {
       },
     },
     server: getServerConfig(env),
+    define: {
+      'process.env': {}
+    },
   }
 })
