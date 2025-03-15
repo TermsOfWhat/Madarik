@@ -11,24 +11,24 @@ function getServerConfig(env: Record<string, string>) {
       port: 3000,
       https: false,
       host: "0.0.0.0",
-      proxy: {
-        "/bff": {
-          target: env.VITE_APP_BASE_URL,
-          secure: false,
-        },
-        "/signin-oidc": {
-          target: env.VITE_APP_BASE_URL,
-          secure: false,
-        },
-        "/signout-callback-oidc": {
-          target: env.VITE_APP_BASE_URL,
-          secure: false,
-        },
-        "/api": {
-          target: env.VITE_APP_BASE_URL,
-          secure: false,
-        },
-      },
+      // proxy: {
+      //   "/bff": {
+      //     target: env.VITE_APP_BASE_URL,
+      //     secure: false,
+      //   },
+      //   "/signin-oidc": {
+      //     target: env.VITE_APP_BASE_URL,
+      //     secure: false,
+      //   },
+      //   "/signout-callback-oidc": {
+      //     target: env.VITE_APP_BASE_URL,
+      //     secure: false,
+      //   },
+      //   "/api": {
+      //     target: env.VITE_APP_BASE_URL,
+      //     secure: false,
+      //   },
+      // },
     };
   }
   return undefined;
