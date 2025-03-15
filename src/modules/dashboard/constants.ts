@@ -1,4 +1,4 @@
-import { BookOpen, BookMarked, Clock, Flame, PlayCircle } from "lucide-react";
+import { BookMarked, Flame, PlayCircle } from "lucide-react";
 
 export const COURSE_PROGRESS = [
   {
@@ -44,4 +44,4 @@ export const DASHBOARD_STATS = [
     color: "#3b82f6",
   },
   { label: "Quizzes Taken", value: "5", icon: PlayCircle, color: "#8b5cf6" },
-] as const; 
+] as const;

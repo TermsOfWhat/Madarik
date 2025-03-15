@@ -1,5 +1,3 @@
-import { IconType } from "lucide-react";
-
 export interface CourseProgress {
   id: string;
   name: string;
@@ -13,7 +11,7 @@ export interface CourseProgress {
 export interface DashboardStat {
   label: string;
   value: string;
-  icon: IconType;
+  icon: any;
   color: string;
 }
 
@@ -30,4 +28,4 @@ export interface DashboardData {
   currentCourse: CourseProgress;
   stats: DashboardStat[];
   roadmaps: LearningRoadmap[];
-} 
+}
