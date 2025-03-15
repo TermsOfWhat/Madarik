@@ -1,5 +1,5 @@
 import { useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   nextQuestion,
   setAnswer,
@@ -12,9 +12,10 @@ import {
   selectAnswers,
   selectCurrentQuiz,
 } from '../store/quizSelectors';
+import { useAppDispatch } from '@src/modules/shared/store';
 
 export const useQuiz = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const currentQuestion = useSelector(selectCurrentQuestion);
   const timeRemaining = useSelector(selectTimeRemaining);
   const answers = useSelector(selectAnswers);

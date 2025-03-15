@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Card } from 'antd';
 import { fetchQuizById } from '../../api/quizApi';
 import { setCurrentQuiz } from '../../store/quizSlice';
@@ -10,10 +10,10 @@ import {
 } from '../../store/quizSelectors';
 import QuizQuestion from '../../components/QuizQuestion/QuizQuestion';
 import { useQuiz } from '../../hooks/useQuiz';
-
+import { useAppDispatch } from '@src/modules/shared/store';
 const QuizDetailPage: React.FC = () => {
   const { quizId } = useParams();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const currentQuiz = useSelector(selectCurrentQuiz);
   const isSubmitted = useSelector(selectIsSubmitted);

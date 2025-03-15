@@ -1,13 +1,13 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { selectScore, selectCurrentQuiz } from '../../store/quizSelectors';
 import { resetQuiz } from '../../store/quizSlice';
 import QuizResult from '../../components/QuizResult/QuizResult';
-
+import { useAppDispatch } from '@src/modules/shared/store';
 const QuizResultsPage: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const score = useSelector(selectScore);
   const currentQuiz = useSelector(selectCurrentQuiz);
 
