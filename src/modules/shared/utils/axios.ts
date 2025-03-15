@@ -3,13 +3,12 @@ import axios from "axios";
 const headers = {
   Accept: "application/json",
   "Content-Type": "application/json",
-  //"X-CSRF": "1",
 };
 
 const axiosInstance = axios.create({
-  baseURL: "",
+  baseURL:
+    import.meta.env.VITE_APP_BASE_URL || "https://madarik-api.onrender.com",
   headers,
-  // withCredentials: true,
 });
 
 export default axiosInstance;
