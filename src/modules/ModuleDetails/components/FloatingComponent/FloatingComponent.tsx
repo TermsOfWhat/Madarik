@@ -2,13 +2,12 @@ import { Button, Typography, Flex } from "antd";
 import { Zap } from "lucide-react";
 import styles from "./FloatingComponent.module.scss";
 import { useState } from "react";
+import { Chapter } from "@src/modules/LearningPath/data/pathTypes";
 
 const { Title, Text } = Typography;
 
 interface FloatingComponentProps {
-  sections: Array<{
-    title: string;
-  }>;
+  sections: Chapter[];
 }
 
 const FloatingComponent: React.FC<FloatingComponentProps> = ({ sections }) => {
@@ -38,7 +37,7 @@ const FloatingComponent: React.FC<FloatingComponentProps> = ({ sections }) => {
                 {index + 1}
               </Button>
 
-              {section.title}
+              {section.name}
             </Flex>
           ))}
         </Flex>

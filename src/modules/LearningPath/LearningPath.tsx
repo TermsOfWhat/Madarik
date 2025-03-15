@@ -8,19 +8,45 @@ import {
 
 import "@xyflow/react/dist/style.css";
 import { Drawer } from "antd";
-import { useState } from "react";
-import { nodes as initialNodes, edges as initialEdges } from "./constants";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../shared/store";
+import { fetchRoadmapById, fetchRoadmapTopic } from "./data/pathThunk";
+import LoaderTopic from "./components/LoaderTopic/LoaderTopic";
 
 function LearningPath() {
-  // const layouted = getLayoutedElements(initialNodes, initialEdges, {
-  //   direction: "TB",
-  // });
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { roadmap, isTopicLoading } = useAppSelector((state) => state.roadmap);
 
-  const [nodes, _, onNodesChange] = useNodesState(initialNodes as any);
-  const [edges] = useEdgesState(initialEdges as any);
+  const [nodes, setNodes, onNodesChange] = useNodesState(
+    roadmap?.flowChart.nodes as any
+  );
+  const [edges, setEdges] = useEdgesState(roadmap?.flowChart.edges as any);
   const [open, setOpen] = useState(false);
+
+  const { pathId } = useParams();
+
+  useEffect(() => {
+    if (pathId) {
+      dispatch(fetchRoadmapById(pathId))
+        .unwrap()
+        .then((data) => {
+          const flowchart = data.flowChart;
+          setNodes(flowchart.nodes as any);
+          setEdges(flowchart.edges as any);
+        });
+    }
+  }, [pathId]);
+
+  if (isTopicLoading) {
+    return (
+      <LoaderTopic
+        isLoading={isTopicLoading}
+        message="Loading topic content... Please wait a moment."
+      />
+    );
+  }
 
   return (
     <div className="learning-path">
@@ -34,7 +60,17 @@ function LearningPath() {
           onNodesChange(changes);
         }}
         onNodeClick={(_, node) => {
-          navigate(`/module/${node.data.label}`);
+          if (!pathId) return;
+          dispatch(
+            fetchRoadmapTopic({
+              roadmapId: pathId,
+              id: node.id as string,
+            })
+          )
+            .unwrap()
+            .then(() => {
+              navigate(`/roadmap/${pathId}/module/${node.id}`);
+            });
         }}
         fitView
         nodesDraggable={false}

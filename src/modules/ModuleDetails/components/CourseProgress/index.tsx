@@ -1,5 +1,3 @@
-"use client";
-
 import { Progress, Typography, Row, Col } from "antd";
 import { BookOutlined, StarOutlined } from "@ant-design/icons";
 import styles from "./CourseProgress.module.scss";
@@ -12,9 +10,7 @@ interface CourseProgressProps {
   lastAccessed: string;
   remainingConcepts: number;
   totalConcepts: number;
-  estimatedTime: string;
   difficulty: string;
-  achievements: number;
 }
 
 function CourseProgress({

@@ -4,22 +4,20 @@ import { TrophyOutlined } from "@ant-design/icons";
 import CourseProgress from "./components/CourseProgress/index";
 
 import ScrollableCourseConcept from "./components/ScrollableCourseConcept/ScrollableCourseConcept";
-import { concepts } from "./constants";
 import { useParams } from "../shared/hooks/useParams";
 import { setCurrentQuiz } from "../quiz/store/quizSlice";
-import { useAppDispatch } from "../shared/store";
+import { useAppDispatch, useAppSelector } from "../shared/store";
 import { useNavigate } from "react-router-dom";
 import { fetchQuizById } from "../quiz/api/quizApi";
+import { useMemo } from "react";
 
 function ModuleDetails() {
-  const handleConceptClick = (id: number) => {
-    console.log(`Concept ${id} clicked`);
-  };
+  const { roadmap, topic } = useAppSelector((state) => state.roadmap);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { name } = useParams();
+  const { name, pathId } = useParams();
 
   const startQuiz = async () => {
     try {
@@ -33,9 +31,13 @@ function ModuleDetails() {
     }
   };
 
+  const chaptersData = useMemo(() => topic?.chapters || [], [topic?.chapters]);
+
+  if (!topic?.chapters) return null;
+
   return (
     <div>
-      <ViewTitle retourUrl="/learning-path" title={name}>
+      <ViewTitle retourUrl={`/roadmap/${pathId}`} title={topic?.name}>
         <Button
           label="take quiz"
           IconComponent={TrophyOutlined}
@@ -44,20 +46,15 @@ function ModuleDetails() {
       </ViewTitle>
 
       <CourseProgress
-        title="Master modern state management techniques in React applications, from local state to global solutions."
+        title={roadmap?.description || ""}
         progress={50}
         lastAccessed="2 days ago"
         remainingConcepts={3}
         totalConcepts={4}
-        estimatedTime="2.5 hours"
         difficulty="Intermediate"
-        achievements={2}
       />
 
-      <ScrollableCourseConcept
-        concepts={concepts}
-        handleConceptClick={handleConceptClick}
-      />
+      <ScrollableCourseConcept chapters={chaptersData || []} />
     </div>
   );
 }
