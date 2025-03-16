@@ -9,7 +9,8 @@ import { setCurrentQuiz } from "../quiz/store/quizSlice";
 import { useAppDispatch, useAppSelector } from "../shared/store";
 import { useNavigate } from "react-router-dom";
 import { fetchQuizById } from "../quiz/api/quizApi";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
+import { fetchRoadmapTopic } from "../LearningPath/data/pathThunk";
 
 function ModuleDetails() {
   const { roadmap, topic } = useAppSelector((state) => state.roadmap);
@@ -17,7 +18,7 @@ function ModuleDetails() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { name, pathId } = useParams();
+  const { moduleId, pathId } = useParams();
 
   const startQuiz = async () => {
     try {
@@ -30,6 +31,12 @@ function ModuleDetails() {
       console.error("Failed to start quiz:", error);
     }
   };
+
+  useEffect(() => {
+    if (!topic && pathId && moduleId) {
+      dispatch(fetchRoadmapTopic({ roadmapId: pathId, id: moduleId }));
+    }
+  }, []);
 
   const chaptersData = useMemo(() => topic?.chapters || [], [topic?.chapters]);
 
