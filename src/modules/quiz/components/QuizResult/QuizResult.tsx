@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, memo } from 'react';
+import React, { useEffect, useCallback, memo, useRef } from 'react';
 import { Card, Result, Progress, Button } from 'antd';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
@@ -50,15 +50,24 @@ const QuizResult: React.FC<QuizResultProps> = ({
   onRetry,
   onRetryCurrentQuiz,
 }) => {
+  const congratsAudioRef = useRef(new Audio('/audio/congratulations.mp3'));
+
   useEffect(() => {
     let interval: number | undefined;
 
     if (score >= 80) {
+      congratsAudioRef.current.play().catch(err => {
+        console.log('Failed to play congratulations sound:', err);
+      });
+      
       interval = triggerConfetti(3000);
     }
 
     return () => {
       if (interval) clearInterval(interval);
+      // Cleanup audio
+      congratsAudioRef.current.pause();
+      congratsAudioRef.current.currentTime = 0;
     };
   }, [score]);
 
