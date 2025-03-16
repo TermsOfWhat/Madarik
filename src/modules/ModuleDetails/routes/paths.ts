@@ -1,3 +1,3 @@
 export const PATH = {
-  ModuleDetails: "/roadmap/:pathId/module/:name",
+  ModuleDetails: "/roadmap/:pathId/module/:moduleId",
 };
