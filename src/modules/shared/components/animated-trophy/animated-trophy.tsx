@@ -1,33 +1,35 @@
-"use client"
-
-import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
-import { Trophy } from "lucide-react"
+import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { Trophy } from "lucide-react";
 
 interface AnimatedTrophyProps {
-  className?: string
-  size?: number
-  color?: string
+  className?: string;
+  size?: number;
+  color?: string;
 }
 
-export default function AnimatedTrophy({ className = "", size = 16, color = "#eab308" }: AnimatedTrophyProps) {
-  const [isAnimating, setIsAnimating] = useState(false)
+export default function AnimatedTrophy({
+  className = "",
+  size = 16,
+  color = "#eab308",
+}: AnimatedTrophyProps) {
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsAnimating(true)
-      const timer = setTimeout(() => setIsAnimating(false), 3000)
-      return () => clearTimeout(timer)
-    }, 8000)
+      setIsAnimating(true);
+      const timer = setTimeout(() => setIsAnimating(false), 3000);
+      return () => clearTimeout(timer);
+    }, 8000);
 
-    setIsAnimating(true)
-    const timer = setTimeout(() => setIsAnimating(false), 3000)
+    setIsAnimating(true);
+    const timer = setTimeout(() => setIsAnimating(false), 3000);
 
     return () => {
-      clearInterval(interval)
-      clearTimeout(timer)
-    }
-  }, [])
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <div className={`animated-trophy-container ${className}`}>
@@ -46,7 +48,12 @@ export default function AnimatedTrophy({ className = "", size = 16, color = "#ea
         }}
         className="trophy-wrapper"
       >
-        <Trophy className="trophy-icon" size={size} color={color} fill={color} />
+        <Trophy
+          className="trophy-icon"
+          size={size}
+          color={color}
+          fill={color}
+        />
       </motion.div>
 
       {isAnimating && (
@@ -90,6 +97,5 @@ export default function AnimatedTrophy({ className = "", size = 16, color = "#ea
         </>
       )}
     </div>
-  )
+  );
 }
-

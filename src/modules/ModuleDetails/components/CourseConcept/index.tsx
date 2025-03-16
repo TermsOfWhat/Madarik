@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { Typography, Row, Col, Tabs, Button, message } from "antd";
 import {
@@ -8,37 +6,23 @@ import {
   LockOutlined,
   BookOutlined,
   ExportOutlined,
-  ClockCircleOutlined,
 } from "@ant-design/icons";
 import Quiz, { QuizQuestion } from "../Quiz";
 import styles from "./CourseConcept.module.scss";
+import { Chapter } from "@src/modules/LearningPath/data/pathTypes";
 
 const { Title, Text } = Typography;
 const { TabPane } = Tabs;
 
-export type ConceptStatus = "completed" | "active" | "locked";
-
-interface RecommendedReading {
-  id: number;
-  title: string;
-  author: string;
-  readTime: number;
-  url: string;
-}
-
-interface CourseConceptProps {
-  title: string;
-  description: string;
-  status: ConceptStatus;
-  onClick?: () => void;
-  recommendedReadings?: RecommendedReading[];
+interface CourseConceptProps extends Chapter {
+  status: string;
 }
 
 function CourseConcept({
-  title,
+  name,
+  articles,
   description,
   status,
-  recommendedReadings = [],
 }: CourseConceptProps) {
   const [expanded, setExpanded] = useState(true);
   const [activeTab, setActiveTab] = useState("articles");
@@ -102,7 +86,7 @@ function CourseConcept({
         <Col flex="1" className={styles.contentCol}>
           <div>
             <Title level={5} className={styles.conceptTitle}>
-              {title}
+              {name}
             </Title>
             {status === "completed" && (
               <Text className={styles.statusText}>Completed</Text>
@@ -135,19 +119,13 @@ function CourseConcept({
           <TabPane tab="Articles" key="articles">
             <div className={styles.articlesSection}>
               <h3 className={styles.sectionTitle}>Recommended Reading</h3>
-              {recommendedReadings.length > 0 ? (
+              {articles.length > 0 ? (
                 <div className={styles.readingList}>
-                  {recommendedReadings.map((article) => (
-                    <div key={article.id} className={styles.readingItem}>
+                  {articles.map((article) => (
+                    <div key={article.url} className={styles.readingItem}>
                       <BookOutlined className={styles.readingIcon} />
                       <div className={styles.readingContent}>
-                        <h4 className={styles.readingTitle}>{article.title}</h4>
-                        <div className={styles.readingMeta}>
-                          <Text type="secondary">{article.author}</Text>
-                          <div className={styles.readingTime}>
-                            <ClockCircleOutlined /> {article.readTime} min
-                          </div>
-                        </div>
+                        <h4 className={styles.readingTitle}>{article.name}</h4>
                         <Button
                           type="link"
                           className={styles.readButton}

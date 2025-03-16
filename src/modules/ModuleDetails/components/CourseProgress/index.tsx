@@ -1,7 +1,7 @@
-"use client";
-
-import { Progress, Typography, Row, Col } from "antd";
+import { Typography, Row, Col } from "antd";
 import { BookOutlined, StarOutlined } from "@ant-design/icons";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
 import styles from "./CourseProgress.module.scss";
 
 const { Title, Text } = Typography;
@@ -12,9 +12,7 @@ interface CourseProgressProps {
   lastAccessed: string;
   remainingConcepts: number;
   totalConcepts: number;
-  estimatedTime: string;
   difficulty: string;
-  achievements: number;
 }
 
 function CourseProgress({
@@ -23,6 +21,15 @@ function CourseProgress({
   totalConcepts,
   difficulty,
 }: CourseProgressProps) {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start({
+      width: `${progress}%`,
+      transition: { duration: 1.5, ease: "easeOut" },
+    });
+  }, [progress, controls]);
+
   return (
     <div className={styles.courseProgressContainer}>
       <Row gutter={[16, 16]}>
@@ -35,19 +42,25 @@ function CourseProgress({
             <div className={styles.progressSection}>
               <div className={styles.progressHeader}>
                 <Text className={styles.progressLabel}>Progress</Text>
-                <div className={styles.progressValue}>{progress}%</div>
+                <motion.div
+                  className={styles.progressValue}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {progress}%
+                </motion.div>
               </div>
 
               <div className={styles.progressContentWrapper}>
                 <div className={styles.progressBarWrapper}>
-                  <Progress
-                    percent={progress}
-                    strokeColor="#0080ff"
-                    trailColor="#e8f4ff"
-                    showInfo={false}
-                    strokeWidth={10}
-                    className={styles.progressBar}
-                  />
+                  <div className={styles.progressTrack}>
+                    <motion.div
+                      className={styles.progressFill}
+                      initial={{ width: "0%" }}
+                      animate={controls}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

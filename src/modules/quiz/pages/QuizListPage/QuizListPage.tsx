@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Card, List } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { fetchQuizzes } from '../../api/quizApi';
 import { setQuizzes } from '../../store/quizSlice';
 import { selectQuizzes } from '../../store/quizSelectors';
-
+import { useAppDispatch } from '@src/modules/shared/store';
 const QuizListPage: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const quizzes = useSelector(selectQuizzes);
 

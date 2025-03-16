@@ -1,3 +1,3 @@
 export const PATH = {
-  LearningPath: "/learning-path",
+  LearningPath: "/roadmap/:pathId",
 };
