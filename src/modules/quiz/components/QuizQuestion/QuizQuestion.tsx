@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useCallback, useMemo, memo } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, memo, useRef } from 'react';
 import { Card, Radio, Checkbox, Progress, Space, Button } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   CheckCircleFilled,
   CloseCircleFilled,
   InfoCircleFilled,
+  SoundOutlined,
+  SoundFilled,
+  DownOutlined,
 } from '@ant-design/icons';
 import { Question } from '../../types/quiz.types';
 import './_QuizQuestion.scss';
@@ -18,6 +21,96 @@ interface QuizQuestionProps {
   isLastQuestion: boolean;
 }
 
+function useAudioManager() {
+  const [isMuted, setIsMuted] = useState(false);
+  const audioRef = useRef({
+    correctSound: new Audio('/audio/correct-answer.mp3.wav'),
+    wrongSound: new Audio('/audio/wrong-answer.mp3.mp3'),
+    timerSound: new Audio('/audio/twenty-seconds.mp3.mp3'),
+  });
+  
+  const shouldPlayRef = useRef({
+    correctSound: false,
+    wrongSound: false,
+    timerSound: false,  
+  });
+
+  const stopAllSounds = useCallback(() => {
+    Object.values(audioRef.current).forEach(audio => {
+      audio.pause();
+      audio.currentTime = 0;
+    });
+    Object.keys(shouldPlayRef.current).forEach(key => {
+      shouldPlayRef.current[key as keyof typeof shouldPlayRef.current] = false;
+    });
+  }, []);
+
+  const toggleMute = useCallback(() => {
+    setIsMuted(prev => {
+      const newMutedState = !prev;
+      if (newMutedState) {
+        // If muting, pause all sounds but remember their state
+        Object.values(audioRef.current).forEach(audio => {
+          if (!audio.paused) {
+            const key = Object.keys(audioRef.current).find(
+              k => audioRef.current[k as keyof typeof audioRef.current] === audio
+            ) as keyof typeof shouldPlayRef.current;
+            shouldPlayRef.current[key] = true;
+          }
+          audio.pause();
+        });
+      } else {
+        Object.keys(shouldPlayRef.current).forEach(key => {
+          const soundKey = key as keyof typeof shouldPlayRef.current;
+          if (shouldPlayRef.current[soundKey]) {
+            const audio = audioRef.current[soundKey];
+            audio.currentTime = 0;
+            audio.play().catch(() => {
+              console.log('Failed to play audio');
+            });
+            
+            if (soundKey !== 'timerSound') {
+              shouldPlayRef.current[soundKey] = false;
+            }
+          }
+        });
+      }
+      return newMutedState;
+    });
+  }, []);
+
+  const playSound = useCallback((soundKey: keyof typeof audioRef.current, force = false) => {
+    shouldPlayRef.current[soundKey] = true;
+    
+    if ((!isMuted || force) && audioRef.current[soundKey]) {
+      const audio = audioRef.current[soundKey];
+      audio.pause();
+      audio.currentTime = 0;
+      
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          audio.pause();
+          audio.currentTime = 0;
+          shouldPlayRef.current[soundKey] = false;
+        });
+      }
+    }
+    
+    if (soundKey !== 'timerSound') {
+      setTimeout(() => {
+        shouldPlayRef.current[soundKey] = false;
+      }, 100);
+    }
+  }, [isMuted]);
+  
+  const markSoundForPlaying = useCallback((soundKey: keyof typeof audioRef.current, shouldPlay: boolean) => {
+    shouldPlayRef.current[soundKey] = shouldPlay;
+  }, []);
+
+  return { isMuted, toggleMute, playSound, stopAllSounds, markSoundForPlaying };
+}
+
 export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
   ({
     question,
@@ -27,14 +120,59 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
     onNext,
     isLastQuestion,
   }) => {
+    const { isMuted, toggleMute, playSound, stopAllSounds, markSoundForPlaying } = useAudioManager();
     const [showExplanation, setShowExplanation] = useState(false);
     const [shuffledOptions, setShuffledOptions] = useState(question.options);
     const [isAnswerLocked, setIsAnswerLocked] = useState(false);
+    const [hasPlayedAnswerSound, setHasPlayedAnswerSound] = useState(false);
+    const prevTimeRemainingRef = useRef(timeRemaining);
+    const questionIdRef = useRef(question.id);
+    const [isContentCollapsed, setIsContentCollapsed] = useState(false);
+    const explanationRef = useRef<HTMLDivElement>(null);
 
     const correctAnswers = useMemo(
       () => question.options.filter((opt) => opt.isCorrect),
       [question.options],
     );
+
+    useEffect(() => {
+      if (questionIdRef.current !== question.id) {
+        questionIdRef.current = question.id;
+        stopAllSounds();
+        setHasPlayedAnswerSound(false);
+        markSoundForPlaying('timerSound', false);
+      }
+    }, [question.id, stopAllSounds, markSoundForPlaying]);
+
+    useEffect(() => {
+      if (!hasPlayedAnswerSound) {
+        if (timeRemaining === 20) {
+          playSound('timerSound');
+          markSoundForPlaying('timerSound', true);
+        }
+      }
+      
+      prevTimeRemainingRef.current = timeRemaining;
+    }, [timeRemaining, playSound, hasPlayedAnswerSound, markSoundForPlaying]);
+
+    useEffect(() => {
+      if (selectedAnswers.length > 0 && !hasPlayedAnswerSound) {
+        const isCorrect = selectedAnswers.every((ans) =>
+          correctAnswers.some((correct) => correct.id === ans)
+        );
+        
+        const shouldPlayNow = 
+          question.type === 'single' || 
+          (question.type === 'multiple' && selectedAnswers.length === correctAnswers.length);
+          
+        if (shouldPlayNow) {
+          playSound(isCorrect ? 'correctSound' : 'wrongSound');
+          setHasPlayedAnswerSound(true);
+          
+          markSoundForPlaying('timerSound', false);
+        }
+      }
+    }, [selectedAnswers, correctAnswers, question.type, playSound, hasPlayedAnswerSound, markSoundForPlaying]);
 
     useEffect(() => {
       if (question.type === 'single') {
@@ -44,10 +182,17 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
       }
     }, [selectedAnswers, correctAnswers.length, question.type]);
 
+    const handleSoundToggle = useCallback((e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      toggleMute();
+    }, [toggleMute]);
+
     useEffect(() => {
       const shuffled = [...question.options].sort(() => Math.random() - 0.5);
       setShuffledOptions(shuffled);
       setIsAnswerLocked(false);
+      setIsContentCollapsed(false);
     }, [question]);
 
     const handleSingleChoice = useCallback(
@@ -114,6 +259,27 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
       setShowExplanation(false);
     }, []);
 
+    useEffect(() => {
+      return () => {
+        stopAllSounds();
+      };
+    }, [stopAllSounds]);
+
+    const handleNextClick = useCallback(() => {
+      stopAllSounds();
+      onNext();
+    }, [stopAllSounds, onNext]);
+
+    const handleCollapseExplanation = useCallback((e: React.MouseEvent) => {
+      e.stopPropagation();
+      setIsContentCollapsed(prev => !prev);
+      
+      // Add haptic feedback if supported
+      if (window.navigator && window.navigator.vibrate) {
+        window.navigator.vibrate(50);
+      }
+    }, []);
+
     return (
       <motion.div className="quiz-question w-full max-w-4xl mx-auto p-6">
         <Card>
@@ -128,15 +294,30 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                   <div className="question-number">
                     Question {question.id.replace('q', '')}:
                   </div>
-                  <Progress
-                    type="circle"
-                    percent={progressPercent}
-                    format={() => timeRemaining}
-                    size={60}
-                    strokeColor="#3887d9"
-                    strokeWidth={8}
-                    status={progressStatus}
-                  />
+                  <div className="timer-container">
+                    <button 
+                      className={`sound-toggle ${isMuted ? 'muted' : ''}`}
+                      onClick={handleSoundToggle}
+                      type="button"
+                      aria-label={isMuted ? "Unmute sound" : "Mute sound"}
+                    >
+                      {isMuted ? (
+                        <SoundOutlined className="sound-icon" />
+                      ) : (
+                        <SoundFilled className="sound-icon" />
+                      )}
+                      {isMuted && <div className="mute-line" />}
+                    </button>
+                    <Progress
+                      type="circle"
+                      percent={progressPercent}
+                      format={() => timeRemaining}
+                      size={60}
+                      strokeColor="#3887d9"
+                      strokeWidth={8}
+                      status={progressStatus}
+                    />
+                  </div>
                 </div>
 
                 <h2 className="question-text">
@@ -172,8 +353,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                   ) : (
                     <>
                       <div className="multiple-choice-hint">
-                        <InfoCircleFilled /> Select {correctAnswers.length}{' '}
-                        correct answer{correctAnswers.length > 1 ? 's' : ''}
+                        <InfoCircleFilled /> Multiple-choice question ({correctAnswers.length} {correctAnswers.length === 1 ? 'answer' : 'answers'} required)
                       </div>
                       <Checkbox.Group
                         onChange={handleMultipleChoice}
@@ -207,27 +387,88 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                 {...explanationAnimations}
                 className="answer-explanation"
               >
-                <div className="answer-status">
-                  {isAnswerCorrect() ? (
-                    <CheckCircleFilled className="correct-icon" />
-                  ) : (
-                    <CloseCircleFilled className="incorrect-icon" />
+                <motion.div 
+                  className={`answer-status ${isAnswerCorrect() ? 'correct' : 'incorrect'}`}
+                  onClick={handleCollapseExplanation}
+                  whileTap={{ scale: 0.98 }}
+                  role="button"
+                  tabIndex={0}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      handleCollapseExplanation(e as any);
+                    }
+                  }}
+                >
+                  <div className="status-left">
+                    {isAnswerCorrect() ? (
+                      <CheckCircleFilled className="correct-icon" />
+                    ) : (
+                      <CloseCircleFilled className="incorrect-icon" />
+                    )}
+                    <h3>Correct Answer{correctAnswers.length > 1 ? 's' : ''}</h3>
+                  </div>
+                  <motion.div
+                    animate={{ rotate: isContentCollapsed ? 0 : 180 }}
+                    transition={{ 
+                      duration: 0.4, 
+                      ease: [0.25, 0.1, 0.25, 1.0],
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20
+                    }}
+                    className="chevron-icon"
+                  >
+                    <DownOutlined />
+                  </motion.div>
+                </motion.div>
+                <AnimatePresence mode="wait">
+                  {!isContentCollapsed && (
+                    <motion.div 
+                      ref={explanationRef}
+                      className="explanation-content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ 
+                        height: "auto", 
+                        opacity: 1,
+                        transition: {
+                          height: { 
+                            duration: 0.4,
+                            ease: [0.25, 0.1, 0.25, 1.0]
+                          },
+                          opacity: { 
+                            duration: 0.3,
+                            delay: 0.1
+                          }
+                        }
+                      }}
+                      exit={{ 
+                        height: 0, 
+                        opacity: 0,
+                        transition: {
+                          height: { 
+                            duration: 0.3,
+                            ease: [0.25, 0.1, 0.25, 1.0]
+                          },
+                          opacity: { 
+                            duration: 0.2 
+                          }
+                        }
+                      }}
+                    >
+                      <ul>
+                        {correctAnswers.map((answer) => (
+                          <li key={answer.id}>{answer.text}</li>
+                        ))}
+                      </ul>
+                      {question.explanation && (
+                        <>
+                          <h3>Explanation:</h3>
+                          <p>{question.explanation}</p>
+                        </>
+                      )}
+                    </motion.div>
                   )}
-                </div>
-                <div className="explanation-content">
-                  <h3>Correct Answer{correctAnswers.length > 1 ? 's' : ''}:</h3>
-                  <ul>
-                    {correctAnswers.map((answer) => (
-                      <li key={answer.id}>{answer.text}</li>
-                    ))}
-                  </ul>
-                  {question.explanation && (
-                    <>
-                      <h3>Explanation:</h3>
-                      <p>{question.explanation}</p>
-                    </>
-                  )}
-                </div>
+                </AnimatePresence>
               </motion.div>
             )}
           </AnimatePresence>
@@ -235,7 +476,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
           <motion.div className="button-container">
             <Button
               type="primary"
-              onClick={onNext}
+              onClick={handleNextClick}
               className="next-button"
               disabled={!showExplanation}
             >
