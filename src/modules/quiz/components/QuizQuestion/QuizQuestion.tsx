@@ -21,21 +21,18 @@ interface QuizQuestionProps {
   isLastQuestion: boolean;
 }
 
-
 function useAudioManager() {
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef({
     correctSound: new Audio('/audio/correct-answer.mp3.wav'),
     wrongSound: new Audio('/audio/wrong-answer.mp3.mp3'),
     timerSound: new Audio('/audio/twenty-seconds.mp3.mp3'),
-    lastTenSecondsSound: new Audio('/audio/last-ten-seconds.mp3.mp3')
   });
   
   const shouldPlayRef = useRef({
     correctSound: false,
     wrongSound: false,
-    timerSound: false,
-    lastTenSecondsSound: false
+    timerSound: false,  
   });
 
   const stopAllSounds = useCallback(() => {
@@ -63,7 +60,6 @@ function useAudioManager() {
           audio.pause();
         });
       } else {
-        // If unmuting, resume sounds that should be playing
         Object.keys(shouldPlayRef.current).forEach(key => {
           const soundKey = key as keyof typeof shouldPlayRef.current;
           if (shouldPlayRef.current[soundKey]) {
@@ -73,8 +69,7 @@ function useAudioManager() {
               console.log('Failed to play audio');
             });
             
-            // Reset the flag after playing
-            if (soundKey !== 'timerSound' && soundKey !== 'lastTenSecondsSound') {
+            if (soundKey !== 'timerSound') {
               shouldPlayRef.current[soundKey] = false;
             }
           }
@@ -102,7 +97,7 @@ function useAudioManager() {
       }
     }
     
-    if (soundKey !== 'timerSound' && soundKey !== 'lastTenSecondsSound') {
+    if (soundKey !== 'timerSound') {
       setTimeout(() => {
         shouldPlayRef.current[soundKey] = false;
       }, 100);
@@ -133,6 +128,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
     const prevTimeRemainingRef = useRef(timeRemaining);
     const questionIdRef = useRef(question.id);
     const [isContentCollapsed, setIsContentCollapsed] = useState(false);
+    const explanationRef = useRef<HTMLDivElement>(null);
 
     const correctAnswers = useMemo(
       () => question.options.filter((opt) => opt.isCorrect),
@@ -145,7 +141,6 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
         stopAllSounds();
         setHasPlayedAnswerSound(false);
         markSoundForPlaying('timerSound', false);
-        markSoundForPlaying('lastTenSecondsSound', false);
       }
     }, [question.id, stopAllSounds, markSoundForPlaying]);
 
@@ -168,14 +163,13 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
         
         const shouldPlayNow = 
           question.type === 'single' || 
-          (question.type !== 'single' && selectedAnswers.length === correctAnswers.length);
+          (question.type === 'multiple' && selectedAnswers.length === correctAnswers.length);
           
         if (shouldPlayNow) {
           playSound(isCorrect ? 'correctSound' : 'wrongSound');
           setHasPlayedAnswerSound(true);
           
           markSoundForPlaying('timerSound', false);
-          markSoundForPlaying('lastTenSecondsSound', false);
         }
       }
     }, [selectedAnswers, correctAnswers, question.type, playSound, hasPlayedAnswerSound, markSoundForPlaying]);
@@ -198,6 +192,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
       const shuffled = [...question.options].sort(() => Math.random() - 0.5);
       setShuffledOptions(shuffled);
       setIsAnswerLocked(false);
+      setIsContentCollapsed(false);
     }, [question]);
 
     const handleSingleChoice = useCallback(
@@ -278,6 +273,11 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
     const handleCollapseExplanation = useCallback((e: React.MouseEvent) => {
       e.stopPropagation();
       setIsContentCollapsed(prev => !prev);
+      
+      // Add haptic feedback if supported
+      if (window.navigator && window.navigator.vibrate) {
+        window.navigator.vibrate(50);
+      }
     }, []);
 
     return (
@@ -299,6 +299,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                       className={`sound-toggle ${isMuted ? 'muted' : ''}`}
                       onClick={handleSoundToggle}
                       type="button"
+                      aria-label={isMuted ? "Unmute sound" : "Mute sound"}
                     >
                       {isMuted ? (
                         <SoundOutlined className="sound-icon" />
@@ -362,7 +363,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                       >
                         <Space
                           direction="vertical"
-                            className="w-full"
+                          className="w-full"
                           size={12}
                         >
                           {shuffledOptions.map((option) => (
@@ -386,9 +387,10 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                 {...explanationAnimations}
                 className="answer-explanation"
               >
-                <div 
-                  className="answer-status"
+                <motion.div 
+                  className={`answer-status ${isAnswerCorrect() ? 'correct' : 'incorrect'}`}
                   onClick={handleCollapseExplanation}
+                  whileTap={{ scale: 0.98 }}
                   role="button"
                   tabIndex={0}
                   onKeyPress={(e) => {
@@ -407,24 +409,50 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                   </div>
                   <motion.div
                     animate={{ rotate: isContentCollapsed ? 0 : 180 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    transition={{ 
+                      duration: 0.4, 
+                      ease: [0.25, 0.1, 0.25, 1.0],
+                      type: "spring",
+                      stiffness: 300,
+                      damping: 20
+                    }}
                     className="chevron-icon"
                   >
                     <DownOutlined />
                   </motion.div>
-                </div>
+                </motion.div>
                 <AnimatePresence mode="wait">
                   {!isContentCollapsed && (
                     <motion.div 
+                      ref={explanationRef}
                       className="explanation-content"
                       initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ 
-                        duration: 0.3,
-                        ease: "easeInOut",
-                        opacity: { duration: 0.2 },
-                        height: { duration: 0.3 }
+                      animate={{ 
+                        height: "auto", 
+                        opacity: 1,
+                        transition: {
+                          height: { 
+                            duration: 0.4,
+                            ease: [0.25, 0.1, 0.25, 1.0]
+                          },
+                          opacity: { 
+                            duration: 0.3,
+                            delay: 0.1
+                          }
+                        }
+                      }}
+                      exit={{ 
+                        height: 0, 
+                        opacity: 0,
+                        transition: {
+                          height: { 
+                            duration: 0.3,
+                            ease: [0.25, 0.1, 0.25, 1.0]
+                          },
+                          opacity: { 
+                            duration: 0.2 
+                          }
+                        }
                       }}
                     >
                       <ul>
