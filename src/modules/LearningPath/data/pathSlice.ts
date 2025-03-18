@@ -18,7 +18,7 @@ const initialState: IPathState = {
   isTopicLoading: false,
   chapterQuiz: {},
   isQuizLoading: false,
-  miniQuizResult: null,
+  miniQuizResult: {},
 };
 
 // Create the slice
@@ -84,7 +84,11 @@ const pathSlice = createSlice({
     });
     builder.addCase(submitChapterQuiz.fulfilled, (state, action) => {
       state.isQuizLoading = false;
-      state.miniQuizResult = action.payload;
+      const chapterId = action.meta.arg.chapterId;
+      state.miniQuizResult = {
+        ...state.miniQuizResult,
+        [chapterId]: action.payload,
+      };
     });
     builder.addCase(submitChapterQuiz.rejected, (state) => {
       state.isQuizLoading = false;
