@@ -5,10 +5,9 @@ import CourseProgress from "./components/CourseProgress/index";
 
 import ScrollableCourseConcept from "./components/ScrollableCourseConcept/ScrollableCourseConcept";
 import { useParams } from "../shared/hooks/useParams";
-import { setCurrentQuiz } from "../quiz/store/quizSlice";
 import { useAppDispatch, useAppSelector } from "../shared/store";
 import { useNavigate } from "react-router-dom";
-import { fetchQuizById } from "../quiz/api/quizApi";
+
 import { useEffect, useMemo } from "react";
 import { fetchRoadmapTopic } from "../LearningPath/data/pathThunk";
 
@@ -20,15 +19,9 @@ function ModuleDetails() {
 
   const { moduleId, pathId } = useParams();
 
-  const startQuiz = async () => {
-    try {
-      const quiz = await fetchQuizById("1");
-      if (quiz) {
-        dispatch(setCurrentQuiz(quiz));
-        navigate(`/quiz/${name}`);
-      }
-    } catch (error) {
-      console.error("Failed to start quiz:", error);
+  const startQuiz = () => {
+    if (pathId && moduleId) {
+      navigate(`/quiz/${pathId}/${moduleId}`);
     }
   };
 

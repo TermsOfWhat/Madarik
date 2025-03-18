@@ -1,5 +1,4 @@
 export const QUIZ_PATHS = {
-  LIST: '/quiz',
-  DETAIL: '/quiz/:quizId',
-  RESULTS: '/quiz/:quizId/results',
+  TOPIC_QUIZ: '/quiz/:roadmapId/:topicId',
+  TOPIC_QUIZ_RESULTS: '/quiz/:roadmapId/:topicId/results',
 } as const;

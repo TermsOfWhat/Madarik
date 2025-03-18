@@ -3,6 +3,9 @@ export interface IPathState {
   topic: RoadmapTopic | null;
   isLoading: boolean;
   isTopicLoading: boolean;
+  chapterQuiz: Record<string, QuizQuestion[]> | null;
+  isQuizLoading: boolean;
+  miniQuizResult: QuizSubmissionResponse | null;
 }
 
 // Node types
@@ -72,18 +75,76 @@ export interface Article {
 }
 
 export interface Chapter {
+  id: string;
   name: string;
   description: string;
   articles: Article[];
+  isCompleted: boolean;
+  quiz?: quizInChapter | null;
 }
+
+export type quizInChapter = {
+  id: string;
+  questions: {
+    id: string;
+    question: string;
+    possibleAnswers: {
+      id: string;
+      answer: string;
+      isCorrect: boolean;
+    }[];
+    explanation: string;
+  }[];
+};
 
 export interface RoadmapTopic {
   id: string;
   name: string;
   chapters: Chapter[];
+  progress: number;
+  difficulty: string;
+  chaptersCount: number;
 }
 
 export interface FetchRoadmapTopicParams {
   roadmapId: string;
   id: string;
+}
+
+interface QuizAnswer {
+  id: string;
+  answer: string;
+}
+
+export interface QuizQuestion {
+  id: string;
+  question: string;
+  possibleAnswers: QuizAnswer[];
+}
+
+export interface FetchChapterQuizParams {
+  roadmapId: string;
+  topicId: string;
+  chapterId: string;
+}
+
+export interface QuizSubmissionAnswer {
+  question: string;
+  yourAnswer: string;
+  isCorrect: boolean;
+  correctAnswer: string;
+  explanation: string;
+}
+
+export interface QuizSubmissionResponse {
+  numberOfQuestions: number;
+  numberOfValidAnswers: number;
+  submission: QuizSubmissionAnswer[];
+}
+
+export interface SubmitQuizParams {
+  roadmapId: string;
+  topicId: string;
+  chapterId: string;
+  answers: { questionId: string; answerId: string }[];
 }

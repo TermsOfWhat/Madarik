@@ -1,23 +1,27 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useEffect, useCallback, memo, useRef, useState } from "react"
-import { Card, Progress, Button } from "antd"
-import { motion, AnimatePresence } from "framer-motion"
-import confetti from "canvas-confetti"
-import { CheckOutlined, CloseOutlined, TrophyOutlined } from "@ant-design/icons"
-import "./_QuizResult.scss"
-import LoadingDots from "@src/modules/shared/components/LoadingDots/LoadingDots"
+import type React from "react";
+import { useEffect, useCallback, memo, useRef, useState } from "react";
+import { Card, Progress, Button } from "antd";
+import { motion, AnimatePresence } from "framer-motion";
+import confetti from "canvas-confetti";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  TrophyOutlined,
+} from "@ant-design/icons";
+import "./_QuizResult.scss";
+import LoadingDots from "@src/modules/shared/components/LoadingDots/LoadingDots";
 
 interface QuizResultProps {
-  score: number
-  totalQuestions: number
-  onRetry: () => void
-  onRetryCurrentQuiz?: () => void
+  score: number;
+  totalQuestions: number;
+  onRetry: () => void;
+  onRetryCurrentQuiz?: () => void;
 }
 
 const triggerConfetti = (duration: number) => {
-  const animationEnd = Date.now() + duration
+  const animationEnd = Date.now() + duration;
   const defaults = {
     startVelocity: 30,
     spread: 360,
@@ -25,33 +29,31 @@ const triggerConfetti = (duration: number) => {
     zIndex: 0,
     shapes: ["circle" as const, "square" as const],
     colors: ["#22c55e", "#3b82f6", "#f59e0b", "#8b5cf6", "#ec4899"],
-  }
+  };
 
   const randomInRange = (min: number, max: number) => {
-    return Math.random() * (max - min) + min
-  }
+    return Math.random() * (max - min) + min;
+  };
 
   const interval: number = window.setInterval(() => {
-    const timeLeft = animationEnd - Date.now()
+    const timeLeft = animationEnd - Date.now();
 
     if (timeLeft <= 0) {
-      return clearInterval(interval)
+      return clearInterval(interval);
     }
 
-    const particleCount = 50 * (timeLeft / duration)
-
+    const particleCount = 50 * (timeLeft / duration);
 
     confetti({
       ...defaults,
       particleCount,
       origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
-    })
+    });
     confetti({
       ...defaults,
       particleCount,
       origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
-    })
-
+    });
 
     if (Math.random() > 0.8) {
       confetti({
@@ -60,100 +62,106 @@ const triggerConfetti = (duration: number) => {
         scalar: 1.2,
         shapes: ["star" as const],
         origin: { x: 0.5, y: 0.5 },
-      })
+      });
     }
-  }, 250)
+  }, 250);
 
-  return interval
-}
+  return interval;
+};
 
-const QuizResult: React.FC<QuizResultProps> = ({ score, totalQuestions, onRetry, onRetryCurrentQuiz }) => {
-  const congratsAudioRef = useRef(new Audio("/audio/congratulation.mp3.mp3"))
-  const failAudioRef = useRef(new Audio("/audio/fail.mp3"))
-  const [hasInteracted, setHasInteracted] = useState(false)
-  const [audioError, setAudioError] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [showCard, setShowCard] = useState(false)
+const QuizResult: React.FC<QuizResultProps> = ({
+  score,
+  totalQuestions,
+  onRetry,
+  onRetryCurrentQuiz,
+}) => {
+  const congratsAudioRef = useRef(new Audio("/audio/congratulation.mp3.mp3"));
+  const failAudioRef = useRef(new Audio("/audio/fail.mp3"));
+  const [hasInteracted, setHasInteracted] = useState(false);
+  const [audioError, setAudioError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showCard, setShowCard] = useState(false);
+
+  console.log("hasInteracted", hasInteracted);
+  console.log("audioError", audioError);
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false)
-
-      // Add a small delay before showing the card for a smoother transition
+      setIsLoading(false);
       setTimeout(() => {
-        setShowCard(true)
+        setShowCard(true);
 
         const playAudio = async () => {
           try {
             if (score >= 80) {
-              await congratsAudioRef.current.play()
-              console.log("Success audio played successfully")
-              triggerConfetti(3000)
+              await congratsAudioRef.current.play();
+              console.log("Success audio played successfully");
+              triggerConfetti(3000);
             } else {
-              await failAudioRef.current.play()
-              console.log("Fail audio played successfully")
+              await failAudioRef.current.play();
+              console.log("Fail audio played successfully");
             }
           } catch (error) {
-            console.error("Audio play failed:", error)
+            console.error("Audio play failed:", error);
             if (score >= 80) {
-              triggerConfetti(3000)
+              triggerConfetti(3000);
             }
           }
-        }
-        playAudio()
-      }, 300)
-    }, 1500)
+        };
+        playAudio();
+      }, 300);
+    }, 1500);
 
-    return () => clearTimeout(timer)
-  }, [score])
+    return () => clearTimeout(timer);
+  }, [score]);
 
   useEffect(() => {
     const preloadAudio = () => {
-      ;[congratsAudioRef.current, failAudioRef.current].forEach((audio) => {
+      [congratsAudioRef.current, failAudioRef.current].forEach((audio) => {
         audio.addEventListener("error", (e) => {
-          console.error("Audio file failed to load:", e)
-          console.error("Audio source:", audio.src)
-          setAudioError(true)
-        })
-      })
-    }
+          console.error("Audio file failed to load:", e);
+          console.error("Audio source:", audio.src);
+          setAudioError(true);
+        });
+      });
+    };
 
-    preloadAudio()
+    preloadAudio();
 
     return () => {
-      ;[congratsAudioRef.current, failAudioRef.current].forEach((audio) => {
-        audio.pause()
-        audio.currentTime = 0
-      })
-    }
-  }, [])
+      [congratsAudioRef.current, failAudioRef.current].forEach((audio) => {
+        audio.pause();
+        audio.currentTime = 0;
+      });
+    };
+  }, []);
 
   useEffect(() => {
     const handleInteraction = () => {
-      console.log("User interaction detected")
-      setHasInteracted(true)
-    }
+      console.log("User interaction detected");
+      setHasInteracted(true);
+    };
 
-    document.addEventListener("click", handleInteraction, { once: true })
-    return () => document.removeEventListener("click", handleInteraction)
-  }, [])
+    document.addEventListener("click", handleInteraction, { once: true });
+    return () => document.removeEventListener("click", handleInteraction);
+  }, []);
 
   const handleRetry = useCallback(() => {
-    onRetry()
-  }, [onRetry])
+    onRetry();
+  }, [onRetry]);
 
   const handleRetryCurrentQuiz = useCallback(() => {
     if (onRetryCurrentQuiz) {
-      onRetryCurrentQuiz()
+      onRetryCurrentQuiz();
     }
-  }, [onRetryCurrentQuiz])
+  }, [onRetryCurrentQuiz]);
 
-  const formattedScore = score.toFixed(2)
-  const correctAnswers = Math.round((score * totalQuestions) / 100)
-  const isSuccess = score >= 80
+  const formattedScore = score.toFixed(2);
+  const correctAnswers = Math.round((score * totalQuestions) / 100);
+  const isSuccess = score >= 80;
 
   if (isLoading) {
-    return <LoadingDots />
+    return <LoadingDots />;
   }
 
   return (
@@ -181,9 +189,15 @@ const QuizResult: React.FC<QuizResultProps> = ({ score, totalQuestions, onRetry,
                   damping: 20,
                   delay: 0.3,
                 }}
-                className={`icon-container ${isSuccess ? "success" : "failure"}`}
+                className={`icon-container ${
+                  isSuccess ? "success" : "failure"
+                }`}
               >
-                {isSuccess ? <TrophyOutlined className="result-icon" /> : <CloseOutlined className="result-icon" />}
+                {isSuccess ? (
+                  <TrophyOutlined className="result-icon" />
+                ) : (
+                  <CloseOutlined className="result-icon" />
+                )}
               </motion.div>
 
               <motion.h2
@@ -202,7 +216,13 @@ const QuizResult: React.FC<QuizResultProps> = ({ score, totalQuestions, onRetry,
                 className="result-subtitle"
               >
                 You scored{" "}
-                <span className={`score-highlight ${isSuccess ? "success" : "failure"}`}>{formattedScore}%</span>
+                <span
+                  className={`score-highlight ${
+                    isSuccess ? "success" : "failure"
+                  }`}
+                >
+                  {formattedScore}%
+                </span>
                 <span className="score-detail">
                   ({correctAnswers}/{totalQuestions} correct)
                 </span>
@@ -250,7 +270,10 @@ const QuizResult: React.FC<QuizResultProps> = ({ score, totalQuestions, onRetry,
                     transition={{ delay: 1.1, duration: 0.4 }}
                     className="retry-button-container"
                   >
-                    <Button onClick={handleRetryCurrentQuiz} className="retry-same-button">
+                    <Button
+                      onClick={handleRetryCurrentQuiz}
+                      className="retry-same-button"
+                    >
                       Try Again
                     </Button>
                   </motion.div>
@@ -263,7 +286,7 @@ const QuizResult: React.FC<QuizResultProps> = ({ score, totalQuestions, onRetry,
                   className="next-button-container"
                 >
                   <Button onClick={handleRetry} className="try-another-button">
-                    Try Another Quiz
+                    Return to Topic
                   </Button>
                 </motion.div>
               </div>
@@ -272,8 +295,7 @@ const QuizResult: React.FC<QuizResultProps> = ({ score, totalQuestions, onRetry,
         </motion.div>
       )}
     </AnimatePresence>
-  )
-}
+  );
+};
 
-export default memo(QuizResult)
-
+export default memo(QuizResult);

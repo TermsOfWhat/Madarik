@@ -1,49 +1,109 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Radio, Button, Typography, Space } from "antd";
 import type { RadioChangeEvent } from "antd";
 import QuizResults from "./QuizResults";
 import styles from "./Quiz.module.scss";
+import {
+  fetchChapterQuiz,
+  submitChapterQuiz,
+} from "@src/modules/LearningPath/data/pathThunk";
+import { useAppDispatch, useAppSelector } from "@src/modules/shared/store";
+import { useParams } from "react-router-dom";
+import { quizInChapter } from "@src/modules/LearningPath/data/pathTypes";
 
 const { Title, Text } = Typography;
 
-export interface QuizQuestion {
-  id: number;
-  question: string;
-  options: string[];
-  correctAnswer: number; // Index of the correct option
-}
-
 interface QuizProps {
   title?: string;
-  questions: QuizQuestion[];
   onComplete?: (score: number, totalQuestions: number) => void;
+  chapterId: string;
+  quiz?: quizInChapter | null;
 }
 
-function Quiz({ title = "Mini Quiz", questions, onComplete }: QuizProps) {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<number[]>(
-    Array(questions.length).fill(-1)
+function Quiz({ title = "Mini Quiz", chapterId, quiz }: QuizProps) {
+  const dispatch = useAppDispatch();
+  const { chapterQuiz, miniQuizResult } = useAppSelector(
+    (state) => state.roadmap
   );
+
+  console.log("miniQuizResult", miniQuizResult);
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [selectedAnswers, setSelectedAnswers] = useState<
+    {
+      questionId: string;
+      answerId: string;
+    }[]
+  >([]);
+
   const [submitted, setSubmitted] = useState(false);
+
+  const { pathId, moduleId } = useParams();
+
+  if (!pathId || !moduleId || !chapterId) {
+    return null;
+  }
+
+  console.log("quiz", quiz?.questions);
+  console.log("chapterQuiz", chapterQuiz);
+  useEffect(() => {
+    if (!pathId || !moduleId || !chapterId) {
+      return;
+    }
+
+    if (quiz) {
+      return;
+    }
+
+    dispatch(
+      fetchChapterQuiz({
+        roadmapId: pathId,
+        topicId: moduleId,
+        chapterId: chapterId,
+      })
+    );
+  }, [pathId, moduleId, chapterId, quiz]);
+
+  const questions = quiz ? quiz.questions : chapterQuiz?.[chapterId];
+
+  if (!questions || questions.length === 0) {
+    return "loading...";
+  }
 
   const currentQuestion = questions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const isFirstQuestion = currentQuestionIndex === 0;
 
   const handleOptionChange = (e: RadioChangeEvent) => {
-    const newSelectedAnswers = [...selectedAnswers];
-    newSelectedAnswers[currentQuestionIndex] = Number(e.target.value);
-    setSelectedAnswers(newSelectedAnswers);
+    setSelectedAnswers((prev) => {
+      const newSelectedAnswers = prev.map((answer) => {
+        if (answer.questionId === currentQuestion.id) {
+          return { ...answer, answerId: e.target.value };
+        }
+        return answer;
+      });
+
+      if (newSelectedAnswers.length === currentQuestionIndex) {
+        newSelectedAnswers.push({
+          questionId: currentQuestion.id,
+          answerId: e.target.value,
+        });
+      }
+
+      return newSelectedAnswers;
+    });
   };
 
   const handleNext = () => {
     if (isLastQuestion) {
-      if (onComplete) {
-        const score = selectedAnswers.reduce((total, selected, index) => {
-          return total + (selected === questions[index].correctAnswer ? 1 : 0);
-        }, 0);
-        onComplete(score, questions.length);
-      }
+      dispatch(
+        submitChapterQuiz({
+          roadmapId: pathId,
+          topicId: moduleId,
+          chapterId: chapterId,
+          answers: selectedAnswers,
+        })
+      );
       setSubmitted(true);
     } else {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -59,17 +119,11 @@ function Quiz({ title = "Mini Quiz", questions, onComplete }: QuizProps) {
   const handleRetry = () => {
     setSubmitted(false);
     setCurrentQuestionIndex(0);
-    setSelectedAnswers(Array(questions.length).fill(-1));
+    setSelectedAnswers([]);
   };
 
   if (submitted) {
-    return (
-      <QuizResults
-        questions={questions}
-        userAnswers={selectedAnswers}
-        onRetry={handleRetry}
-      />
-    );
+    return <QuizResults result={miniQuizResult} onRetry={handleRetry} />;
   }
 
   return (
@@ -90,12 +144,18 @@ function Quiz({ title = "Mini Quiz", questions, onComplete }: QuizProps) {
         <Radio.Group
           className={styles.optionsGroup}
           onChange={handleOptionChange}
-          value={selectedAnswers[currentQuestionIndex]}
         >
           <Space direction="vertical" className={styles.optionsSpace}>
-            {currentQuestion.options.map((option, index) => (
-              <Radio key={index} value={index} className={styles.optionItem}>
-                {option}
+            {currentQuestion.possibleAnswers.map((answer) => (
+              <Radio
+                key={answer.id}
+                value={answer.id}
+                className={styles.optionItem}
+                checked={
+                  selectedAnswers[currentQuestionIndex]?.answerId === answer.id
+                }
+              >
+                {answer.answer}
               </Radio>
             ))}
           </Space>
@@ -114,7 +174,7 @@ function Quiz({ title = "Mini Quiz", questions, onComplete }: QuizProps) {
         <Button
           type="primary"
           onClick={handleNext}
-          disabled={selectedAnswers[currentQuestionIndex] === -1}
+          disabled={!selectedAnswers[currentQuestionIndex]?.answerId}
           className={styles.nextButton}
         >
           {isLastQuestion ? "Submit" : "Next"}

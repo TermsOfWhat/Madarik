@@ -5,7 +5,7 @@ import authReducer from "../../auth/data/authSlice";
 import layoutReducer from "./slices/layout/layoutSlice";
 import modalReducer from "./slices/modal/modalSlice";
 import themeReducer from "./slices/theme/themeSlice";
-import quizReducer from "../../quiz/store/quizSlice";
+import quizReducer from "../../quiz/data/quizSlice";
 import pathSlice from "@src/modules/LearningPath/data/pathSlice";
 
 const rootReducer = combineReducers({
