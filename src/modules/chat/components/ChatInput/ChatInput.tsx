@@ -37,9 +37,11 @@ function ChatInput() {
         setIsLoading(false);
         navigate(`/roadmap/${data.id}`);
       })
-      .catch((error) => {
+      .catch(() => {
         setIsLoading(false);
-        handleError(error);
+        handleError(
+          "I apologize, but I cannot generate a roadmap for this request."
+        );
       });
   };
 

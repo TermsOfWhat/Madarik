@@ -1,17 +1,17 @@
 import { Typography, Button } from "antd";
 import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
-import { QuizQuestion } from "./index";
 import styles from "./QuizResults.module.scss";
+import { QuizSubmissionResponse } from "@src/modules/LearningPath/data/pathTypes";
 
 const { Title, Text } = Typography;
 
 interface QuizResultsProps {
-  questions: QuizQuestion[];
-  userAnswers: number[];
+  result: QuizSubmissionResponse | null;
+
   onRetry: () => void;
 }
 
-function QuizResults({ questions, userAnswers, onRetry }: QuizResultsProps) {
+function QuizResults({ result, onRetry }: QuizResultsProps) {
   return (
     <div className={styles.resultsContainer}>
       <Title level={4} className={styles.resultsTitle}>
@@ -19,17 +19,14 @@ function QuizResults({ questions, userAnswers, onRetry }: QuizResultsProps) {
       </Title>
 
       <div className={styles.questionsList}>
-        {questions.map((question, index) => {
-          const isCorrect = userAnswers[index] === question.correctAnswer;
-          const userAnswerText =
-            userAnswers[index] >= 0
-              ? question.options[userAnswers[index]]
-              : "No answer";
-          const correctAnswerText = question.options[question.correctAnswer];
+        {result?.submission.map((sub, index) => {
+          const isCorrect = sub.isCorrect;
+          const userAnswerText = sub.yourAnswer;
+          const correctAnswerText = sub.correctAnswer;
 
           return (
             <div
-              key={question.id}
+              key={sub.question}
               className={`${styles.resultItem} ${
                 isCorrect ? styles.correct : styles.incorrect
               }`}
@@ -41,7 +38,7 @@ function QuizResults({ questions, userAnswers, onRetry }: QuizResultsProps) {
                   <CloseCircleFilled className={styles.incorrectIcon} />
                 )}
                 <Title level={5} className={styles.questionText}>
-                  {index + 1}. {question.question}
+                  {index + 1}. {sub.question}
                 </Title>
               </div>
 
@@ -51,9 +48,16 @@ function QuizResults({ questions, userAnswers, onRetry }: QuizResultsProps) {
                 </Text>
 
                 {!isCorrect && (
-                  <Text className={styles.correctAnswer}>
-                    Correct answer: {correctAnswerText}
-                  </Text>
+                  <>
+                    <Text className={styles.correctAnswer}>
+                      Correct answer: {correctAnswerText}
+                    </Text>
+                    {sub.explanation && (
+                      <Text className={styles.explanation}>
+                        <span>Explanation</span>: {sub.explanation}
+                      </Text>
+                    )}
+                  </>
                 )}
               </div>
             </div>

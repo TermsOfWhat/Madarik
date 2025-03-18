@@ -129,6 +129,10 @@
   display: flex;
   justify-content: space-between;
 
+  button {
+    min-width: 2rem !important;
+  }
+
   .activeButton,
   .inactiveButton {
     height: 2rem;

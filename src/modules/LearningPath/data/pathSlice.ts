@@ -1,6 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { IPathState } from "./pathTypes";
-import { fetchRoadmap, fetchRoadmapById, fetchRoadmapTopic } from "./pathThunk";
+import {
+  fetchChapterQuiz,
+  fetchRoadmap,
+  fetchRoadmapById,
+  fetchRoadmapTopic,
+  submitChapterQuiz,
+} from "./pathThunk";
 
 // Basic type definitions
 
@@ -10,6 +16,9 @@ const initialState: IPathState = {
   topic: null,
   isLoading: false,
   isTopicLoading: false,
+  chapterQuiz: {},
+  isQuizLoading: false,
+  miniQuizResult: null,
 };
 
 // Create the slice
@@ -51,6 +60,34 @@ const pathSlice = createSlice({
     });
     builder.addCase(fetchRoadmapTopic.rejected, (state) => {
       state.isTopicLoading = false;
+    });
+
+    //get chapter quiz
+    builder.addCase(fetchChapterQuiz.pending, (state) => {
+      state.isQuizLoading = true;
+    });
+    builder.addCase(fetchChapterQuiz.fulfilled, (state, action) => {
+      state.isQuizLoading = false;
+      const chapterId = action.meta.arg.chapterId;
+      state.chapterQuiz = {
+        ...state.chapterQuiz,
+        [chapterId]: action.payload,
+      };
+    });
+    builder.addCase(fetchChapterQuiz.rejected, (state) => {
+      state.isQuizLoading = false;
+    });
+
+    // submit quiz
+    builder.addCase(submitChapterQuiz.pending, (state) => {
+      state.isQuizLoading = true;
+    });
+    builder.addCase(submitChapterQuiz.fulfilled, (state, action) => {
+      state.isQuizLoading = false;
+      state.miniQuizResult = action.payload;
+    });
+    builder.addCase(submitChapterQuiz.rejected, (state) => {
+      state.isQuizLoading = false;
     });
   },
 });

@@ -11,11 +11,13 @@ function ScrollableCourseConcept({ chapters }: { chapters: Chapter[] }) {
         {chapters.map((chapter, index) => (
           <section key={`section-${index}`} id={`section-${index}`}>
             <CourseConcept
-              key={chapter.name}
+              id={chapter.id}
+              key={chapter.id}
               name={chapter.name}
               description={chapter.description}
-              status={"active"}
+              isCompleted={chapter.isCompleted}
               articles={chapter.articles}
+              quiz={chapter.quiz}
             />
           </section>
         ))}
