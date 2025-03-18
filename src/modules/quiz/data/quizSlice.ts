@@ -81,6 +81,7 @@ const quizSlice = createSlice({
       state.error = action.error.message || "Failed to fetch results";
     });
   },
+  
 });
 
 export const { nextQuestion, updateTimeRemaining, resetQuiz } = quizSlice.actions;

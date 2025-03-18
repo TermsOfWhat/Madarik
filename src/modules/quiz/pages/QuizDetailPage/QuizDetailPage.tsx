@@ -6,7 +6,7 @@ import { nextQuestion, updateTimeRemaining } from '../../data/quizSlice';
 import QuizQuestion from '../../components/QuizQuestion/QuizQuestion';
 import LoadingDots from '@src/modules/shared/components/LoadingDots/LoadingDots';
 import { Card } from 'antd';
-
+import { BookOutlined, InfoOutlined } from '@ant-design/icons';
 const QuizDetailPage: React.FC = () => {
   const { roadmapId, topicId } = useParams();
   const { 
@@ -15,7 +15,6 @@ const QuizDetailPage: React.FC = () => {
     isLoading, 
     currentAnswer,
     answers, 
-    results,
     topic,
     timeRemaining
   } = useAppSelector((state) => state.quiz);
@@ -84,12 +83,6 @@ const QuizDetailPage: React.FC = () => {
     dispatch(updateTimeRemaining(20));
   }, [currentQuestionIndex, dispatch]);
 
-  useEffect(() => {
-    if (results) {
-      navigate(`/quiz/${roadmapId}/${topicId}/results`);
-    }
-  }, [results, navigate, roadmapId, topicId]);
-
   const handleAnswerSelect = async (selectedAnswers: string[]) => {
     if (!hasAnswered && roadmapId && topicId && selectedAnswers.length > 0) {
       setHasAnswered(true);
@@ -108,7 +101,14 @@ const QuizDetailPage: React.FC = () => {
       setHasAnswered(false);
     } else {
       try {
-        await dispatch(fetchQuizResults({ roadmapId: roadmapId!, topicId: topicId! })).unwrap();
+        const resultAction = await dispatch(fetchQuizResults({ 
+          roadmapId: roadmapId!, 
+          topicId: topicId! 
+        })).unwrap();
+        
+        if (resultAction) {
+          navigate(`/quiz/${roadmapId}/${topicId}/results`);
+        }
       } catch (error) {
         console.error('Failed to fetch quiz results:', error);
       }
@@ -135,11 +135,11 @@ const QuizDetailPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-4">
       <Card className="mb-4">
-        <h1 className="text-2xl font-bold mb-2">
-          {topic?.name || 'Quiz'}
+        <h1 className="text-lg font-bold mb-2 text-gray-800 line-clamp-2">
+        <BookOutlined className="mr-2" style={{  padding: '2px', borderRadius: '50%' }} /> {topic?.name || 'Quiz'}
         </h1>
-        <p className="text-gray-600">
-          {topic?.description || 'Test your knowledge on this topic'}
+        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+         <InfoOutlined className="mr-2" style={{ backgroundColor: '#007bff', color: '#fff', padding: '2px', borderRadius: '50%' }} /> {topic?.description || 'Test your knowledge on this topic'}
         </p>
       </Card>
       <QuizQuestion
