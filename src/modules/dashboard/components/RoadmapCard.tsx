@@ -1,6 +1,6 @@
-import { motion } from "framer-motion";
-import { BookOpen, Clock, ChevronRight } from "lucide-react";
-import { LearningRoadmap } from "../types";
+import { motion } from 'framer-motion';
+import { BookOpen, Clock, ChevronRight } from 'lucide-react';
+import { LearningRoadmap } from '../types';
 
 interface RoadmapCardProps {
   roadmap: LearningRoadmap;
@@ -18,20 +18,20 @@ export function RoadmapCard({ roadmap, index, onClick }: RoadmapCardProps) {
       onClick={onClick}
     >
       <div className="roadmap-content">
-        <h3>{roadmap.name}</h3>
-        <p>{roadmap.description}</p>
+        <h3>{roadmap?.name}</h3>
+        <p>{roadmap?.description}</p>
         <div className="roadmap-meta">
           <span className="roadmap-modules">
             <BookOpen className="w-4 h-4" />
-            {roadmap.modules} Modules
+            {roadmap?.modules} Modules
           </span>
           <span className="roadmap-time">
             <Clock className="w-4 h-4" />
-            {roadmap.estimatedTime}
+            {roadmap?.estimatedTime}
           </span>
         </div>
         <div className="roadmap-level">
-          <span>{roadmap.level}</span>
+          <span>{roadmap?.difficulty}</span>
         </div>
       </div>
       <div className="roadmap-action">
@@ -39,4 +39,4 @@ export function RoadmapCard({ roadmap, index, onClick }: RoadmapCardProps) {
       </div>
     </motion.div>
   );
-} 
+}

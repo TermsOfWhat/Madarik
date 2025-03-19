@@ -1,17 +1,15 @@
-import Button from "../shared/components/Button/Button";
-import ViewTitle from "../shared/components/ViewTitle/ViewTitle";
-import { TrophyOutlined } from "@ant-design/icons";
-import CourseProgress from "./components/CourseProgress/index";
+import Button from '../shared/components/Button/Button';
+import ViewTitle from '../shared/components/ViewTitle/ViewTitle';
+import { TrophyOutlined } from '@ant-design/icons';
+import CourseProgress from './components/CourseProgress/index';
 
-import ScrollableCourseConcept from "./components/ScrollableCourseConcept/ScrollableCourseConcept";
-import { useParams } from "../shared/hooks/useParams";
-import { useAppDispatch, useAppSelector } from "../shared/store";
-import { useNavigate } from "react-router-dom";
+import ScrollableCourseConcept from './components/ScrollableCourseConcept/ScrollableCourseConcept';
+import { useParams } from '../shared/hooks/useParams';
+import { useAppDispatch, useAppSelector } from '../shared/store';
+import { useNavigate } from 'react-router-dom';
 
-import { useEffect } from "react";
-import { fetchRoadmapTopic } from "../LearningPath/data/pathThunk";
-import ModuleAdvisor from "./components/ModuleAdvisor";
-import "./ModuleDetails.scss";
+import { useEffect, useMemo } from 'react';
+import { fetchRoadmapTopic } from '../LearningPath/data/pathThunk';
 
 function ModuleDetails() {
   const { roadmap, topic } = useAppSelector((state) => state.roadmap);
@@ -33,40 +31,25 @@ function ModuleDetails() {
     }
   }, []);
 
-  if (!topic) return null;
+  const chaptersData = useMemo(() => topic?.chapters || [], [topic?.chapters]);
 
-  const chaptersData = topic?.chapters;
-
-  // Prepare chapter data for the advisor
-  const chaptersForAdvisor =
-    chaptersData?.map((chapter) => ({
-      name: chapter.name,
-      description: chapter.description || "",
-    })) || [];
+  if (!topic?.chapters) return null;
 
   return (
-    <div className="module-details-container">
+    <div>
       <ViewTitle retourUrl={`/roadmap/${pathId}`} title={topic?.name}>
         <Button
-          label="Take Quiz"
+          label="take quiz"
           IconComponent={TrophyOutlined}
           onClick={startQuiz}
-          className="quiz-button"
         />
       </ViewTitle>
 
       <CourseProgress
-        title={roadmap?.description || ""}
+        title={roadmap?.description || ''}
         progress={topic?.progress}
         totalConcepts={topic?.chaptersCount}
         difficulty={topic?.difficulty}
-      />
-
-      <ModuleAdvisor
-        topicName={topic.name}
-        topicDifficulty={topic.difficulty}
-        chapters={chaptersForAdvisor}
-        roadmapContext={roadmap?.description}
       />
 
       <ScrollableCourseConcept chapters={chaptersData || []} />

@@ -3,6 +3,7 @@ export interface AnalyticsData {
     id: string;
     name: string;
     description: string;
+    roadmapId: string;
     progress: number;
   };
   streak: number;
@@ -14,4 +15,4 @@ export interface IAnalyticsState {
   data: AnalyticsData | null;
   isLoading: boolean;
   error: string | null;
-} 
+}

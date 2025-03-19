@@ -1,0 +1,131 @@
+.quiz-topic-card {
+  margin-bottom: 2rem;
+
+  .ant-card {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-radius: 1.25rem;
+    border: none;
+    overflow: visible;
+    background: #fff;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .ant-card-body {
+      padding: 1.5rem;
+    }
+  }
+
+  .topic-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    .topic-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #3887d9, #2563eb);
+      color: white;
+      border-radius: 12px;
+      margin-right: 1rem;
+      box-shadow: 0 4px 10px rgba(56, 135, 217, 0.3);
+
+      .anticon {
+        font-size: 1.25rem;
+      }
+    }
+
+    .topic-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #111827;
+      margin: 0;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  .topic-description {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 0.75rem;
+    padding: 1rem;
+    background-color: #f0f7ff;
+    border-radius: 0.75rem;
+    border-left: 4px solid #3887d9;
+
+    .description-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      background-color: #3887d9;
+      color: white;
+      border-radius: 50%;
+      margin-right: 0.75rem;
+      box-shadow: 0 2px 6px rgba(56, 135, 217, 0.3);
+
+      .anticon {
+        font-size: 0.875rem;
+      }
+    }
+
+    .description-text {
+      color: #4b5563;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  .topic-progress {
+    margin-top: 1.25rem;
+
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+
+      .label-text {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #6b7280;
+      }
+    }
+
+    .ant-progress-bg {
+      background: linear-gradient(to right, #3887d9, #2563eb);
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(56, 135, 217, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(56, 135, 217, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(56, 135, 217, 0);
+  }
+}

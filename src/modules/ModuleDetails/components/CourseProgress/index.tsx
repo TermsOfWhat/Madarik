@@ -1,8 +1,8 @@
-import { Typography, Row, Col } from "antd";
-import { BookOutlined, StarOutlined } from "@ant-design/icons";
-import { motion, useAnimation } from "framer-motion";
-import { useEffect } from "react";
-import styles from "./CourseProgress.module.scss";
+import { Typography, Row, Col } from 'antd';
+import { BookOutlined, StarOutlined } from '@ant-design/icons';
+import { useAnimation } from 'framer-motion';
+import { useEffect } from 'react';
+import styles from './CourseProgress.module.scss';
 
 const { Title, Text } = Typography;
 
@@ -24,39 +24,37 @@ function CourseProgress({
   useEffect(() => {
     controls.start({
       width: `${progress}%`,
-      transition: { duration: 1.5, ease: "easeOut" },
+      transition: { duration: 1.5, ease: 'easeOut' },
     });
   }, [progress, controls]);
+
+  const displayProgress = progress > 75 ? 100 : Math.min(progress, 75);
 
   return (
     <div className={styles.courseProgressContainer}>
       <Row gutter={[16, 16]}>
         <Col xs={24} lg={16}>
           <div className={styles.mainSection}>
-            <Title level={4} className={styles.courseTitle}>
+            <Title level={5} className={styles.courseTitle}>
               {title}
             </Title>
 
             <div className={styles.progressSection}>
               <div className={styles.progressHeader}>
-                <Text className={styles.progressLabel}>Progress</Text>
-                <motion.div
-                  className={styles.progressValue}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  {progress}%
-                </motion.div>
+                <Text className={styles.progressLabel}>Course Progress</Text>
+                <Text className={styles.progressValue}>
+                  {displayProgress}%
+                  {progress > 75 && progress < 100 && ' (Quiz Required)'}
+                  {progress === 100 && ' (Completed)'}
+                </Text>
               </div>
 
               <div className={styles.progressContentWrapper}>
                 <div className={styles.progressBarWrapper}>
                   <div className={styles.progressTrack}>
-                    <motion.div
+                    <div
                       className={styles.progressFill}
-                      initial={{ width: "0%" }}
-                      animate={controls}
+                      style={{ width: `${displayProgress}%` }}
                     />
                   </div>
                 </div>

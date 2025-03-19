@@ -1,9 +1,9 @@
-import { ChangeEventHandler } from 'react'
-import SearchIcon from '../../assets/icons/Search/search.svg'
+import { ChangeEventHandler } from 'react';
+import SearchIcon from '../../assets/icons/Search/search.svg';
 
 interface ISearchProps {
-  placeholder: string
-  onChange?: ChangeEventHandler<HTMLInputElement>
+  placeholder: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
 function Search({ placeholder, onChange }: ISearchProps) {
@@ -12,7 +12,7 @@ function Search({ placeholder, onChange }: ISearchProps) {
       <img src={SearchIcon} alt="" />
       <input type="text" placeholder={placeholder} onChange={onChange} />
     </div>
-  )
+  );
 }
 
-export default Search
+export default Search;

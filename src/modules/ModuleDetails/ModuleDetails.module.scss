@@ -1,4 +1,9 @@
-@forward "./components/ScrollableCourseConcept/scrollableCourceConcept.scss";
+@forward './components/ScrollableCourseConcept/scrollableCourceConcept.scss';
+
+.moduleContainer {
+  width: 100%;
+  padding: 24px;
+}
 
 .scrollableContainer {
   display: flex;
@@ -17,4 +22,43 @@
     width: 66.666667%;
     padding-right: 1.5rem;
   }
+}
+
+.lockedButton {
+  opacity: 0.7;
+  cursor: not-allowed !important;
+  position: relative;
+  border-radius: 11px;
+  padding: 10px;
+  color: #949494;
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &::before {
+    content: 'Complete 75% of the course to unlock';
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+  }
+
+  &:hover::before {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+button.classical {
+  background-color: #3887d9;
+  color: #fff;
 }

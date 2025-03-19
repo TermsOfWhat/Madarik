@@ -21,7 +21,7 @@ export interface LearningRoadmap {
   description: string;
   modules: number;
   estimatedTime: string;
-  level: string;
+  difficulty: string;
 }
 
 export interface DashboardData {

@@ -48,6 +48,7 @@ export interface SubmitQuizAnswerParams {
   topicId: string;
   questionId: string;
   answerId: string;
+  selectedAnswers: string[];
 }
 
 export interface FetchQuizParams {
@@ -77,4 +78,4 @@ export interface QuizQuestionProps {
   onNext: () => void;
   timeRemaining: number;
   isAnswered: boolean;
-} 
+}
