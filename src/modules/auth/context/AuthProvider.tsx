@@ -19,7 +19,8 @@ interface AuthProviderProps {
 const AuthProvider = ({ children }: AuthProviderProps) => {
   // const isMounted = useIsMountedRef();
 
-  const { isInitialised } = useSelector((state: RootState) => state.auth);
+  const auth = useSelector((state: RootState) => state.auth);
+  const isInitialised = auth?.isInitialised ?? false; // Provide a default value
   // const dispatch = useDispatch();
 
   // const isValidToken = (token: string) => {

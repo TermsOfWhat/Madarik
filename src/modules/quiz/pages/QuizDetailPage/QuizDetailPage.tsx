@@ -135,7 +135,7 @@ const QuizDetailPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto p-4">
       <Card className="mb-4">
-        <h1 className="text-lg font-bold mb-2 text-gray-800 line-clamp-2">
+        <h1 className="text-lg font-bold mb-2 text-gray-8c00 line-clamp-2">
         <BookOutlined className="mr-2" style={{  padding: '2px', borderRadius: '50%' }} /> {topic?.name || 'Quiz'}
         </h1>
         <p className="text-gray-600 text-sm mb-4 line-clamp-3">
