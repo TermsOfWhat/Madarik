@@ -58,12 +58,10 @@ function DashboardSkeleton() {
             active
             style={{ width: '80%', height: 80, marginBottom: 24 }}
           />{' '}
-          {/* Increased height */}
           <Skeleton.Input
             active
             style={{ width: '100%', height: 16, marginBottom: 24 }}
           />{' '}
-          {/* Increased margin */}
           <Skeleton.Button active style={{ width: 150, height: 40 }} />
         </div>
 
@@ -205,6 +203,7 @@ export default function Dashboard() {
   const currentCourse = {
     id: analyticsData.topic.id,
     name: analyticsData.topic.name,
+    roadmapId: analyticsData.topic.roadmapId,
     description: analyticsData.topic.description,
     progress: analyticsData.topic.progress,
     totalModules: 100,
@@ -238,8 +237,8 @@ export default function Dashboard() {
     name: roadmap.name,
     description: roadmap.description,
     modules: roadmap.numberOfTopics,
-    estimatedTime: 'TBD',
-    level: 'All Levels',
+    estimatedTime: roadmap.estimatedTime,
+    difficulty: roadmap.difficutly,
   }));
 
   const isCourseCompleted = currentCourse.progress === 100;
@@ -272,7 +271,9 @@ export default function Dashboard() {
               }
               onNextCourse={() => {
                 if (roadmaps.length > 0) {
-                  navigate(`/roadmap/${roadmaps[0].id}`);
+                  navigate(
+                    `/roadmap/${currentCourse.roadmapId}/module/${currentCourse.id}`,
+                  );
                 }
               }}
             />
@@ -303,7 +304,11 @@ export default function Dashboard() {
                 <Button
                   type="primary"
                   size="large"
-                  onClick={() => navigate(`/module/${currentCourse.id}`)}
+                  onClick={() =>
+                    navigate(
+                      `/roadmap/${currentCourse.roadmapId}/module/${currentCourse.id}`,
+                    )
+                  }
                   className="continue-button"
                 >
                   Continue Learning

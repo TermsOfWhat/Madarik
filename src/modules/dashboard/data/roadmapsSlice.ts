@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { fetchRoadmaps } from "./roadmapsThunk";
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchRoadmaps } from './roadmapsThunk';
 
 interface Roadmap {
   id: string;
@@ -23,7 +23,7 @@ const initialState: RoadmapsState = {
 };
 
 const roadmapsSlice = createSlice({
-  name: "roadmaps",
+  name: 'roadmaps',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -43,4 +43,4 @@ const roadmapsSlice = createSlice({
   },
 });
 
-export default roadmapsSlice.reducer; 
+export default roadmapsSlice.reducer;
