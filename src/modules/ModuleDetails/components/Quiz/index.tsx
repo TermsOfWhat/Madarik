@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Radio, Button, Typography, Space } from "antd";
+import { Radio, Button, Typography, Space, Spin } from "antd";
 import type { RadioChangeEvent } from "antd";
 import QuizResults from "./QuizResults";
 import styles from "./Quiz.module.scss";
@@ -26,8 +26,6 @@ function Quiz({ title = "Mini Quiz", chapterId, quiz }: QuizProps) {
     (state) => state.roadmap
   );
 
-  console.log("miniQuizResult", miniQuizResult);
-
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState<
     {
@@ -44,8 +42,6 @@ function Quiz({ title = "Mini Quiz", chapterId, quiz }: QuizProps) {
     return null;
   }
 
-  console.log("quiz", quiz?.questions);
-  console.log("chapterQuiz", chapterQuiz);
   useEffect(() => {
     if (!pathId || !moduleId || !chapterId) {
       return;
@@ -67,7 +63,7 @@ function Quiz({ title = "Mini Quiz", chapterId, quiz }: QuizProps) {
   const questions = quiz ? quiz.questions : chapterQuiz?.[chapterId];
 
   if (!questions || questions.length === 0) {
-    return "loading...";
+    return <Spin />;
   }
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -123,7 +119,9 @@ function Quiz({ title = "Mini Quiz", chapterId, quiz }: QuizProps) {
   };
 
   if (submitted) {
-    return <QuizResults result={miniQuizResult} onRetry={handleRetry} />;
+    return (
+      <QuizResults result={miniQuizResult[chapterId]} onRetry={handleRetry} />
+    );
   }
 
   return (

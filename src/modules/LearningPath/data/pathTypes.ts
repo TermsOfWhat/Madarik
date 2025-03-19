@@ -5,7 +5,7 @@ export interface IPathState {
   isTopicLoading: boolean;
   chapterQuiz: Record<string, QuizQuestion[]> | null;
   isQuizLoading: boolean;
-  miniQuizResult: QuizSubmissionResponse | null;
+  miniQuizResult: Record<string, QuizSubmissionResponse>;
 }
 
 // Node types

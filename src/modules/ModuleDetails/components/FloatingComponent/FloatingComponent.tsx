@@ -36,7 +36,6 @@ const FloatingComponent: React.FC<FloatingComponentProps> = ({ sections }) => {
               >
                 {index + 1}
               </Button>
-
               {section.name}
             </Flex>
           ))}

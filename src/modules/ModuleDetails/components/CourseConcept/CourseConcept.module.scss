@@ -257,7 +257,27 @@ $green-text: #16a34a;
     color: $green-text;
   }
 }
+.inCompleted {
+  position: relative;
 
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: $blue;
+  }
+
+  .statusIcon {
+    color: $blue;
+  }
+
+  .statusText {
+    color: $blue;
+  }
+}
 // Active state
 .active {
   background-color: $white;

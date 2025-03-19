@@ -9,8 +9,6 @@ const { Title, Text } = Typography;
 interface CourseProgressProps {
   title: string;
   progress: number;
-  lastAccessed: string;
-  remainingConcepts: number;
   totalConcepts: number;
   difficulty: string;
 }

@@ -47,11 +47,9 @@ function ModuleDetails() {
 
       <CourseProgress
         title={roadmap?.description || ""}
-        progress={50}
-        lastAccessed="2 days ago"
-        remainingConcepts={3}
-        totalConcepts={4}
-        difficulty="Intermediate"
+        progress={topic?.progress}
+        totalConcepts={topic?.chaptersCount}
+        difficulty={topic?.difficulty}
       />
 
       <ScrollableCourseConcept chapters={chaptersData || []} />

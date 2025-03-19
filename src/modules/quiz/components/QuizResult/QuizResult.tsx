@@ -2,7 +2,7 @@
 
 import type React from "react";
 import { useEffect, useCallback, memo, useRef, useState } from "react";
-import { Card, Progress, Button } from "antd";
+import { Card, Progress, Button, Result } from "antd";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import {
@@ -12,6 +12,8 @@ import {
 } from "@ant-design/icons";
 import "./_QuizResult.scss";
 import LoadingDots from "@src/modules/shared/components/LoadingDots/LoadingDots";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "@src/modules/shared/store";
 
 interface QuizResultProps {
   score: number;
@@ -81,6 +83,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
   const [audioError, setAudioError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showCard, setShowCard] = useState(false);
+  const navigate = useNavigate();
 
   console.log("hasInteracted", hasInteracted);
   console.log("audioError", audioError);
@@ -159,6 +162,8 @@ const QuizResult: React.FC<QuizResultProps> = ({
   const formattedScore = score.toFixed(2);
   const correctAnswers = Math.round((score * totalQuestions) / 100);
   const isSuccess = score >= 80;
+  const percentage = Math.round((score / totalQuestions) * 100);
+  const isPassed = percentage >= 70;
 
   if (isLoading) {
     return <LoadingDots />;
@@ -292,6 +297,26 @@ const QuizResult: React.FC<QuizResultProps> = ({
               </div>
             </div>
           </Card>
+          <Result
+            status={isPassed ? "success" : "warning"}
+            title={isPassed ? "Quiz Completed Successfully!" : "Quiz Needs Improvement"}
+            subTitle={`You scored ${percentage}% (${score}/${totalQuestions} correct answers)`}
+            extra={[
+              <Button
+                type="primary"
+                onClick={() => navigate("/dashboard")}
+                key="dashboard"
+              >
+                Back to Dashboard
+              </Button>,
+              <Button 
+                onClick={() => navigate(-1)} 
+                key="retry"
+              >
+                Review Module
+              </Button>,
+            ]}
+          />
         </motion.div>
       )}
     </AnimatePresence>
