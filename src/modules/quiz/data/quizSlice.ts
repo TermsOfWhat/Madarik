@@ -5,6 +5,7 @@ import {
   submitQuizAnswer,
   fetchQuizResults,
 } from './quizThunk';
+import { shuffleArray } from '../utils/array-utils';
 
 const initialState: IQuizState = {
   questions: [],
@@ -41,7 +42,11 @@ const quizSlice = createSlice({
     });
     builder.addCase(fetchTopicQuiz.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.questions = action.payload.questions;
+      const shuffledQuestions = shuffleArray(action.payload.questions).map(question => ({
+        ...question,
+        possibleAnswers: shuffleArray(question.possibleAnswers)
+      }));
+      state.questions = shuffledQuestions;
       state.topic = {
         name: action.payload.topic?.name || 'Quiz',
         description:
