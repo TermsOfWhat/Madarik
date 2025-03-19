@@ -1,57 +1,51 @@
-'use client';
+"use client"
 
-import type React from 'react';
-
-import { useState, useEffect, useRef } from 'react';
-import './enhanced-search.scss';
+import type React from "react"
+import { useState, useEffect, useRef } from "react"
+import "./enhanced-search.scss"
 
 interface EnhancedSearchProps {
-  placeholder?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  value?: string;
-  className?: string;
+  placeholder?: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value?: string
+  className?: string
 }
 
-export function EnhancedSearch({
-  placeholder = 'Search...',
-  onChange,
-  value,
-  className,
-}: EnhancedSearchProps) {
-  const [searchValue, setSearchValue] = useState(value || '');
-  const inputRef = useRef<HTMLInputElement>(null);
+export function EnhancedSearch({ placeholder = "Search...", onChange, value, className }: EnhancedSearchProps) {
+  const [searchValue, setSearchValue] = useState(value || "")
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (value !== undefined) {
-      setSearchValue(value);
+      setSearchValue(value)
     }
-  }, [value]);
+  }, [value])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-    onChange(e);
-  };
+    setSearchValue(e.target.value)
+    onChange(e)
+  }
 
   const handleClear = () => {
-    setSearchValue('');
+    setSearchValue("")
     if (inputRef.current) {
-      inputRef.current.value = '';
-      const event = new Event('input', { bubbles: true });
-      inputRef.current.dispatchEvent(event);
+      inputRef.current.value = ""
+      const event = new Event("input", { bubbles: true })
+      inputRef.current.dispatchEvent(event)
 
       // Create a synthetic React change event
       const syntheticEvent = {
-        target: { value: '' },
-        currentTarget: { value: '' },
-      } as React.ChangeEvent<HTMLInputElement>;
+        target: { value: "" },
+        currentTarget: { value: "" },
+      } as React.ChangeEvent<HTMLInputElement>
 
-      onChange(syntheticEvent);
-      inputRef.current.focus();
+      onChange(syntheticEvent)
+      inputRef.current.focus()
     }
-  };
+  }
 
   return (
-    <div className={`enhanced-search ${className || ''}`}>
+    <div className={`enhanced-search ${className || ""}`}>
       <div className="search-input-container">
         <svg
           className="search-icon"
@@ -77,12 +71,7 @@ export function EnhancedSearch({
           className="search-input"
         />
         {searchValue && (
-          <button
-            type="button"
-            onClick={handleClear}
-            className="clear-button"
-            aria-label="Clear search"
-          >
+          <button type="button" onClick={handleClear} className="clear-button" aria-label="Clear search">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -101,5 +90,6 @@ export function EnhancedSearch({
         )}
       </div>
     </div>
-  );
+  )
 }
+

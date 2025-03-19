@@ -1,46 +1,38 @@
-'use client';
+"use client"
 
-import type React from 'react';
+import type React from "react"
 
-import { useEffect, useState } from 'react';
-import { Alert } from 'antd';
-import { useAppDispatch, useAppSelector } from '../shared/store';
-import { fetchRoadmaps } from '../dashboard/data/roadmapsThunk';
-import { RoadmapCard } from '../dashboard/components/RoadmapCard';
-import { useNavigate } from 'react-router-dom';
-import RoadmapsSkeleton from './components/RoadmapsSkeleton';
-import { EnhancedSearch } from './components/Search/enhanced-search';
-import './roadmaps.scss';
-import { resetRoadmap } from '../LearningPath/data/pathSlice';
+import { useEffect, useState } from "react"
+import { Alert } from "antd"
+import { useAppDispatch, useAppSelector } from "../shared/store"
+import { fetchRoadmaps } from "../dashboard/data/roadmapsThunk"
+import { RoadmapCard } from "../dashboard/components/RoadmapCard"
+import { useNavigate } from "react-router-dom"
+import RoadmapsSkeleton from "./components/RoadmapsSkeleton"
+import { EnhancedSearch } from "./components/Search/enhanced-search"
+import { filterBySearch } from "../shared/utils/search-utils"
+import "./roadmaps.scss"
+import { resetRoadmap } from "../LearningPath/data/pathSlice"
 
 export default function Roadmaps() {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const [searchTerm, setSearchTerm] = useState("")
 
-  const {
-    data: roadmapsData,
-    isLoading,
-    error,
-  } = useAppSelector((state) => state.roadmaps);
+  const { data: roadmapsData, isLoading, error } = useAppSelector((state) => state.roadmaps)
 
   useEffect(() => {
-    dispatch(fetchRoadmaps());
-  }, [dispatch]);
+    dispatch(fetchRoadmaps())
+  }, [dispatch])
 
   if (isLoading) {
-    return <RoadmapsSkeleton />;
+    return <RoadmapsSkeleton />
   }
 
   if (error) {
     return (
-      <Alert
-        message="Error"
-        description="Failed to load roadmaps. Please try again later."
-        type="error"
-        showIcon
-      />
-    );
+      <Alert message="Error" description="Failed to load roadmaps. Please try again later." type="error" showIcon />
+    )
   }
 
   const roadmaps = roadmapsData.map((roadmap) => ({
@@ -48,24 +40,20 @@ export default function Roadmaps() {
     name: roadmap.name,
     description: roadmap.description,
     modules: roadmap.numberOfTopics,
-    estimatedTime: roadmap.estimatedTime || 'TBD',
-    difficulty: roadmap.difficulty || 'Easy',
-  }));
+    estimatedTime: roadmap.estimatedTime || "TBD",
+    difficulty: roadmap.difficulty || "Easy",
+  }))
 
-  const filteredRoadmaps = roadmaps.filter(
-    (roadmap) =>
-      roadmap.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      roadmap.description.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  const filteredRoadmaps = filterBySearch(roadmaps, searchTerm, (roadmap) => `${roadmap.name} ${roadmap.description}`)
 
   const handleRoadmapClick = (roadmapId: string) => {
-    dispatch(resetRoadmap());
-    navigate(`/roadmap/${roadmapId}`);
-  };
+    dispatch(resetRoadmap())
+    navigate(`/roadmap/${roadmapId}`)
+  }
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
+    setSearchTerm(e.target.value)
+  }
 
   return (
     <div className="roadmaps-container">
@@ -96,5 +84,6 @@ export default function Roadmaps() {
         </div>
       )}
     </div>
-  );
+  )
 }
+
