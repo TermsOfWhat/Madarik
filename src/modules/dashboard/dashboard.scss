@@ -408,4 +408,203 @@
     z-index: 0;
   }
   
+  .course-completion-card {
+    display: flex;
+    background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 100%);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .completion-content {
+      flex: 1;
+      padding: 2rem;
+      
+      @media (max-width: 768px) {
+        padding: 1.5rem;
+      }
+      
+      .completion-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        gap: 1.5rem;
+        
+        @media (max-width: 640px) {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        
+        .trophy-container {
+          position: relative;
+          width: 64px;
+          height: 64px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          .trophy-icon {
+            color: #eab308;
+            filter: drop-shadow(0 0 8px rgba(234, 179, 8, 0.4));
+            z-index: 2;
+          }
+          
+          .sparkle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            
+            .sparkle-icon {
+              color: rgba(234, 179, 8, 0.2);
+            }
+          }
+        }
+        
+        .completion-text {
+          h2 {
+            font-size: 1.25rem;
+            color: #6b7280;
+            margin-bottom: 0.75rem;
+          }
+          
+          h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0;
+          }
+        }
+      }
+      
+      .completion-details {
+        p {
+          color: #4b5563;
+          margin-bottom: 1.5rem;
+          line-height: 1.6;
+        }
+        
+        .completion-progress {
+          margin-bottom: 1.5rem;
+          
+          .progress-bar-complete {
+            position: relative;
+            width: 100%;
+            height: 12px;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: visible;
+            
+            .progress-fill {
+              position: absolute;
+              top: 0;
+              left: 0;
+              height: 100%;
+              width: 100%;
+              border-radius: 9999px;
+              background: linear-gradient(90deg, #0ea5e9, #3b82f6);
+              box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+              animation: pulse-progress 1.5s infinite;
+            }
+            
+            .progress-label {
+              position: absolute;
+              top: -24px;
+              right: 0;
+              background-color: #1f2937;
+              color: white;
+              padding: 2px 8px;
+              border-radius: 4px;
+              font-size: 0.75rem;
+              font-weight: 600;
+              display: flex;
+              align-items: center;
+              gap: 4px;
+              
+              &:after {
+                content: '';
+                position: absolute;
+                bottom: -4px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid #1f2937;
+              }
+            }
+          }
+        }
+        
+        .completion-actions {
+          display: flex;
+          gap: 1rem;
+          flex-wrap: wrap;
+          
+          .certificate-button {
+            background-color: #3b82f6;
+            
+            &:hover {
+              background-color: #2563eb;
+            }
+          }
+          
+          .next-course-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-color: #3b82f6;
+            color: #3b82f6;
+            
+            &:hover {
+              background-color: rgba(59, 130, 246, 0.1);
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  // Trophy animation styles
+  .trophy-wrapper {
+    position: relative;
+    z-index: 2;
+  }
+  
+  .trophy-icon {
+    filter: drop-shadow(0 0 2px rgba(234, 179, 8, 0.5));
+  }
+  
+  .sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: #fcd34d;
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow: 0 0 4px 1px rgba(234, 179, 8, 0.7);
+  }
+  
+  .trophy-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(234, 179, 8, 0.6) 0%, rgba(234, 179, 8, 0) 70%);
+    border-radius: 50%;
+    z-index: 0;
+  }
   

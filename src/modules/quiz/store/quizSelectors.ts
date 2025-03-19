@@ -1,13 +1,12 @@
-import { RootState } from "../../shared/store";
+import { RootState } from "@src/modules/shared/store";
+import { createSelector } from '@reduxjs/toolkit';
 
-export const selectQuizzes = (state: RootState) => state.quiz.quizzes;
-export const selectCurrentQuiz = (state: RootState) => state.quiz.currentQuiz;
-export const selectCurrentQuestion = (state: RootState) => {
-  const quiz = state.quiz.currentQuiz;
-  return quiz?.questions[state.quiz.currentQuestion];
-};
+export const selectQuestions = (state: RootState) => state.quiz.questions;
+export const selectCurrentQuestion = createSelector(
+  [(state: RootState) => state.quiz.questions, 
+   (state: RootState) => state.quiz.currentQuestionIndex],
+  (questions, index) => questions[index] || null
+);
 export const selectAnswers = (state: RootState) => state.quiz.answers;
-export const selectTimeRemaining = (state: RootState) =>
-  state.quiz.timeRemaining;
-export const selectIsSubmitted = (state: RootState) => state.quiz.isSubmitted;
-export const selectScore = (state: RootState) => state.quiz.score;
+export const selectTimeRemaining = (state: RootState) => state.quiz.timeRemaining;
+export const selectResults = (state: RootState) => state.quiz.results;

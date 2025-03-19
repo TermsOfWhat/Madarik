@@ -7,21 +7,14 @@ const routes = [
   {
     exact: true,
     guard: AuthGuard,
-    path: QUIZ_PATHS.LIST,
-    component: lazy(() => import('../pages/QuizListPage')),
-    layout: MainLayout,
-  },
-  {
-    exact: true,
-    guard: AuthGuard,
-    path: QUIZ_PATHS.DETAIL,
+    path: QUIZ_PATHS.TOPIC_QUIZ,
     component: lazy(() => import('../pages/QuizDetailPage')),
     layout: MainLayout,
   },
   {
     exact: true,
     guard: AuthGuard,
-    path: QUIZ_PATHS.RESULTS,
+    path: QUIZ_PATHS.TOPIC_QUIZ_RESULTS,
     component: lazy(() => import('../pages/QuizResultsPage')),
     layout: MainLayout,
   },

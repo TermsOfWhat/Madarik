@@ -9,16 +9,29 @@ import {
   SoundFilled,
   DownOutlined,
 } from '@ant-design/icons';
-import { Question } from '../../types/quiz.types';
 import './_QuizQuestion.scss';
 
 interface QuizQuestionProps {
-  question: Question;
+  question: {
+    id: string;
+    text: string;
+    type: 'single';
+    options: {
+      id: string;
+      text: string;
+      isCorrect: boolean;
+    }[];
+    timeLimit: number;
+    explanation?: string;
+    questionNumber: number;
+    totalQuestions: number;
+  };
   selectedAnswers: string[];
-  timeRemaining: number;
+  isLastQuestion: boolean;
   onAnswerSelect: (answers: string[]) => void;
   onNext: () => void;
-  isLastQuestion: boolean;
+  timeRemaining: number;
+  isAnswered: boolean;
 }
 
 function useAudioManager() {
@@ -49,7 +62,6 @@ function useAudioManager() {
     setIsMuted(prev => {
       const newMutedState = !prev;
       if (newMutedState) {
-        // If muting, pause all sounds but remember their state
         Object.values(audioRef.current).forEach(audio => {
           if (!audio.paused) {
             const key = Object.keys(audioRef.current).find(
@@ -108,10 +120,16 @@ function useAudioManager() {
     shouldPlayRef.current[soundKey] = shouldPlay;
   }, []);
 
+  useEffect(() => {
+    audioRef.current.timerSound.volume = 0.02;
+    audioRef.current.correctSound.volume = 0.2;
+    audioRef.current.wrongSound.volume = 0.2;
+  }, []);
+
   return { isMuted, toggleMute, playSound, stopAllSounds, markSoundForPlaying };
 }
 
-export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
+const QuizQuestion: React.FC<QuizQuestionProps> = memo(
   ({
     question,
     selectedAnswers,
@@ -122,11 +140,10 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
   }) => {
     const { isMuted, toggleMute, playSound, stopAllSounds, markSoundForPlaying } = useAudioManager();
     const [showExplanation, setShowExplanation] = useState(false);
-    const [shuffledOptions, setShuffledOptions] = useState(question.options);
     const [isAnswerLocked, setIsAnswerLocked] = useState(false);
     const [hasPlayedAnswerSound, setHasPlayedAnswerSound] = useState(false);
     const prevTimeRemainingRef = useRef(timeRemaining);
-    const questionIdRef = useRef(question.id);
+    const prevQuestionIdRef = useRef(question.id);
     const [isContentCollapsed, setIsContentCollapsed] = useState(false);
     const explanationRef = useRef<HTMLDivElement>(null);
 
@@ -136,13 +153,12 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
     );
 
     useEffect(() => {
-      if (questionIdRef.current !== question.id) {
-        questionIdRef.current = question.id;
-        stopAllSounds();
+      if (prevQuestionIdRef.current !== question.id) {
+        setIsAnswerLocked(false);
         setHasPlayedAnswerSound(false);
-        markSoundForPlaying('timerSound', false);
+        prevQuestionIdRef.current = question.id;
       }
-    }, [question.id, stopAllSounds, markSoundForPlaying]);
+    }, [question.id]);
 
     useEffect(() => {
       if (!hasPlayedAnswerSound) {
@@ -188,13 +204,6 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
       toggleMute();
     }, [toggleMute]);
 
-    useEffect(() => {
-      const shuffled = [...question.options].sort(() => Math.random() - 0.5);
-      setShuffledOptions(shuffled);
-      setIsAnswerLocked(false);
-      setIsContentCollapsed(false);
-    }, [question]);
-
     const handleSingleChoice = useCallback(
       (value: string) => {
         if (!isAnswerLocked) {
@@ -226,24 +235,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
       );
     }, [selectedAnswers, correctAnswers]);
 
-    const questionAnimations = useMemo(
-      () => ({
-        initial: { opacity: 0, x: 20 },
-        animate: { opacity: 1, x: 0 },
-        exit: { opacity: 0, x: -20 },
-        transition: { duration: 0.3 },
-      }),
-      [],
-    );
 
-    const explanationAnimations = useMemo(
-      () => ({
-        initial: { opacity: 0, y: 20 },
-        animate: { opacity: 1, y: 0 },
-        exit: { opacity: 0, y: -20 },
-      }),
-      [],
-    );
 
     const progressPercent = useMemo(
       () => (timeRemaining / 20) * 100,
@@ -265,6 +257,15 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
       };
     }, [stopAllSounds]);
 
+    useEffect(() => {
+      const timerSound = new Audio('/audio/twenty-seconds.mp3.mp3');
+      timerSound.volume = 0.05; // Set volume to 5%
+      return () => {
+        timerSound.pause();
+        timerSound.currentTime = 0;
+      };
+    }, []);
+
     const handleNextClick = useCallback(() => {
       stopAllSounds();
       onNext();
@@ -274,7 +275,6 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
       e.stopPropagation();
       setIsContentCollapsed(prev => !prev);
       
-      // Add haptic feedback if supported
       if (window.navigator && window.navigator.vibrate) {
         window.navigator.vibrate(50);
       }
@@ -286,14 +286,16 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
           <AnimatePresence mode="wait" onExitComplete={handleExitComplete}>
             <motion.div
               key={question.id}
-              {...questionAnimations}
-              className="question-animate-container"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.3 }}
             >
               <div className="question-content">
                 <div className="question-header">
-                  <div className="question-number">
-                    Question {question.id.replace('q', '')}:
-                  </div>
+                  <span className="question-number">
+                    Question {question.questionNumber} / {question.totalQuestions}
+                  </span>
                   <div className="timer-container">
                     <button 
                       className={`sound-toggle ${isMuted ? 'muted' : ''}`}
@@ -324,7 +326,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                   <span className="text-gray-500"></span> {question.text}
                 </h2>
 
-                {question.image && (
+                {/* {question.image && (
                   <motion.img
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -332,7 +334,7 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                     alt="Question"
                     className="mb-12 rounded-xl w-full max-h-80 object-cover shadow-md"
                   />
-                )}
+                )} */}
 
                 <div className="options-container">
                   {question.type === 'single' ? (
@@ -343,8 +345,12 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                       disabled={isAnswerLocked}
                     >
                       <Space direction="vertical" className="w-full" size={12}>
-                        {shuffledOptions.map((option) => (
-                          <Radio key={option.id} value={option.id}>
+                        {question.options.map((option) => (
+                          <Radio 
+                            key={option.id} 
+                            value={option.id}
+                            className="quiz-option"
+                          >
                             {option.text}
                           </Radio>
                         ))}
@@ -366,8 +372,12 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                           className="w-full"
                           size={12}
                         >
-                          {shuffledOptions.map((option) => (
-                            <Checkbox key={option.id} value={option.id}>
+                          {question.options.map((option) => (
+                            <Checkbox 
+                              key={option.id} 
+                              value={option.id}
+                              disabled={isAnswerLocked}
+                            >
                               {option.text}
                             </Checkbox>
                           ))}
@@ -384,109 +394,77 @@ export const QuizQuestion: React.FC<QuizQuestionProps> = memo(
             {showExplanation && (
               <motion.div
                 key={`explanation-${question.id}`}
-                {...explanationAnimations}
-                className="answer-explanation"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
               >
                 <motion.div 
-                  className={`answer-status ${isAnswerCorrect() ? 'correct' : 'incorrect'}`}
-                  onClick={handleCollapseExplanation}
-                  whileTap={{ scale: 0.98 }}
-                  role="button"
-                  tabIndex={0}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      handleCollapseExplanation(e as any);
-                    }
-                  }}
+                  className="answer-explanation"
+                  ref={explanationRef}
                 >
-                  <div className="status-left">
-                    {isAnswerCorrect() ? (
-                      <CheckCircleFilled className="correct-icon" />
-                    ) : (
-                      <CloseCircleFilled className="incorrect-icon" />
-                    )}
-                    <h3>Correct Answer{correctAnswers.length > 1 ? 's' : ''}</h3>
-                  </div>
-                  <motion.div
-                    animate={{ rotate: isContentCollapsed ? 0 : 180 }}
-                    transition={{ 
-                      duration: 0.4, 
-                      ease: [0.25, 0.1, 0.25, 1.0],
-                      type: "spring",
-                      stiffness: 300,
-                      damping: 20
-                    }}
-                    className="chevron-icon"
+                  <div 
+                    className={`answer-status ${isAnswerCorrect() ? 'correct' : 'incorrect'}`}
+                    onClick={!isAnswerCorrect() ? handleCollapseExplanation : undefined}
+                    style={{ cursor: !isAnswerCorrect() ? 'pointer' : 'default' }}
                   >
-                    <DownOutlined />
-                  </motion.div>
-                </motion.div>
-                <AnimatePresence mode="wait">
-                  {!isContentCollapsed && (
-                    <motion.div 
-                      ref={explanationRef}
-                      className="explanation-content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ 
-                        height: "auto", 
-                        opacity: 1,
-                        transition: {
-                          height: { 
-                            duration: 0.4,
-                            ease: [0.25, 0.1, 0.25, 1.0]
-                          },
-                          opacity: { 
-                            duration: 0.3,
-                            delay: 0.1
-                          }
-                        }
-                      }}
-                      exit={{ 
-                        height: 0, 
-                        opacity: 0,
-                        transition: {
-                          height: { 
-                            duration: 0.3,
-                            ease: [0.25, 0.1, 0.25, 1.0]
-                          },
-                          opacity: { 
-                            duration: 0.2 
-                          }
-                        }
-                      }}
-                    >
-                      <ul>
-                        {correctAnswers.map((answer) => (
-                          <li key={answer.id}>{answer.text}</li>
-                        ))}
-                      </ul>
-                      {question.explanation && (
+                    <div className="status-left">
+                      {isAnswerCorrect() ? (
                         <>
-                          <h3>Explanation:</h3>
-                          <p>{question.explanation}</p>
+                          <CheckCircleFilled className="correct-icon" />
+                          <h3>Correct Answer!</h3>
+                        </>
+                      ) : (
+                        <>
+                          <CloseCircleFilled className="incorrect-icon" />
+                          <h3>Incorrect Answer</h3>
                         </>
                       )}
+                    </div>
+                    {!isAnswerCorrect() && (
+                      <DownOutlined
+                        className="chevron-icon"
+                        style={{
+                          transform: isContentCollapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+                        }}
+                      />
+                    )}
+                  </div>
+                  {!isAnswerCorrect() && question.explanation && (
+                    <motion.div 
+                      className="explanation-content"
+                      initial={false}
+                      animate={{
+                        height: isContentCollapsed ? 0 : 'auto',
+                        opacity: isContentCollapsed ? 0 : 1
+                      }}
+                      transition={{
+                        duration: 0.3,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <p>{question.explanation}</p>
                     </motion.div>
                   )}
-                </AnimatePresence>
+                </motion.div>
               </motion.div>
             )}
           </AnimatePresence>
 
-          <motion.div className="button-container">
-            <Button
-              type="primary"
-              onClick={handleNextClick}
-              className="next-button"
-              disabled={!showExplanation}
-            >
-              {isLastQuestion ? 'Show Results' : 'Next Question'}
-            </Button>
-          </motion.div>
+          <div className="button-container">
+            {(showExplanation || timeRemaining === 0) && (
+              <Button
+                type="primary"
+                onClick={handleNextClick}
+                className="next-button"
+              >
+                {isLastQuestion ? 'Finish Quiz' : 'Next Question'}
+              </Button>
+            )}
+          </div>
         </Card>
       </motion.div>
     );
-  },
+  }
 );
 
 export default QuizQuestion;
