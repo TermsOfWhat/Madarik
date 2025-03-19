@@ -12,8 +12,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../shared/store";
 import { fetchRoadmapById, fetchRoadmapTopic } from "./data/pathThunk";
-import { resetRoadmap } from "./data/pathSlice";
 import LoaderTopic from "./components/LoaderTopic/LoaderTopic";
+import AkinatorAvatar from "../shared/components/AkinatorAvatar";
 
 function LearningPath() {
   const dispatch = useAppDispatch();
@@ -29,10 +29,18 @@ function LearningPath() {
   );
   const [open, setOpen] = useState(false);
 
+  // Transform roadmap modules for Akinator
+  const getAkinatorModules = () => {
+    if (!roadmap) return [];
+
+    // Extract module information from flowChart nodes as they represent topics
+    return roadmap.flowChart.nodes.map((node) => ({
+      name: node.data.label,
+      description: `Module: ${node.data.label}`,
+    }));
+  };
+
   useEffect(() => {
-    // Reset state when component mounts or pathId changes
-    dispatch(resetRoadmap());
-    
     if (pathId) {
       dispatch(fetchRoadmapById(pathId))
         .unwrap()
@@ -42,11 +50,6 @@ function LearningPath() {
           setEdges(flowchart.edges as any);
         });
     }
-
-    // Cleanup when component unmounts
-    return () => {
-      dispatch(resetRoadmap());
-    };
   }, [pathId, dispatch]);
 
   if (isTopicLoading) {
@@ -57,6 +60,9 @@ function LearningPath() {
       />
     );
   }
+
+  // Only render the Akinator if we have roadmap data
+  const shouldRenderAkinator = roadmap && roadmap.name && roadmap.description;
 
   return (
     <div className="learning-path">
@@ -99,6 +105,15 @@ function LearningPath() {
           FULL CONTENT
         </Drawer>
       </ReactFlow>
+
+      {shouldRenderAkinator && (
+        <AkinatorAvatar
+          roadmapName={roadmap.name}
+          roadmapDescription={roadmap.description}
+          modules={getAkinatorModules()}
+          difficulty={"Intermediate"}
+        />
+      )}
     </div>
   );
 }

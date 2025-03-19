@@ -2,19 +2,20 @@ import { Button, Input, Tag } from "antd";
 import { SendOutlined } from "@ant-design/icons";
 import { useRef, useState, useEffect } from "react";
 import type { InputRef } from "antd";
-import { useNavigate } from "react-router-dom";
 import { useKeyPress } from "@src/modules/shared/hooks/useKeyPress";
 import { fetchRoadmap } from "@src/modules/LearningPath/data/pathThunk";
 import { useAppDispatch } from "@src/modules/shared/store";
 import { handleError } from "@src/modules/shared/utils/errorMessage";
 import LoaderRoadmap from "@src/modules/shared/components/LoaderRoadmap/LoaderRoadmap";
+import { useRouter } from "@src/modules/shared/hooks/useNavigate";
 
 function ChatInput() {
   const inputRef = useRef<InputRef>(null);
   const dispatch = useAppDispatch();
+
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate();
+  const router = useRouter();
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -35,7 +36,7 @@ function ChatInput() {
       .unwrap()
       .then((data) => {
         setIsLoading(false);
-        navigate(`/roadmap/${data.id}`);
+        router.push(`/roadmap/${data.id}`);
       })
       .catch(() => {
         setIsLoading(false);
@@ -67,36 +68,16 @@ function ChatInput() {
           <div className="popular-topics">
             <p>Popular topics:</p>
             <div className="tags">
-              <Tag
-                color="blue"
-                onClick={() => !isLoading && setInputValue("React")}
-              >
-                React
-              </Tag>
-              <Tag
-                color="blue"
-                onClick={() => !isLoading && setInputValue("Next.js")}
-              >
-                Next.js
-              </Tag>
-              <Tag
-                color="blue"
-                onClick={() => !isLoading && setInputValue("English")}
-              >
-                English
-              </Tag>
-              <Tag
-                color="blue"
-                onClick={() => !isLoading && setInputValue("French")}
-              >
-                French
-              </Tag>
-              <Tag
-                color="blue"
-                onClick={() => !isLoading && setInputValue("C#")}
-              >
-                C#
-              </Tag>
+              {popularTopics.map((topic) => (
+                <Tag
+                  key={topic}
+                  color="blue"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => !isLoading && setInputValue(topic)}
+                >
+                  {topic}
+                </Tag>
+              ))}
             </div>
           </div>
           <Button
@@ -117,3 +98,16 @@ function ChatInput() {
 }
 
 export default ChatInput;
+
+const popularTopics = [
+  "Artificial Intelligence",
+  "Machine Learning",
+  "Blockchain",
+  "Cloud Computing",
+  "Cybersecurity",
+  "Data Science",
+  "Web Development",
+  "Space Exploration",
+  "Virtual Reality",
+  "Quantum Computing",
+];

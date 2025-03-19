@@ -1,18 +1,18 @@
-import { useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useCallback } from "react";
+import { useSelector } from "react-redux";
 import {
   nextQuestion,
   setAnswer,
   updateTimeRemaining,
   submitQuiz,
-} from '../store/quizSlice';
+} from "../store/quizSlice";
 import {
   selectCurrentQuestion,
   selectTimeRemaining,
   selectAnswers,
   selectCurrentQuiz,
-} from '../store/quizSelectors';
-import { useAppDispatch } from '@src/modules/shared/store';
+} from "../store/quizSelectors";
+import { useAppDispatch } from "@src/modules/shared/store";
 
 export const useQuiz = () => {
   const dispatch = useAppDispatch();
@@ -48,7 +48,7 @@ export const useQuiz = () => {
     (questionId: string, selectedAnswers: string[]) => {
       dispatch(setAnswer({ questionId, answers: selectedAnswers }));
     },
-    [dispatch],
+    [dispatch]
   );
 
   const handleNextQuestion = useCallback(() => {

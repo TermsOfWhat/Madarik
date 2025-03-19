@@ -8,8 +8,10 @@ import { useParams } from "../shared/hooks/useParams";
 import { useAppDispatch, useAppSelector } from "../shared/store";
 import { useNavigate } from "react-router-dom";
 
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { fetchRoadmapTopic } from "../LearningPath/data/pathThunk";
+import ModuleAdvisor from "./components/ModuleAdvisor";
+import "./ModuleDetails.scss";
 
 function ModuleDetails() {
   const { roadmap, topic } = useAppSelector((state) => state.roadmap);
@@ -31,17 +33,25 @@ function ModuleDetails() {
     }
   }, []);
 
-  const chaptersData = useMemo(() => topic?.chapters || [], [topic?.chapters]);
+  if (!topic) return null;
 
-  if (!topic?.chapters) return null;
+  const chaptersData = topic?.chapters;
+
+  // Prepare chapter data for the advisor
+  const chaptersForAdvisor =
+    chaptersData?.map((chapter) => ({
+      name: chapter.name,
+      description: chapter.description || "",
+    })) || [];
 
   return (
-    <div>
+    <div className="module-details-container">
       <ViewTitle retourUrl={`/roadmap/${pathId}`} title={topic?.name}>
         <Button
-          label="take quiz"
+          label="Take Quiz"
           IconComponent={TrophyOutlined}
           onClick={startQuiz}
+          className="quiz-button"
         />
       </ViewTitle>
 
@@ -50,6 +60,13 @@ function ModuleDetails() {
         progress={topic?.progress}
         totalConcepts={topic?.chaptersCount}
         difficulty={topic?.difficulty}
+      />
+
+      <ModuleAdvisor
+        topicName={topic.name}
+        topicDifficulty={topic.difficulty}
+        chapters={chaptersForAdvisor}
+        roadmapContext={roadmap?.description}
       />
 
       <ScrollableCourseConcept chapters={chaptersData || []} />

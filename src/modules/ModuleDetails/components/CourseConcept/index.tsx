@@ -8,10 +8,9 @@ import {
 } from "@ant-design/icons";
 import Quiz from "../Quiz";
 import styles from "./CourseConcept.module.scss";
-import { Chapter } from "@src/modules/LearningPath/data/pathTypes";
+import { Article, Chapter } from "@src/modules/LearningPath/data/pathTypes";
 
 const { Title, Text } = Typography;
-const { TabPane } = Tabs;
 
 function CourseConcept({
   id: chapterId,
@@ -87,41 +86,19 @@ function CourseConcept({
           activeKey={activeTab}
           onChange={handleTabChange}
           className={styles.conceptTabs}
-        >
-          <TabPane tab="Articles" key="articles">
-            <div className={styles.articlesSection}>
-              <h3 className={styles.sectionTitle}>Recommended Reading</h3>
-              {articles.length > 0 ? (
-                <div className={styles.readingList}>
-                  {articles.map((article) => (
-                    <div key={article.url} className={styles.readingItem}>
-                      <BookOutlined className={styles.readingIcon} />
-                      <div className={styles.readingContent}>
-                        <h4 className={styles.readingTitle}>{article.name}</h4>
-                        <Button
-                          type="link"
-                          className={styles.readButton}
-                          icon={<ExportOutlined />}
-                          href={article.url}
-                          target="_blank"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          Read Article
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <Text type="secondary">No recommended readings available.</Text>
-              )}
-            </div>
-          </TabPane>
-
-          <TabPane tab="Quiz" key="quiz">
-            <Quiz chapterId={chapterId} quiz={quiz} />
-          </TabPane>
-        </Tabs>
+          items={[
+            {
+              label: "Articles",
+              key: "articles",
+              children: <Articles articles={articles} />,
+            },
+            {
+              label: "Quiz",
+              key: "quiz",
+              children: <Quiz chapterId={chapterId} quiz={quiz} />,
+            },
+          ]}
+        ></Tabs>
       </div>
     );
   };
@@ -139,3 +116,35 @@ function CourseConcept({
 }
 
 export default CourseConcept;
+
+const Articles = ({ articles }: { articles: Article[] }) => {
+  return (
+    <div className={styles.articlesSection}>
+      <h3 className={styles.sectionTitle}>Recommended Reading</h3>
+      {articles.length > 0 ? (
+        <div className={styles.readingList}>
+          {articles.map((article) => (
+            <div key={article.url} className={styles.readingItem}>
+              <BookOutlined className={styles.readingIcon} />
+              <div className={styles.readingContent}>
+                <h4 className={styles.readingTitle}>{article.name}</h4>
+                <Button
+                  type="link"
+                  className={styles.readButton}
+                  icon={<ExportOutlined />}
+                  href={article.url}
+                  target="_blank"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Read Article
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <Text type="secondary">No recommended readings available.</Text>
+      )}
+    </div>
+  );
+};

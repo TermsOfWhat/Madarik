@@ -1,0 +1,23 @@
+.quiz-button {
+  background: linear-gradient(135deg, #4776e6 0%, #8e54e9 100%) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(71, 118, 230, 0.2) !important;
+  color: white !important;
+  padding: 10px 20px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  &:hover {
+    background: linear-gradient(135deg, #3a67d7 0%, #7c45da 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(71, 118, 230, 0.25) !important;
+  }
+  transition: all 0.2s ease !important;
+}
+
+.module-details-container {
+  padding-bottom: 40px;
+}
