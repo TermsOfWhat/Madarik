@@ -7,6 +7,7 @@ import {
 import { BookOpen } from "lucide-react";
 
 import { PATH } from "@src/modules/dashboard/routes/paths";
+import { PATH as ROADMAPS_PATH } from "@src/modules/roadmaps/routes/paths";
 
 export const menuItems = [
   {
@@ -20,8 +21,7 @@ export const menuItems = [
     key: "roadmaps",
     label: "Roadmaps",
     icon: <BookOpen />,
-    path: "/roadmaps",
-    disabled: true,
+    path: ROADMAPS_PATH.ROADMAPS,
   },
   // {
   //   key: "competetive-quiz",

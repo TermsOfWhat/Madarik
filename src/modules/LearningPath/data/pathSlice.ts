@@ -25,7 +25,14 @@ const initialState: IPathState = {
 const pathSlice = createSlice({
   name: "learningPath",
   initialState,
-  reducers: {},
+  reducers: {
+    resetRoadmap: (state) => {
+      state.roadmap = null;
+      state.topic = null;
+      state.isLoading = false;
+      state.isTopicLoading = false;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchRoadmap.pending, (state) => {
       state.isLoading = true;
@@ -97,6 +104,6 @@ const pathSlice = createSlice({
 });
 
 // Export actions and reducer
-export const {} = pathSlice.actions;
+export const { resetRoadmap } = pathSlice.actions;
 
 export default pathSlice.reducer;

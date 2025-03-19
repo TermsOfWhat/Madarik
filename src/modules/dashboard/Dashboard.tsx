@@ -298,9 +298,9 @@ export default function Dashboard() {
                   exit: { opacity: 1 },
                 }}
               >
-                {displayedRoadmaps.map((roadmap, index) => (
+                {displayedRoadmaps.map((roadmap, index) => (  
                   <motion.div
-                    key={roadmap.id}
+                    key={`roadmap-${roadmap.id}-${index}`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}

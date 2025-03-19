@@ -1,0 +1,30 @@
+.ant-menu-submenu-title {
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+}
+
+.ant-menu-item {
+  margin: 0 !important;
+  height: 40px !important;
+  line-height: 40px !important;
+  
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+  
+  &.ant-menu-item-selected {
+    background-color: #e6f4ff;
+    color: #1890ff;
+  }
+}
+
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+  .ant-menu {
+    flex: 1;
+  }
+} 

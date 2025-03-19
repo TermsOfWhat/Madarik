@@ -6,6 +6,8 @@ interface Roadmap {
   name: string;
   description: string;
   numberOfTopics: number;
+  estimatedTime: string;
+  difficutly: string;
 }
 
 interface RoadmapsState {

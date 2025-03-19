@@ -12,12 +12,14 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../shared/store";
 import { fetchRoadmapById, fetchRoadmapTopic } from "./data/pathThunk";
+import { resetRoadmap } from "./data/pathSlice";
 import LoaderTopic from "./components/LoaderTopic/LoaderTopic";
 
 function LearningPath() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { roadmap, isTopicLoading } = useAppSelector((state) => state.roadmap);
+  const { pathId } = useParams();
 
   const [nodes, setNodes, onNodesChange] = useNodesState(
     (roadmap?.flowChart.nodes as any) || []
@@ -27,10 +29,11 @@ function LearningPath() {
   );
   const [open, setOpen] = useState(false);
 
-  const { pathId } = useParams();
-
   useEffect(() => {
-    if (pathId && !roadmap) {
+    // Reset state when component mounts or pathId changes
+    dispatch(resetRoadmap());
+    
+    if (pathId) {
       dispatch(fetchRoadmapById(pathId))
         .unwrap()
         .then((data) => {
@@ -39,7 +42,12 @@ function LearningPath() {
           setEdges(flowchart.edges as any);
         });
     }
-  }, [pathId]);
+
+    // Cleanup when component unmounts
+    return () => {
+      dispatch(resetRoadmap());
+    };
+  }, [pathId, dispatch]);
 
   if (isTopicLoading) {
     return (
