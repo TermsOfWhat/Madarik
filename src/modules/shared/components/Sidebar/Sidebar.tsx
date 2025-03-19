@@ -1,9 +1,9 @@
-import { Layout, Menu } from "antd";
-import { menuItems } from "../../constants/menuItems";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import AddNewPath from "./components/AddNewPath/AddNewPath";
-import logo from "../../assets/logo2.svg";
+import { Layout, Menu } from 'antd';
+import { menuItems } from '../../constants/menuItems';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import AddNewPath from './components/AddNewPath/AddNewPath';
+import logo from '../../assets/logo2.svg';
 
 const { Sider } = Layout;
 
@@ -20,14 +20,14 @@ const Sidebar = () => {
   };
 
   const siderStyle: React.CSSProperties = {
-    overflow: "auto",
-    height: "100vh",
-    position: "sticky",
+    overflow: 'auto',
+    height: '100vh',
+    position: 'sticky',
     insetInlineStart: 0,
     top: 0,
     bottom: 0,
-    scrollbarWidth: "thin",
-    scrollbarGutter: "stable",
+    scrollbarWidth: 'thin',
+    scrollbarGutter: 'stable',
   };
 
   return (
@@ -41,11 +41,11 @@ const Sidebar = () => {
       <div
         className="logo"
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          marginBottom: "2rem",
-          marginTop: "1rem",
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: '2rem',
+          marginTop: '1rem',
         }}
       >
         <img src={logo} style={{}} />
@@ -55,9 +55,9 @@ const Sidebar = () => {
       <Menu
         theme="dark"
         mode="inline"
-        defaultSelectedKeys={[location.pathname.split("/")[1]]}
+        defaultSelectedKeys={[location.pathname.split('/')[1]]}
         items={menuItems}
-        selectedKeys={[location.pathname.split("/")[1]]}
+        selectedKeys={[location.pathname.split('/')[1]]}
         onClick={handleMenuClick}
         rootClassName="sidebar-menu"
       />
