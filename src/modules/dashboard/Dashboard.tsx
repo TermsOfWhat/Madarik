@@ -8,9 +8,9 @@ import { useMounted } from "../shared/hooks/use-mounted"
 import { StatCard } from "./components/StatCard"
 import { RoadmapCard } from "./components/RoadmapCard"
 import { useAppDispatch, useAppSelector } from "../shared/store"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { fetchAnalytics } from "./data/analyticsThunk"
-import { BookMarked, Flame, PlayCircle } from "lucide-react"
+import { BookMarked, Flame, PlayCircle, ChevronDown, ChevronUp } from "lucide-react"
 import "./dashboard.scss"
 import { fetchRoadmaps } from "./data/roadmapsThunk"
 import { CourseCompletionCard } from "./components/CourseCompletionCard"
@@ -38,11 +38,10 @@ function DashboardSkeleton() {
         >
           <Skeleton.Input active style={{ width: 200, height: 24, marginBottom: 16 }} />
           <Skeleton.Input active style={{ width: 300, height: 32, marginBottom: 16 }} />
-          <Skeleton.Input active style={{ width: "80%", height: 80, marginBottom: 24 }} /> 
-          <Skeleton.Input active style={{ width: "100%", height: 16, marginBottom: 24 }} /> 
+          <Skeleton.Input active style={{ width: "80%", height: 80, marginBottom: 24 }} /> {/* Increased height */}
+          <Skeleton.Input active style={{ width: "100%", height: 16, marginBottom: 24 }} /> {/* Increased margin */}
           <Skeleton.Button active style={{ width: 150, height: 40 }} />
         </div>
-
 
         <div
           className="dashboard-row"
@@ -85,7 +84,7 @@ function DashboardSkeleton() {
               gap: 16,
             }}
           >
-            {[1, 2].map((_, index) => (
+            {[1, 2, 3, 4].map((_, index) => (
               <div
                 key={index}
                 style={{
@@ -119,6 +118,7 @@ export default function Dashboard() {
   const navigate = useNavigate()
   const { isMounted } = useMounted()
   const dispatch = useAppDispatch()
+  const [showAllRoadmaps, setShowAllRoadmaps] = useState(false)
 
   const {
     data: analyticsData,
@@ -198,11 +198,16 @@ export default function Dashboard() {
     description: roadmap.description,
     modules: roadmap.numberOfTopics,
     estimatedTime: "TBD", 
-    level: "All Levels",
+    level: "All Levels", 
   }))
 
-
   const isCourseCompleted = currentCourse.progress === 100
+  const displayedRoadmaps = showAllRoadmaps ? roadmaps : roadmaps.slice(0, 4)
+  const hasMoreRoadmaps = roadmaps.length > 4
+
+  const toggleRoadmapsView = () => {
+    setShowAllRoadmaps((prev) => !prev)
+  }
 
   return (
     <div className="dashboard-container">
@@ -274,17 +279,54 @@ export default function Dashboard() {
           >
             <div className="dashboard-card-header">
               <h2>Learning Roadmaps</h2>
+              {hasMoreRoadmaps && (
+                <Button type="link" onClick={toggleRoadmapsView} className="roadmap-toggle-button">
+                  {showAllRoadmaps ? "Show Less" : "View All"}
+                </Button>
+              )}
             </div>
-            <div className="roadmaps-grid">
-              {roadmaps.map((roadmap, index) => (
-                <RoadmapCard
-                  key={roadmap.id}
-                  roadmap={roadmap}
-                  index={index}
-                  onClick={() => navigate(`/roadmap/${roadmap.id}`)}
-                />
-              ))}
-            </div>
+
+            <AnimatePresence initial={false}>
+              <motion.div
+                className="roadmaps-grid"
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                variants={{
+                  initial: { opacity: 1 },
+                  animate: { opacity: 1 },
+                  exit: { opacity: 1 },
+                }}
+              >
+                {displayedRoadmaps.map((roadmap, index) => (
+                  <motion.div
+                    key={roadmap.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{
+                      duration: 0.3,
+                      delay: index < 4 ? 0 : 0.05 * (index - 3),
+                    }}
+                  >
+                    <RoadmapCard roadmap={roadmap} index={index} onClick={() => navigate(`/roadmap/${roadmap.id}`)} />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
+
+            {hasMoreRoadmaps && (
+              <div className="view-all-roadmaps">
+                <Button
+                  type="default"
+                  onClick={toggleRoadmapsView}
+                  className="view-all-button"
+                  icon={showAllRoadmaps ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                >
+                  {showAllRoadmaps ? "Show Less" : `View All Roadmaps (${roadmaps.length})`}
+                </Button>
+              </div>
+            )}
           </motion.div>
         </AnimatePresence>
       </div>
