@@ -1,5 +1,7 @@
 'use client';
 
+import type React from 'react';
+
 import { useEffect, useState } from 'react';
 import { Alert } from 'antd';
 import { useAppDispatch, useAppSelector } from '../shared/store';
@@ -7,7 +9,7 @@ import { fetchRoadmaps } from '../dashboard/data/roadmapsThunk';
 import { RoadmapCard } from '../dashboard/components/RoadmapCard';
 import { useNavigate } from 'react-router-dom';
 import RoadmapsSkeleton from './components/RoadmapsSkeleton';
-import Search from '../shared/components/Search/Search';
+import { EnhancedSearch } from './components/Search/enhanced-search';
 import './roadmaps.scss';
 import { resetRoadmap } from '../LearningPath/data/pathSlice';
 
@@ -61,25 +63,38 @@ export default function Roadmaps() {
     navigate(`/roadmap/${roadmapId}`);
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   return (
     <div className="roadmaps-container">
       <div className="roadmaps-header">
         <h1>Learning Roadmaps</h1>
-        <Search
-          placeholder="Search roadmaps..."
-          onChange={(e) => setSearchTerm(e.target.value)}
+        <EnhancedSearch
+          placeholder="Search roadmaps by name or description..."
+          onChange={handleSearchChange}
+          value={searchTerm}
+          className="search-container"
         />
       </div>
-      <div className="roadmaps-grid">
-        {filteredRoadmaps.map((roadmap, index) => (
-          <RoadmapCard
-            key={roadmap.id}
-            roadmap={roadmap}
-            index={index}
-            onClick={() => handleRoadmapClick(roadmap.id)}
-          />
-        ))}
-      </div>
+
+      {filteredRoadmaps.length === 0 ? (
+        <div className="no-results">
+          <p>No roadmaps found matching "{searchTerm}"</p>
+        </div>
+      ) : (
+        <div className="roadmaps-grid">
+          {filteredRoadmaps.map((roadmap, index) => (
+            <RoadmapCard
+              key={roadmap.id}
+              roadmap={roadmap}
+              index={index}
+              onClick={() => handleRoadmapClick(roadmap.id)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
