@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useCallback, useMemo, memo, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  memo,
+  useRef,
+} from 'react';
 import { Card, Radio, Checkbox, Progress, Space, Button } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -41,38 +48,39 @@ function useAudioManager() {
     wrongSound: new Audio('/audio/wrong-answer.mp3.mp3'),
     timerSound: new Audio('/audio/twenty-seconds.mp3.mp3'),
   });
-  
+
   const shouldPlayRef = useRef({
     correctSound: false,
     wrongSound: false,
-    timerSound: false,  
+    timerSound: false,
   });
 
   const stopAllSounds = useCallback(() => {
-    Object.values(audioRef.current).forEach(audio => {
+    Object.values(audioRef.current).forEach((audio) => {
       audio.pause();
       audio.currentTime = 0;
     });
-    Object.keys(shouldPlayRef.current).forEach(key => {
+    Object.keys(shouldPlayRef.current).forEach((key) => {
       shouldPlayRef.current[key as keyof typeof shouldPlayRef.current] = false;
     });
   }, []);
 
   const toggleMute = useCallback(() => {
-    setIsMuted(prev => {
+    setIsMuted((prev) => {
       const newMutedState = !prev;
       if (newMutedState) {
-        Object.values(audioRef.current).forEach(audio => {
+        Object.values(audioRef.current).forEach((audio) => {
           if (!audio.paused) {
             const key = Object.keys(audioRef.current).find(
-              k => audioRef.current[k as keyof typeof audioRef.current] === audio
+              (k) =>
+                audioRef.current[k as keyof typeof audioRef.current] === audio,
             ) as keyof typeof shouldPlayRef.current;
             shouldPlayRef.current[key] = true;
           }
           audio.pause();
         });
       } else {
-        Object.keys(shouldPlayRef.current).forEach(key => {
+        Object.keys(shouldPlayRef.current).forEach((key) => {
           const soundKey = key as keyof typeof shouldPlayRef.current;
           if (shouldPlayRef.current[soundKey]) {
             const audio = audioRef.current[soundKey];
@@ -80,7 +88,7 @@ function useAudioManager() {
             audio.play().catch(() => {
               console.log('Failed to play audio');
             });
-            
+
             if (soundKey !== 'timerSound') {
               shouldPlayRef.current[soundKey] = false;
             }
@@ -91,34 +99,40 @@ function useAudioManager() {
     });
   }, []);
 
-  const playSound = useCallback((soundKey: keyof typeof audioRef.current, force = false) => {
-    shouldPlayRef.current[soundKey] = true;
-    
-    if ((!isMuted || force) && audioRef.current[soundKey]) {
-      const audio = audioRef.current[soundKey];
-      audio.pause();
-      audio.currentTime = 0;
-      
-      const playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          audio.pause();
-          audio.currentTime = 0;
-          shouldPlayRef.current[soundKey] = false;
-        });
+  const playSound = useCallback(
+    (soundKey: keyof typeof audioRef.current, force = false) => {
+      shouldPlayRef.current[soundKey] = true;
+
+      if ((!isMuted || force) && audioRef.current[soundKey]) {
+        const audio = audioRef.current[soundKey];
+        audio.pause();
+        audio.currentTime = 0;
+
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            audio.pause();
+            audio.currentTime = 0;
+            shouldPlayRef.current[soundKey] = false;
+          });
+        }
       }
-    }
-    
-    if (soundKey !== 'timerSound') {
-      setTimeout(() => {
-        shouldPlayRef.current[soundKey] = false;
-      }, 100);
-    }
-  }, [isMuted]);
-  
-  const markSoundForPlaying = useCallback((soundKey: keyof typeof audioRef.current, shouldPlay: boolean) => {
-    shouldPlayRef.current[soundKey] = shouldPlay;
-  }, []);
+
+      if (soundKey !== 'timerSound') {
+        setTimeout(() => {
+          shouldPlayRef.current[soundKey] = false;
+        }, 100);
+      }
+    },
+    [isMuted],
+  );
+
+  const markSoundForPlaying = useCallback(
+    (soundKey: keyof typeof audioRef.current, shouldPlay: boolean) => {
+      shouldPlayRef.current[soundKey] = shouldPlay;
+    },
+    [],
+  );
 
   useEffect(() => {
     audioRef.current.timerSound.volume = 0.02;
@@ -138,7 +152,13 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
     onNext,
     isLastQuestion,
   }) => {
-    const { isMuted, toggleMute, playSound, stopAllSounds, markSoundForPlaying } = useAudioManager();
+    const {
+      isMuted,
+      toggleMute,
+      playSound,
+      stopAllSounds,
+      markSoundForPlaying,
+    } = useAudioManager();
     const [showExplanation, setShowExplanation] = useState(false);
     const [isAnswerLocked, setIsAnswerLocked] = useState(false);
     const [hasPlayedAnswerSound, setHasPlayedAnswerSound] = useState(false);
@@ -167,28 +187,36 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
           markSoundForPlaying('timerSound', true);
         }
       }
-      
+
       prevTimeRemainingRef.current = timeRemaining;
     }, [timeRemaining, playSound, hasPlayedAnswerSound, markSoundForPlaying]);
 
     useEffect(() => {
       if (selectedAnswers.length > 0 && !hasPlayedAnswerSound) {
         const isCorrect = selectedAnswers.every((ans) =>
-          correctAnswers.some((correct) => correct.id === ans)
+          correctAnswers.some((correct) => correct.id === ans),
         );
-        
-        const shouldPlayNow = 
-          question.type === 'single' || 
-          (question.type === 'multiple' && selectedAnswers.length === correctAnswers.length);
-          
+
+        const shouldPlayNow =
+          question.type === 'single' ||
+          (question.type === 'multiple' &&
+            selectedAnswers.length === correctAnswers.length);
+
         if (shouldPlayNow) {
           playSound(isCorrect ? 'correctSound' : 'wrongSound');
           setHasPlayedAnswerSound(true);
-          
+
           markSoundForPlaying('timerSound', false);
         }
       }
-    }, [selectedAnswers, correctAnswers, question.type, playSound, hasPlayedAnswerSound, markSoundForPlaying]);
+    }, [
+      selectedAnswers,
+      correctAnswers,
+      question.type,
+      playSound,
+      hasPlayedAnswerSound,
+      markSoundForPlaying,
+    ]);
 
     useEffect(() => {
       if (question.type === 'single') {
@@ -198,11 +226,14 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
       }
     }, [selectedAnswers, correctAnswers.length, question.type]);
 
-    const handleSoundToggle = useCallback((e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      toggleMute();
-    }, [toggleMute]);
+    const handleSoundToggle = useCallback(
+      (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMute();
+      },
+      [toggleMute],
+    );
 
     const handleSingleChoice = useCallback(
       (value: string) => {
@@ -235,8 +266,6 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
       );
     }, [selectedAnswers, correctAnswers]);
 
-
-
     const progressPercent = useMemo(
       () => (timeRemaining / 20) * 100,
       [timeRemaining],
@@ -259,7 +288,7 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
 
     useEffect(() => {
       const timerSound = new Audio('/audio/twenty-seconds.mp3.mp3');
-      timerSound.volume = 0.05; // Set volume to 5%
+      timerSound.volume = 0.05;
       return () => {
         timerSound.pause();
         timerSound.currentTime = 0;
@@ -273,8 +302,8 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
 
     const handleCollapseExplanation = useCallback((e: React.MouseEvent) => {
       e.stopPropagation();
-      setIsContentCollapsed(prev => !prev);
-      
+      setIsContentCollapsed((prev) => !prev);
+
       if (window.navigator && window.navigator.vibrate) {
         window.navigator.vibrate(50);
       }
@@ -294,14 +323,14 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
               <div className="question-content">
                 <div className="question-header">
                   <span className="question-number">
-                    Question {question.questionNumber} / {question.totalQuestions}
+                    Question {question.questionNumber}
                   </span>
                   <div className="timer-container">
-                    <button 
+                    <button
                       className={`sound-toggle ${isMuted ? 'muted' : ''}`}
                       onClick={handleSoundToggle}
                       type="button"
-                      aria-label={isMuted ? "Unmute sound" : "Mute sound"}
+                      aria-label={isMuted ? 'Unmute sound' : 'Mute sound'}
                     >
                       {isMuted ? (
                         <SoundOutlined className="sound-icon" />
@@ -346,8 +375,8 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                     >
                       <Space direction="vertical" className="w-full" size={12}>
                         {question.options.map((option) => (
-                          <Radio 
-                            key={option.id} 
+                          <Radio
+                            key={option.id}
                             value={option.id}
                             className="quiz-option"
                           >
@@ -359,7 +388,10 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                   ) : (
                     <>
                       <div className="multiple-choice-hint">
-                        <InfoCircleFilled /> Multiple-choice question ({correctAnswers.length} {correctAnswers.length === 1 ? 'answer' : 'answers'} required)
+                        <InfoCircleFilled /> Multiple-choice question (
+                        {correctAnswers.length}{' '}
+                        {correctAnswers.length === 1 ? 'answer' : 'answers'}{' '}
+                        required)
                       </div>
                       <Checkbox.Group
                         onChange={handleMultipleChoice}
@@ -373,8 +405,8 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                           size={12}
                         >
                           {question.options.map((option) => (
-                            <Checkbox 
-                              key={option.id} 
+                            <Checkbox
+                              key={option.id}
                               value={option.id}
                               disabled={isAnswerLocked}
                             >
@@ -398,14 +430,17 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
               >
-                <motion.div 
-                  className="answer-explanation"
-                  ref={explanationRef}
-                >
-                  <div 
-                    className={`answer-status ${isAnswerCorrect() ? 'correct' : 'incorrect'}`}
-                    onClick={!isAnswerCorrect() ? handleCollapseExplanation : undefined}
-                    style={{ cursor: !isAnswerCorrect() ? 'pointer' : 'default' }}
+                <motion.div className="answer-explanation" ref={explanationRef}>
+                  <div
+                    className={`answer-status ${
+                      isAnswerCorrect() ? 'correct' : 'incorrect'
+                    }`}
+                    onClick={
+                      !isAnswerCorrect() ? handleCollapseExplanation : undefined
+                    }
+                    style={{
+                      cursor: !isAnswerCorrect() ? 'pointer' : 'default',
+                    }}
                   >
                     <div className="status-left">
                       {isAnswerCorrect() ? (
@@ -424,22 +459,24 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
                       <DownOutlined
                         className="chevron-icon"
                         style={{
-                          transform: isContentCollapsed ? 'rotate(180deg)' : 'rotate(0deg)',
+                          transform: isContentCollapsed
+                            ? 'rotate(180deg)'
+                            : 'rotate(0deg)',
                         }}
                       />
                     )}
                   </div>
                   {!isAnswerCorrect() && question.explanation && (
-                    <motion.div 
+                    <motion.div
                       className="explanation-content"
                       initial={false}
                       animate={{
                         height: isContentCollapsed ? 0 : 'auto',
-                        opacity: isContentCollapsed ? 0 : 1
+                        opacity: isContentCollapsed ? 0 : 1,
                       }}
                       transition={{
                         duration: 0.3,
-                        ease: "easeInOut"
+                        ease: 'easeInOut',
                       }}
                     >
                       <p>{question.explanation}</p>
@@ -464,7 +501,7 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
         </Card>
       </motion.div>
     );
-  }
+  },
 );
 
 export default QuizQuestion;
