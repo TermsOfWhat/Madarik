@@ -16,8 +16,10 @@ import LoadingDots from "@src/modules/shared/components/LoadingDots/LoadingDots"
 interface QuizResultProps {
   score: number;
   totalQuestions: number;
+  hasPassed: boolean;
   onRetry: () => void;
   onRetryCurrentQuiz?: () => void;
+  isLoading?: boolean;
 }
 
 const triggerConfetti = (duration: number) => {
@@ -72,14 +74,15 @@ const triggerConfetti = (duration: number) => {
 const QuizResult: React.FC<QuizResultProps> = ({
   score,
   totalQuestions,
+  hasPassed,
   onRetry,
   onRetryCurrentQuiz,
+  isLoading = false,
 }) => {
   const congratsAudioRef = useRef(new Audio("/audio/congratulation.mp3.mp3"));
   const failAudioRef = useRef(new Audio("/audio/fail.mp3"));
   const [hasInteracted, setHasInteracted] = useState(false);
   const [audioError, setAudioError] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [showCard, setShowCard] = useState(false);
 
   console.log("hasInteracted", hasInteracted);
@@ -87,33 +90,30 @@ const QuizResult: React.FC<QuizResultProps> = ({
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsLoading(false);
-      setTimeout(() => {
-        setShowCard(true);
+      setShowCard(true);
 
-        const playAudio = async () => {
-          try {
-            if (score >= 80) {
-              await congratsAudioRef.current.play();
-              console.log("Success audio played successfully");
-              triggerConfetti(3000);
-            } else {
-              await failAudioRef.current.play();
-              console.log("Fail audio played successfully");
-            }
-          } catch (error) {
-            console.error("Audio play failed:", error);
-            if (score >= 80) {
-              triggerConfetti(3000);
-            }
+      const playAudio = async () => {
+        try {
+          if (hasPassed) {
+            await congratsAudioRef.current.play();
+            console.log("Success audio played successfully");
+            triggerConfetti(3000);
+          } else {
+            await failAudioRef.current.play();
+            console.log("Fail audio played successfully");
           }
-        };
-        playAudio();
-      }, 300);
-    }, 1500);
+        } catch (error) {
+          console.error("Audio play failed:", error);
+          if (hasPassed) {
+            triggerConfetti(3000);
+          }
+        }
+      };
+      playAudio();
+    }, 300);
 
     return () => clearTimeout(timer);
-  }, [score]);
+  }, [hasPassed]);
 
   useEffect(() => {
     const preloadAudio = () => {
@@ -158,7 +158,6 @@ const QuizResult: React.FC<QuizResultProps> = ({
 
   const formattedScore = score.toFixed(2);
   const correctAnswers = Math.round((score * totalQuestions) / 100);
-  const isSuccess = score >= 80;
 
   if (isLoading) {
     return <LoadingDots />;
@@ -178,7 +177,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
           }}
           className="quiz-result"
         >
-          <Card className={`result-card ${isSuccess ? "success" : "failure"}`}>
+          <Card className={`result-card ${hasPassed ? "success" : "failure"}`}>
             <div className="result-content">
               <motion.div
                 initial={{ scale: 0 }}
@@ -190,10 +189,10 @@ const QuizResult: React.FC<QuizResultProps> = ({
                   delay: 0.3,
                 }}
                 className={`icon-container ${
-                  isSuccess ? "success" : "failure"
+                  hasPassed ? "success" : "failure"
                 }`}
               >
-                {isSuccess ? (
+                {hasPassed ? (
                   <TrophyOutlined className="result-icon" />
                 ) : (
                   <CloseOutlined className="result-icon" />
@@ -206,7 +205,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
                 transition={{ delay: 0.5, duration: 0.5 }}
                 className="result-title"
               >
-                {isSuccess ? "Congratulations! 🎉" : "Better Luck Next Time"}
+                {hasPassed ? "Congratulations! 🎉" : "Better Luck Next Time"}
               </motion.h2>
 
               <motion.div
@@ -218,7 +217,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
                 You scored{" "}
                 <span
                   className={`score-highlight ${
-                    isSuccess ? "success" : "failure"
+                    hasPassed ? "success" : "failure"
                   }`}
                 >
                   {formattedScore}%
@@ -242,10 +241,10 @@ const QuizResult: React.FC<QuizResultProps> = ({
                 <Progress
                   type="circle"
                   percent={Number(formattedScore)}
-                  format={() => (isSuccess ? <CheckOutlined /> : null)}
+                  format={() => (hasPassed ? <CheckOutlined /> : null)}
                   className="result-progress"
                   strokeWidth={10}
-                  strokeColor={isSuccess ? "#22c55e" : "#ef4444"}
+                  strokeColor={hasPassed ? "#22c55e" : "#ef4444"}
                 />
               </motion.div>
 
@@ -255,7 +254,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
                 transition={{ delay: 1.1, duration: 0.4 }}
                 className="score-message"
               >
-                {isSuccess ? (
+                {hasPassed ? (
                   <span>Great job! You've mastered this quiz!</span>
                 ) : (
                   <span>Don't worry! Practice makes perfect.</span>
@@ -263,7 +262,7 @@ const QuizResult: React.FC<QuizResultProps> = ({
               </motion.div>
 
               <div className="buttons-container">
-                {!isSuccess && onRetryCurrentQuiz && (
+                {!hasPassed && onRetryCurrentQuiz && (
                   <motion.div
                     initial={{ y: 20, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}

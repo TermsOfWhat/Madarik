@@ -294,7 +294,7 @@ const QuizQuestion: React.FC<QuizQuestionProps> = memo(
               <div className="question-content">
                 <div className="question-header">
                   <span className="question-number">
-                    Question {question.questionNumber} / {question.totalQuestions}
+                    Question {question.questionNumber}
                   </span>
                   <div className="timer-container">
                     <button 

@@ -48,7 +48,7 @@ export const fetchRoadmapById = createAsyncThunk<Roadmap, string>(
 
 export const fetchRoadmapTopic = createAsyncThunk<
   RoadmapTopic,
-  FetchRoadmapTopicParams
+  Params
 >('learningPath/fetchRoadmapTopic', async (params) => {
   try {
     const { roadmapId, id } = params;

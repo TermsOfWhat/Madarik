@@ -65,6 +65,7 @@ export const fetchQuizResults = createAsyncThunk(
           totalQuestions: response.data.numberOfQuestions,
           correctAnswers: response.data.numberOfCorrectAnswers,
           score: response.data.score,
+          hasPassed: response.data.hasPassed,
         };
       }
 

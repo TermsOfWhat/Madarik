@@ -16,7 +16,7 @@ const QuizResultsPage: React.FC = () => {
       <LoadingDots 
         message={{
           title: "Processing Your Score..",
-          subtitle: "We’re reviewing your answers—stay tuned!"
+          subtitle: "We're reviewing your answers—stay tuned!"
         }}
       />
     );
@@ -42,6 +42,7 @@ const QuizResultsPage: React.FC = () => {
       <QuizResult 
         score={results.score}
         totalQuestions={results.totalQuestions}
+        hasPassed={results.hasPassed}
         onRetry={handleRetry}
         onRetryCurrentQuiz={handleRetryCurrentQuiz}
       />

@@ -1,7 +1,8 @@
 import Button from '../shared/components/Button/Button';
 import ViewTitle from '../shared/components/ViewTitle/ViewTitle';
-import { TrophyOutlined } from '@ant-design/icons';
+import { TrophyOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import CourseProgress from './components/CourseProgress/index';
+import { resetQuiz } from '../quiz/data/quizSlice';
 
 import ScrollableCourseConcept from './components/ScrollableCourseConcept/ScrollableCourseConcept';
 import { useParams } from '../shared/hooks/useParams';
@@ -10,6 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useEffect, useMemo } from 'react';
 import { fetchRoadmapTopic } from '../LearningPath/data/pathThunk';
+import './quiz-button.scss';
 
 function ModuleDetails() {
   const { roadmap, topic } = useAppSelector((state) => state.roadmap);
@@ -21,17 +23,22 @@ function ModuleDetails() {
 
   const startQuiz = () => {
     if (pathId && moduleId) {
+      dispatch(resetQuiz());
       navigate(`/quiz/${pathId}/${moduleId}`);
     }
   };
 
   useEffect(() => {
-    if (!topic && pathId && moduleId) {
+    if (pathId && moduleId) {
       dispatch(fetchRoadmapTopic({ roadmapId: pathId, id: moduleId }));
     }
-  }, []);
+  }, [pathId, moduleId]);
 
   const chaptersData = useMemo(() => topic?.chapters || [], [topic?.chapters]);
+
+  const isQuizCompleted = useMemo(() => {
+    return topic?.progress === 100;
+  }, [topic?.progress]);
 
   if (!topic?.chapters) return null;
 
@@ -39,9 +46,11 @@ function ModuleDetails() {
     <div>
       <ViewTitle retourUrl={`/roadmap/${pathId}`} title={topic?.name}>
         <Button
-          label="take quiz"
-          IconComponent={TrophyOutlined}
+          label={isQuizCompleted ? "Quiz Completed" : "Final Quiz"}
+          IconComponent={isQuizCompleted ? CheckCircleOutlined : TrophyOutlined}
           onClick={startQuiz}
+          className={`quiz-button ${isQuizCompleted ? 'quiz-completed' : ''}`}
+          disabled={isQuizCompleted}
         />
       </ViewTitle>
 

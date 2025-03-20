@@ -1,7 +1,8 @@
 import type React from 'react';
-import { Card, Progress } from 'antd';
-import { BookOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import { Card, Progress, Modal } from 'antd';
+import { BookOutlined, InfoCircleOutlined, ArrowLeftOutlined } from '@ant-design/icons';
 import './_QuizTopicCard.scss';
+import { useState } from 'react';
 
 interface QuizTopicCardProps {
   topic: {
@@ -10,21 +11,71 @@ interface QuizTopicCardProps {
   };
   currentQuestion?: number;
   totalQuestions?: number;
+  onExitQuiz?: () => void;
 }
 
 const QuizTopicCard: React.FC<QuizTopicCardProps> = ({
   topic,
   currentQuestion = 0,
   totalQuestions = 0,
+  onExitQuiz,
 }) => {
+  const [isExitModalVisible, setIsExitModalVisible] = useState(false);
+
   const progressPercent =
     totalQuestions > 0
       ? Math.round((currentQuestion / totalQuestions) * 100)
       : 0;
 
+  const handleExitClick = () => {
+    setIsExitModalVisible(true);
+  };
+
+  const handleExitConfirm = () => {
+    setIsExitModalVisible(false);
+    onExitQuiz?.();
+  };
+
+  const handleExitCancel = () => {
+    setIsExitModalVisible(false);
+  };
+
   return (
     <div className="quiz-topic-card">
       <Card>
+        {onExitQuiz && (
+          <>
+            <button 
+              className="exit-quiz-button" 
+              onClick={handleExitClick}
+              aria-label="Exit quiz"
+            >
+              <ArrowLeftOutlined />
+              <span>Back to Topic</span>
+            </button>
+
+            <Modal
+              title="Exit Quiz"
+              open={isExitModalVisible}
+              onOk={handleExitConfirm}
+              onCancel={handleExitCancel}
+              okText="Yes, Exit"
+              cancelText="No, Stay"
+              okButtonProps={{ 
+                danger: true,
+                className: "exit-confirm-button" 
+              }}
+              cancelButtonProps={{
+                className: "exit-cancel-button"
+              }}
+              className="exit-confirmation-modal"
+              centered
+            >
+              <p className="exit-confirmation-text">Are you sure you want to exit the quiz? Your progress will be lost.</p>
+            </Modal>
+          </>
+        )}
+        
         <div className="topic-header">
           <div className="topic-icon">
             <BookOutlined />

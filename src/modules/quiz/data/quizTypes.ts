@@ -24,6 +24,7 @@ export interface QuizResults {
   numberOfQuestions: number;
   numberOfCorrectAnswers: number;
   score: number;
+  hasPassed: boolean;
 }
 
 export interface Topic {
@@ -37,7 +38,7 @@ export interface IQuizState {
   answers: Record<string, string>;
   isLoading: boolean;
   error: string | null;
-  results: any | null;
+  results: QuizResults | null;
   currentAnswer: QuizAnswer | null;
   topic?: Topic;
   timeRemaining: number;
