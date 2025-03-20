@@ -195,32 +195,32 @@ export default function Dashboard() {
   }
 
   const currentCourse = {
-    id: analyticsData.topic.id,
-    name: analyticsData.topic.name,
-    roadmapId: analyticsData.topic.roadmapId,
-    description: analyticsData.topic.description,
-    progress: analyticsData.topic.progress,
+    id: analyticsData.topic?.id || '',
+    name: analyticsData.topic?.name || 'No active course',
+    roadmapId: analyticsData.topic?.roadmapId || '',
+    description: analyticsData.topic?.description || 'Start your learning journey!',
+    progress: analyticsData.topic?.progress || 0,
     totalModules: 100,
-    completedModules: analyticsData.topic.progress,
+    completedModules: analyticsData.topic?.progress || 0,
     lastAccessedAt: new Date().toISOString(),
   };
 
   const stats = [
     {
       label: 'Learning Streak',
-      value: `${analyticsData.streak} days`,
+      value: `${analyticsData.streak || 0} days`,
       icon: Flame,
       color: '#f97316',
     },
     {
       label: 'Modules Completed',
-      value: analyticsData.completedModules.toString(),
+      value: (analyticsData.completedModules || 0).toString(),
       icon: BookMarked,
       color: '#3b82f6',
     },
     {
       label: 'Quizzes Taken',
-      value: analyticsData.quizesTaken.toString(),
+      value: (analyticsData.quizesTaken || 0).toString(),
       icon: PlayCircle,
       color: '#8b5cf6',
     },
@@ -232,7 +232,7 @@ export default function Dashboard() {
     description: roadmap.description,
     modules: roadmap.numberOfTopics,
     estimatedTime: roadmap.estimatedTime,
-    difficulty: roadmap.difficulty,
+    difficulty: roadmap.difficutly,
   }));
 
   const isCourseCompleted = currentCourse.progress === 100;

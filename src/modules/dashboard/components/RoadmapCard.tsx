@@ -31,7 +31,7 @@ export function RoadmapCard({ roadmap, index, onClick }: RoadmapCardProps) {
           </span>
         </div>
         <div className="roadmap-level">
-          <span>{roadmap?.difficulty}</span>
+          <span>{roadmap?.difficulty || "Easy"}</span>
         </div>
       </div>
       <div className="roadmap-action">
