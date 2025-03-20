@@ -1,9 +1,9 @@
-import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@src/modules/shared/store';
-import { resetQuiz } from '../../data/quizSlice';
-import QuizResult from '@src/modules/quiz/components/QuizResult/QuizResult';
-import LoadingDots from '@src/modules/shared/components/LoadingDots/LoadingDots';
+import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "@src/modules/shared/store";
+import { resetQuiz } from "../../data/quizSlice";
+import QuizResult from "@src/modules/quiz/components/QuizResult/QuizResult";
+import LoadingDots from "@src/modules/shared/components/LoadingDots/LoadingDots";
 
 const QuizResultsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -13,10 +13,10 @@ const QuizResultsPage: React.FC = () => {
 
   if (isLoading) {
     return (
-      <LoadingDots 
+      <LoadingDots
         message={{
           title: "Processing Your Score..",
-          subtitle: "We're reviewing your answers—stay tuned!"
+          subtitle: "We're reviewing your answers—stay tuned!",
         }}
       />
     );
@@ -37,9 +37,10 @@ const QuizResultsPage: React.FC = () => {
     navigate(`/quiz/${roadmapId}/${topicId}`);
   };
 
+  console.log(results);
   return (
     <div className="min-h-screen bg-gray-50 py-12">
-      <QuizResult 
+      <QuizResult
         score={results.score}
         totalQuestions={results.totalQuestions}
         hasPassed={results.hasPassed}

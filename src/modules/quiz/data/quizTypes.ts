@@ -20,11 +20,18 @@ export interface QuizAnswer {
   explanation: string | null;
 }
 
+// export interface QuizResults {
+//   numberOfQuestions: number;
+//   numberOfCorrectAnswers: number;
+//   score: number;
+//   hasPassed: boolean;
+// }
+
 export interface QuizResults {
-  numberOfQuestions: number;
-  numberOfCorrectAnswers: number;
+  correctAnswers: number;
   score: number;
   hasPassed: boolean;
+  totalQuestions: number;
 }
 
 export interface Topic {
@@ -66,7 +73,7 @@ export interface QuizOption {
 export interface Question {
   id: string;
   text: string;
-  type: 'single';
+  type: "single";
   options: QuizOption[];
   timeLimit: number;
 }

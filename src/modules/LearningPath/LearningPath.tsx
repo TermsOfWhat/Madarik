@@ -13,7 +13,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../shared/store";
 import { fetchRoadmapById, fetchRoadmapTopic } from "./data/pathThunk";
 import LoaderTopic from "./components/LoaderTopic/LoaderTopic";
-import AkinatorAvatar from "../shared/components/AkinatorAvatar";
 
 function LearningPath() {
   const dispatch = useAppDispatch();
@@ -28,17 +27,6 @@ function LearningPath() {
     (roadmap?.flowChart.edges as any) || []
   );
   const [open, setOpen] = useState(false);
-
-  // Transform roadmap modules for Akinator
-  const getAkinatorModules = () => {
-    if (!roadmap) return [];
-
-    // Extract module information from flowChart nodes as they represent topics
-    return roadmap.flowChart.nodes.map((node) => ({
-      name: node.data.label,
-      description: `Module: ${node.data.label}`,
-    }));
-  };
 
   useEffect(() => {
     if (pathId) {
@@ -60,9 +48,6 @@ function LearningPath() {
       />
     );
   }
-
-  // Only render the Akinator if we have roadmap data
-  const shouldRenderAkinator = roadmap && roadmap.name && roadmap.description;
 
   return (
     <div className="learning-path">
@@ -105,15 +90,6 @@ function LearningPath() {
           FULL CONTENT
         </Drawer>
       </ReactFlow>
-
-      {shouldRenderAkinator && (
-        <AkinatorAvatar
-          roadmapName={roadmap.name}
-          roadmapDescription={roadmap.description}
-          modules={getAkinatorModules()}
-          difficulty={"Intermediate"}
-        />
-      )}
     </div>
   );
 }

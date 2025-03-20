@@ -1,11 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IQuizState } from './quizTypes';
+import { createSlice } from "@reduxjs/toolkit";
+import { IQuizState, QuizResults } from "./quizTypes";
 import {
   fetchTopicQuiz,
   submitQuizAnswer,
   fetchQuizResults,
-} from './quizThunk';
-import { shuffleArray } from '../utils/array-utils';
+} from "./quizThunk";
+import { shuffleArray } from "../utils/array-utils";
 
 const initialState: IQuizState = {
   questions: [],
@@ -20,7 +20,7 @@ const initialState: IQuizState = {
 };
 
 const quizSlice = createSlice({
-  name: 'quiz',
+  name: "quiz",
   initialState,
   reducers: {
     nextQuestion: (state) => {
@@ -42,16 +42,18 @@ const quizSlice = createSlice({
     });
     builder.addCase(fetchTopicQuiz.fulfilled, (state, action) => {
       state.isLoading = false;
-      const shuffledQuestions = shuffleArray(action.payload.questions).map(question => ({
-        ...question,
-        possibleAnswers: shuffleArray(question.possibleAnswers)
-      }));
+      const shuffledQuestions = shuffleArray(action.payload.questions).map(
+        (question) => ({
+          ...question,
+          possibleAnswers: shuffleArray(question.possibleAnswers),
+        })
+      );
       state.questions = shuffledQuestions;
       state.topic = {
-        name: action.payload.topic?.name || 'Quiz',
+        name: action.payload.topic?.name || "Quiz",
         description:
           action.payload.topic?.description ||
-          'Test your knowledge on this topic',
+          "Test your knowledge on this topic",
       };
       state.currentQuestionIndex = 0;
       state.answers = {};
@@ -61,7 +63,7 @@ const quizSlice = createSlice({
     });
     builder.addCase(fetchTopicQuiz.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message || 'Failed to fetch quiz';
+      state.error = action.error.message || "Failed to fetch quiz";
     });
 
     builder.addCase(submitQuizAnswer.pending, (state) => {
@@ -76,7 +78,7 @@ const quizSlice = createSlice({
       };
     });
     builder.addCase(submitQuizAnswer.rejected, (state, action) => {
-      state.error = action.error.message || 'Failed to submit answer';
+      state.error = action.error.message || "Failed to submit answer";
     });
 
     builder.addCase(fetchQuizResults.pending, (state) => {
@@ -85,11 +87,11 @@ const quizSlice = createSlice({
     });
     builder.addCase(fetchQuizResults.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.results = action.payload;
+      state.results = action.payload as QuizResults;
     });
     builder.addCase(fetchQuizResults.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message || 'Failed to fetch results';
+      state.error = action.error.message || "Failed to fetch results";
     });
   },
 });

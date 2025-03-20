@@ -1,17 +1,17 @@
-import Button from '../shared/components/Button/Button';
-import ViewTitle from '../shared/components/ViewTitle/ViewTitle';
-import { TrophyOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import CourseProgress from './components/CourseProgress/index';
-import { resetQuiz } from '../quiz/data/quizSlice';
+import Button from "../shared/components/Button/Button";
+import ViewTitle from "../shared/components/ViewTitle/ViewTitle";
+import { TrophyOutlined } from "@ant-design/icons";
+import CourseProgress from "./components/CourseProgress/index";
 
-import ScrollableCourseConcept from './components/ScrollableCourseConcept/ScrollableCourseConcept';
-import { useParams } from '../shared/hooks/useParams';
-import { useAppDispatch, useAppSelector } from '../shared/store';
-import { useNavigate } from 'react-router-dom';
+import ScrollableCourseConcept from "./components/ScrollableCourseConcept/ScrollableCourseConcept";
+import { useParams } from "../shared/hooks/useParams";
+import { useAppDispatch, useAppSelector } from "../shared/store";
+import { useNavigate } from "react-router-dom";
 
-import { useEffect, useMemo } from 'react';
-import { fetchRoadmapTopic } from '../LearningPath/data/pathThunk';
-import './quiz-button.scss';
+import { useEffect } from "react";
+import { fetchRoadmapTopic } from "../LearningPath/data/pathThunk";
+import ModuleAdvisor from "./components/ModuleAdvisor";
+import "./ModuleDetails.scss";
 
 function ModuleDetails() {
   const { roadmap, topic } = useAppSelector((state) => state.roadmap);
@@ -23,42 +23,50 @@ function ModuleDetails() {
 
   const startQuiz = () => {
     if (pathId && moduleId) {
-      dispatch(resetQuiz());
       navigate(`/quiz/${pathId}/${moduleId}`);
     }
   };
 
   useEffect(() => {
-    if (pathId && moduleId) {
+    if (!topic && pathId && moduleId) {
       dispatch(fetchRoadmapTopic({ roadmapId: pathId, id: moduleId }));
     }
-  }, [pathId, moduleId]);
+  }, []);
 
-  const chaptersData = useMemo(() => topic?.chapters || [], [topic?.chapters]);
+  if (!topic) return null;
 
-  const isQuizCompleted = useMemo(() => {
-    return topic?.progress === 100;
-  }, [topic?.progress]);
+  const chaptersData = topic?.chapters;
 
-  if (!topic?.chapters) return null;
+  // Prepare chapter data for the advisor
+  const chaptersForAdvisor =
+    chaptersData?.map((chapter) => ({
+      name: chapter.name,
+      description: chapter.description || "",
+    })) || [];
 
   return (
-    <div>
+    <div className="module-details-container">
       <ViewTitle retourUrl={`/roadmap/${pathId}`} title={topic?.name}>
         <Button
-          label={isQuizCompleted ? "Quiz Completed" : "Final Quiz"}
-          IconComponent={isQuizCompleted ? CheckCircleOutlined : TrophyOutlined}
+          label="Take Quiz"
+          IconComponent={TrophyOutlined}
           onClick={startQuiz}
-          className={`quiz-button ${isQuizCompleted ? 'quiz-completed' : ''}`}
-          disabled={isQuizCompleted}
+          className="quiz-button"
         />
       </ViewTitle>
 
       <CourseProgress
-        title={roadmap?.description || ''}
+        title={roadmap?.description || ""}
         progress={topic?.progress}
         totalConcepts={topic?.chaptersCount}
         difficulty={topic?.difficulty}
+      />
+
+      <ModuleAdvisor
+        topicName={topic.name}
+        topicDifficulty={topic.difficulty}
+        chapters={chaptersForAdvisor}
+        roadmapContext={roadmap?.description}
       />
 
       <ScrollableCourseConcept chapters={chaptersData || []} />

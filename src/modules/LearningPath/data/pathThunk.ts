@@ -1,4 +1,4 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import {
   FetchChapterQuizParams,
   FetchRoadmapParams,
@@ -8,12 +8,12 @@ import {
   Roadmap,
   RoadmapTopic,
   SubmitQuizParams,
-} from './pathTypes';
-import axiosInstance from '@src/modules/shared/utils/axios';
-import { handleError } from '@src/modules/shared/utils/errorMessage';
+} from "./pathTypes";
+import axiosInstance from "@src/modules/shared/utils/axios";
+import { handleError } from "@src/modules/shared/utils/errorMessage";
 
 export const fetchRoadmap = createAsyncThunk<Roadmap, FetchRoadmapParams>(
-  'learningPath/fetchRoadmap',
+  "learningPath/fetchRoadmap",
   async (params, thunkAPI) => {
     try {
       const response = await axiosInstance.post(`/api/roadmaps`, params);
@@ -26,11 +26,11 @@ export const fetchRoadmap = createAsyncThunk<Roadmap, FetchRoadmapParams>(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const fetchRoadmapById = createAsyncThunk<Roadmap, string>(
-  'learningPath/fetchRoadmapById',
+  "learningPath/fetchRoadmapById",
   async (roadmapId) => {
     try {
       const response = await axiosInstance.get(`/api/roadmaps/${roadmapId}`);
@@ -41,19 +41,19 @@ export const fetchRoadmapById = createAsyncThunk<Roadmap, string>(
 
       throw new Error(response.data.message);
     } catch (error) {
-      return handleError(error, 'Failed to fetch roadmap by ID');
+      return handleError(error, "Failed to fetch roadmap by ID");
     }
-  },
+  }
 );
 
 export const fetchRoadmapTopic = createAsyncThunk<
   RoadmapTopic,
-  Params
->('learningPath/fetchRoadmapTopic', async (params) => {
+  FetchRoadmapTopicParams
+>("learningPath/fetchRoadmapTopic", async (params) => {
   try {
     const { roadmapId, id } = params;
     const response = await axiosInstance.get(
-      `/api/roadmaps/${roadmapId}/topics/${id}`,
+      `/api/roadmaps/${roadmapId}/topics/${id}`
     );
 
     if (response.status === 200) {
@@ -62,18 +62,18 @@ export const fetchRoadmapTopic = createAsyncThunk<
 
     throw new Error(response.data.message);
   } catch (error) {
-    return handleError(error, 'Failed to fetch topic');
+    return handleError(error, "Failed to fetch topic");
   }
 });
 
 export const fetchChapterQuiz = createAsyncThunk<
   QuizQuestion[],
   FetchChapterQuizParams
->('learningPath/fetchChapterQuiz', async (params) => {
+>("learningPath/fetchChapterQuiz", async (params) => {
   try {
     const { roadmapId, topicId, chapterId } = params;
     const response = await axiosInstance.get(
-      `/api/roadmaps/${roadmapId}/topics/${topicId}/chapters/${chapterId}/quiz`,
+      `/api/roadmaps/${roadmapId}/topics/${topicId}/chapters/${chapterId}/quiz`
     );
 
     if (response.status === 200) {
@@ -82,19 +82,19 @@ export const fetchChapterQuiz = createAsyncThunk<
 
     throw new Error(response.data.message);
   } catch (error) {
-    return handleError('there was an error generating the quiz');
+    return handleError("there was an error generating the quiz");
   }
 });
 
 export const submitChapterQuiz = createAsyncThunk<
   QuizSubmissionResponse,
   SubmitQuizParams
->('learningPath/submitChapterQuiz', async (params, thunkAPI) => {
+>("learningPath/submitChapterQuiz", async (params, thunkAPI) => {
   try {
     const { roadmapId, topicId, chapterId, answers } = params;
     const response = await axiosInstance.post(
       `/api/roadmaps/${roadmapId}/topics/${topicId}/chapters/${chapterId}/quiz/submit`,
-      answers,
+      answers
     );
 
     if (response.status === 200) {
@@ -104,6 +104,6 @@ export const submitChapterQuiz = createAsyncThunk<
 
     throw new Error(response.data.message);
   } catch (error) {
-    return handleError(error, 'Failed to submit quiz answers');
+    return handleError(error, "Failed to submit quiz answers");
   }
 });
