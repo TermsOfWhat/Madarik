@@ -30,6 +30,7 @@
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     cursor: pointer;
+    position: relative;
 
     &:hover {
       transform: translateY(-2px);
@@ -46,6 +47,7 @@
     .roadmap-content {
       flex: 1;
       padding: 1.5rem;
+      position: relative;
 
       h3 {
         font-size: 1.25rem;
@@ -83,6 +85,53 @@
           color: #4b5563;
         }
       }
+      
+      .roadmap-buttons {
+        position: absolute;
+        bottom: 1.5rem;
+        right: 1.5rem;
+        display: flex;
+        gap: 0.5rem;
+        opacity: 0;
+        transform: translateY(5px);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        
+        &.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .roadmap-button {
+          display: flex;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.375rem 0.75rem;
+          border-radius: 0.375rem;
+          font-size: 0.75rem;
+          font-weight: 500;
+          transition: all 0.2s ease;
+          border: none;
+          cursor: pointer;
+          
+          &.open-button {
+            background-color: #3b82f6;
+            color: white;
+            
+            &:hover {
+              background-color: #2563eb;
+            }
+          }
+          
+          &.delete-button {
+            background-color: #ef4444;
+            color: white;
+            
+            &:hover {
+              background-color: #dc2626;
+            }
+          }
+        }
+      }
     }
 
     .roadmap-action {
@@ -95,4 +144,14 @@
       transition: all 0.2s ease;
     }
   }
-} 
+  
+  .no-results {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+    background-color: #f9fafb;
+    border-radius: 0.5rem;
+    border: 1px dashed #e5e7eb;
+  }
+}
+

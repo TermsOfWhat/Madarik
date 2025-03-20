@@ -3,10 +3,10 @@
 import type React from "react"
 
 import { useEffect, useState } from "react"
-import { Alert } from "antd"
+import { Alert, Modal, message } from "antd"
 import { useAppDispatch, useAppSelector } from "../shared/store"
-import { fetchRoadmaps } from "../dashboard/data/roadmapsThunk"
-import { RoadmapCard } from "../dashboard/components/RoadmapCard"
+import { fetchRoadmaps, deleteRoadmap } from "../dashboard/data/roadmapsThunk"
+import { RoadmapCard } from "./components/RoadmapCard"
 import { useNavigate } from "react-router-dom"
 import RoadmapsSkeleton from "./components/RoadmapsSkeleton"
 import { EnhancedSearch } from "./components/Search/enhanced-search"
@@ -18,6 +18,9 @@ export default function Roadmaps() {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [searchTerm, setSearchTerm] = useState("")
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false)
+  const [roadmapToDelete, setRoadmapToDelete] = useState<string | null>(null)
+  const [messageApi, contextHolder] = message.useMessage()
 
   const { data: roadmapsData, isLoading, error } = useAppSelector((state) => state.roadmaps)
 
@@ -54,9 +57,37 @@ export default function Roadmaps() {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value)
   }
+  
+  const handleDeleteClick = (roadmapId: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    setRoadmapToDelete(roadmapId)
+    setDeleteModalVisible(true)
+  }
+  
+  const confirmDelete = async () => {
+    if (!roadmapToDelete) return
+    
+    try {
+      const resultAction = await dispatch(deleteRoadmap(roadmapToDelete))
+      
+      if (deleteRoadmap.fulfilled.match(resultAction)) {
+        messageApi.success('Roadmap deleted successfully')
+        dispatch(fetchRoadmaps())
+      } else {
+        const errorMessage = resultAction.payload as string
+        messageApi.error(errorMessage)
+      }
+    } catch (error) {
+      messageApi.error('An unexpected error occurred')
+    } finally {
+      setDeleteModalVisible(false)
+      setRoadmapToDelete(null)
+    }
+  }
 
   return (
     <div className="roadmaps-container">
+      {contextHolder}
       <div className="roadmaps-header">
         <h1>Learning Roadmaps</h1>
         <EnhancedSearch
@@ -79,11 +110,23 @@ export default function Roadmaps() {
               roadmap={roadmap}
               index={index}
               onClick={() => handleRoadmapClick(roadmap.id)}
+              onDelete={handleDeleteClick}
             />
           ))}
         </div>
       )}
+      
+      <Modal
+        title="Delete Roadmap"
+        open={deleteModalVisible}
+        onOk={confirmDelete}
+        onCancel={() => setDeleteModalVisible(false)}
+        okText="Delete"
+        cancelText="Cancel"
+        okButtonProps={{ danger: true }}
+      >
+        <p>Are you sure you want to delete this roadmap? This action cannot be undone.</p>
+      </Modal>
     </div>
   )
 }
-
