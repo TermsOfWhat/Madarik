@@ -62,6 +62,7 @@ function LearningPath() {
         }}
         onNodeClick={(_, node) => {
           if (!pathId) return;
+          if (node.type === "mainTopic") return;
           dispatch(
             fetchRoadmapTopic({
               roadmapId: pathId,
